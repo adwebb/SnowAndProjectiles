@@ -120,11 +120,11 @@ static inline CGPoint rwNormalize(CGPoint a) {
     // Create the actions
     SKAction * actionMove = [SKAction moveTo:CGPointMake(-monster.size.width/2, actualY) duration:actualDuration];
     SKAction * actionMoveDone = [SKAction removeFromParent];
-    SKAction * loseAction = [SKAction runBlock:^{
-        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:0.5];
-        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:NO];
-        [self.view presentScene:gameOverScene transition: reveal];
-    }];
+//    SKAction * loseAction = [SKAction runBlock:^{
+//        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:0.5];
+//        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:NO];
+//        [self.view presentScene:gameOverScene transition: reveal];
+//    }];
     [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]];
  
 }
@@ -154,7 +154,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
  
-    [self runAction:[SKAction playSoundFileNamed:@"pew-pew-lei.caf" waitForCompletion:NO]];
+   // [self runAction:[SKAction playSoundFileNamed:@"pew-pew-lei.caf" waitForCompletion:NO]];
  
     // 1 - Choose one of the touches to work with
     UITouch * touch = [touches anyObject];
