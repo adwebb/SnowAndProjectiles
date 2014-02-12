@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "35F3DEE717D8011E009EFFF2"
-               BuildableName = "SpriteKitSimpleGame.app"
+               BuildableName = "SnowAndProjectiles.app"
                BlueprintName = "SnowAndProjectiles"
                ReferencedContainer = "container:SnowAndProjectiles.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "35F3DF0F17D8011E009EFFF2"
-               BuildableName = "SpriteKitSimpleGameTests.xctest"
+               BuildableName = "SnowAndProjectilesTests.xctest"
                BlueprintName = "SnowAndProjectilesTests"
                ReferencedContainer = "container:SnowAndProjectiles.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "35F3DEE717D8011E009EFFF2"
-            BuildableName = "SpriteKitSimpleGame.app"
+            BuildableName = "SnowAndProjectiles.app"
             BlueprintName = "SnowAndProjectiles"
             ReferencedContainer = "container:SnowAndProjectiles.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "35F3DEE717D8011E009EFFF2"
-            BuildableName = "SpriteKitSimpleGame.app"
+            BuildableName = "SnowAndProjectiles.app"
             BlueprintName = "SnowAndProjectiles"
             ReferencedContainer = "container:SnowAndProjectiles.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "35F3DEE717D8011E009EFFF2"
-            BuildableName = "SpriteKitSimpleGame.app"
+            BuildableName = "SnowAndProjectiles.app"
             BlueprintName = "SnowAndProjectiles"
             ReferencedContainer = "container:SnowAndProjectiles.xcodeproj">
          </BuildableReference>

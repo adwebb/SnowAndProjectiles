@@ -21,7 +21,7 @@
 {
     [super viewWillLayoutSubviews];
     NSError *error;
-    NSURL * backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"background-music-aac" withExtension:@"caf"];
+    NSURL * backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"winterHoliday" withExtension:@"mp3"];
     self.backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:backgroundMusicURL error:&error];
     self.backgroundMusicPlayer.numberOfLoops = -1;
     [self.backgroundMusicPlayer prepareToPlay];
@@ -32,6 +32,7 @@
     if (!skView.scene) {
       skView.showsFPS = YES;
       skView.showsNodeCount = YES;
+        NSLog(@"%@",NSStringFromCGSize(self.view.frame.size));
       
       // Create and configure the scene.
       SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
