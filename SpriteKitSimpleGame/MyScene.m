@@ -79,7 +79,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
         
-        
         NSString *snowPath =
         [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
         SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
@@ -135,9 +134,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 // 4 - Bail out if you are shooting down or backwards
                 if (offset.x >= 0) return;
                 
-                // 5 - OK to add now - we've double checked position
-                
-                
                 // 6 - Get the direction of where to shoot
                 CGPoint direction = rwNormalize(offset);
                 CGPoint launchDirection = rwInvert(direction);
@@ -154,7 +150,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 
                 self.projectile.physicsBody.affectedByGravity = YES;
                 [self.projectile.physicsBody applyImpulse:launcher];
-                
             }
         }
     }
@@ -195,6 +190,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
+
 - (void)addMonster {
  
     int monsterPicker = arc4random()%2+1;
@@ -294,7 +290,6 @@ float degToRad(float degree) {
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    // 1
     SKPhysicsBody *firstBody, *secondBody;
  
     if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)

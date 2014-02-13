@@ -31,6 +31,7 @@
 		5A5D158F18AD31A600649720 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158E18AD31A600649720 /* Projectile.m */; };
 		5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159118AD58BA00649720 /* YetiMonster.m */; };
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
+		5A5D159718AD8E4300649720 /* Hero.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159618AD8E4300649720 /* Hero.m */; };
 		C22A818018ABF69A00F25869 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C22A817F18ABF69A00F25869 /* icon@2x.png */; };
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C2573AE818A992D1009790A1 /* snowball.png in Resources */ = {isa = PBXBuildFile; fileRef = C2573AE718A992D1009790A1 /* snowball.png */; };
@@ -94,6 +95,8 @@
 		5A5D159018AD58BA00649720 /* YetiMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YetiMonster.h; sourceTree = "<group>"; };
 		5A5D159118AD58BA00649720 /* YetiMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YetiMonster.m; sourceTree = "<group>"; };
 		5A5D159318AD60C100649720 /* yeti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yeti.png; path = ../yeti.png; sourceTree = "<group>"; };
+		5A5D159518AD8E4300649720 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hero.h; sourceTree = "<group>"; };
+		5A5D159618AD8E4300649720 /* Hero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hero.m; sourceTree = "<group>"; };
 		C22A817F18ABF69A00F25869 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C2573AE718A992D1009790A1 /* snowball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowball.png; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				5A5D159118AD58BA00649720 /* YetiMonster.m */,
 				5A5D158918AD13C100649720 /* SnowmanMonster.h */,
 				5A5D158A18AD13C100649720 /* SnowmanMonster.m */,
+				5A5D159518AD8E4300649720 /* Hero.h */,
+				5A5D159618AD8E4300649720 /* Hero.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -378,6 +383,7 @@
 				5A5D158818AD12BF00649720 /* Monster.m in Sources */,
 				35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */,
 				5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */,
+				5A5D159718AD8E4300649720 /* Hero.m in Sources */,
 				35F3DF0717D8011E009EFFF2 /* MyScene.m in Sources */,
 				35F3DF0417D8011E009EFFF2 /* ViewController.m in Sources */,
 				35F3DEFE17D8011E009EFFF2 /* AppDelegate.m in Sources */,
