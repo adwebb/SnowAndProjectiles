@@ -97,11 +97,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
 -(void)spawnProjectile
 {
     self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
+    self.projectile.physicsBody.affectedByGravity = NO;
     self.projectile.position = projectileSpawnPoint;
-    self.projectile.alpha = 0;
+    self.projectile.alpha = 1;
     [self.projectile setName:movableNodeName];
     [self addChild:self.projectile];
-    [self.projectile runAction:[SKAction fadeInWithDuration:1]];
+   // [self.projectile runAction:[SKAction fadeInWithDuration:1]];
 
 }
 
@@ -112,23 +113,21 @@ static inline CGPoint rwNormalize(CGPoint a) {
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
-	CGPoint touchLocation = [recognizer locationInView:recognizer.view];
-    touchLocation = [self convertPointFromView:touchLocation];
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        [self selectNodeForTouch:touchLocation];
-    } else if (recognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [recognizer translationInView:recognizer.view];
-        translation = CGPointMake(translation.x, -translation.y);
-        [self panForTranslation:translation fromStartPoint:touchLocation];
-        [recognizer setTranslation:CGPointZero inView:recognizer.view];
-        
-    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        
-        if ([[_selectedNode name] isEqualToString:movableNodeName]) {
+	if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
+    {
+        CGPoint touchLocation = [recognizer locationInView:recognizer.view];
+        touchLocation = [self convertPointFromView:touchLocation];
+        if (recognizer.state == UIGestureRecognizerStateBegan) {
+            [self selectNodeForTouch:touchLocation];
+        } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+            CGPoint translation = [recognizer translationInView:recognizer.view];
+            translation = CGPointMake(translation.x, -translation.y);
+            [self panForTranslation:translation fromStartPoint:touchLocation];
+            [recognizer setTranslation:CGPointZero inView:recognizer.view];
             
-            if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
-            {
-                NSLog(@"HI");
+        } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+            
+            if ([[_selectedNode name] isEqualToString:movableNodeName]) {
                 
                 CGPoint location = self.projectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
@@ -155,10 +154,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 
                 self.projectile.physicsBody.affectedByGravity = YES;
                 [self.projectile.physicsBody applyImpulse:launcher];
+                
             }
-
         }
-        
     }
 }
 
@@ -246,6 +244,15 @@ float degToRad(float degree) {
     if (self.lastSpawnTimeInterval > 3) {
         self.lastSpawnTimeInterval = 0;
         [self addMonster];
+        if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
+        {
+            [self.projectile removeFromParent];
+        }
+        
+        if(![self.children containsObject:self.projectile])
+        {
+            [self spawnProjectile];
+        }
         
     }
 }
@@ -259,63 +266,10 @@ float degToRad(float degree) {
         timeSinceLast = 1.0 / 60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
-    
-    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
-    {
-        [self.projectile removeFromParent];
-    }
-    
-    if(![self.children containsObject:self.projectile])
-    {
-        [self spawnProjectile];
-    }
  
     [self updateWithTimeSinceLastUpdate:timeSinceLast];
  
 }
-
-//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-// 
-// 
-//    // 1 - Choose one of the touches to work with
-//    UITouch * touch = [touches anyObject];
-//    CGPoint location = [touch locationInNode:self];
-// 
-//    // 2 - Set up initial location of projectile
-//    
-//   self.projectile.physicsBody.affectedByGravity = NO;
-//    
-//   
-//    
-//    // 3- Determine offset of location to projectile
-//    CGPoint offset = rwSub(location, self.projectile.position);
-// 
-//    // 4 - Bail out if you are shooting down or backwards
-//    if (offset.x <= 0) return;
-// 
-//    // 5 - OK to add now - we've double checked position
-//
-// 
-//    // 6 - Get the direction of where to shoot
-//    CGPoint direction = rwNormalize(offset);
-//    
-//    int force = 20;
-//    if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
-//    {
-//        self.projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:self.projectile.size.width/2];
-//        self.projectile.physicsBody.dynamic = YES;
-//        self.projectile.physicsBody.categoryBitMask = projectileCategory;
-//        self.projectile.physicsBody.contactTestBitMask = monsterCategory;
-//        self.projectile.physicsBody.collisionBitMask = 0;
-//        self.projectile.physicsBody.usesPreciseCollisionDetection = YES;
-//        
-//        self.projectile.physicsBody.affectedByGravity = YES;
-//        [self.projectile.physicsBody applyImpulse:CGVectorMake(direction.x*force, force*direction.y)];
-//        SKAction* pause = [SKAction waitForDuration:2];
-//        SKAction* remove = [SKAction removeFromParent];
-//        [self.projectile runAction:[SKAction sequence:@[pause,remove]]];
-//    }
-//}
 
 - (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
     NSLog(@"Hit");
@@ -323,13 +277,14 @@ float degToRad(float degree) {
     SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
     
     [monster addChild:explosion];
-    
+    monster.physicsBody.collisionBitMask = 0;
+    monster.physicsBody.contactTestBitMask = 0;
     SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
-    SKAction* wait  = [SKAction waitForDuration:2];
     SKAction* remove = [SKAction removeFromParent];
-    [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
+    [monster runAction:[SKAction sequence:@[fadeOut, remove]]];
     
     [projectile removeFromParent];
+    
     self.monstersDestroyed++;
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
    
@@ -352,8 +307,8 @@ float degToRad(float degree) {
     }
  
     // 2
-    if ((firstBody.categoryBitMask & projectileCategory) != 0 &&
-        (secondBody.categoryBitMask & monsterCategory) != 0)
+    if (firstBody.categoryBitMask == projectileCategory &&
+        secondBody.categoryBitMask == monsterCategory)
     {
         [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(SKSpriteNode *) secondBody.node];
     }
