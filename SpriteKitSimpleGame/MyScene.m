@@ -8,12 +8,13 @@
 
 #import "MyScene.h"
 #import "GameOverScene.h"
+#import "Monster.h"
+#import "SnowmanMonster.h"
+#import "YetiMonster.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 
-
-// 1
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
     UIPanGestureRecognizer* panGestureRecognizer;
@@ -102,7 +103,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     [self.projectile setName:movableNodeName];
     [self addChild:self.projectile];
     [self.projectile runAction:[SKAction fadeInWithDuration:1]];
-
 }
 
 - (void)didMoveToView:(SKView *)view {
@@ -199,34 +199,28 @@ float degToRad(float degree) {
 }
 - (void)addMonster {
  
-    // Create sprite
-    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"snowman"];
-    monster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:monster.size]; // 1
-    monster.physicsBody.dynamic = YES; // 2
-    monster.physicsBody.categoryBitMask = monsterCategory; // 3
-    monster.physicsBody.contactTestBitMask = projectileCategory; // 4
-    monster.physicsBody.collisionBitMask = 0; // 5
-    monster.physicsBody.affectedByGravity = NO;
-
+    int monsterPicker = arc4random()%2+1;
+    
+    Monster* monster;
+    
+    if(monsterPicker < 2)
+    {
+    monster = [SnowmanMonster makeSnowmanMonster];
+    }else{
+    monster = [YetiMonster makeYetiMonster];
+    }
+    
     // Determine where to spawn the monster along the Y axis
     monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-    //monster.position = CGPointMake(190, 0);
-    //monster.position = CGPointMake(0, 0);
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
     [self addChild:monster];
  
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
-                             
     SKAction * actionMoveDone = [SKAction removeFromParent];
-//    SKAction * loseAction = [SKAction runBlock:^{
-//        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:0.5];
-//        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:NO];
-//        [self.view presentScene:gameOverScene transition: reveal];
-//    }];
+
     [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]];
- 
 }
 
 -(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
@@ -234,19 +228,17 @@ float degToRad(float degree) {
         CGMutablePathRef path = CGPathCreateMutable();
         CGPathMoveToPoint(path, Nil, 0, 0);
         CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
-       // CGPathAddLineToPoint(path, nil, -500, -150);
         
         return path;
-        
     }
 
-- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
- 
+- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
+{
     self.lastSpawnTimeInterval += timeSinceLast;
     if (self.lastSpawnTimeInterval > 3) {
         self.lastSpawnTimeInterval = 0;
-        [self addMonster];
         
+        [self addMonster];
     }
 }
 
@@ -317,22 +309,32 @@ float degToRad(float degree) {
 //    }
 //}
 
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
+- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster {
+    
+    monster.health--;
     NSLog(@"Hit");
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
-    SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
-    [monster addChild:explosion];
+    SKAction* stutter = [SKAction waitForDuration:.15];
+    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    [monster runAction:[SKAction sequence:@[reColor,stutter,deColor]]];
     
-    SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
-    SKAction* wait  = [SKAction waitForDuration:2];
-    SKAction* remove = [SKAction removeFromParent];
-    [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
+    if (monster.health == 0)
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
+        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        [monster addChild:explosion];
+        SKAction* wait = [SKAction waitForDuration:.5];
+        SKAction* remove = [SKAction removeFromParent];
+        SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
+        [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
     
+        self.monstersDestroyed++;
+    }
     [projectile removeFromParent];
-    self.monstersDestroyed++;
-    [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
-   
+    
+
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -355,7 +357,7 @@ float degToRad(float degree) {
     if ((firstBody.categoryBitMask & projectileCategory) != 0 &&
         (secondBody.categoryBitMask & monsterCategory) != 0)
     {
-        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(SKSpriteNode *) secondBody.node];
+        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
     }
 }
 
