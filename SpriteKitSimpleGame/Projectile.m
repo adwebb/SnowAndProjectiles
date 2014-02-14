@@ -10,4 +10,14 @@
 
 @implementation Projectile
 
+
+- (Projectile*)makeProjectile
+{
+    Projectile* projectile = [Projectile new];
+    projectile.physicsBody.affectedByGravity = NO;
+    projectile.alpha = 1;
+    
+    return projectile;
+}
+
 @end

@@ -26,6 +26,7 @@
 		35F3DF1E17D8011E009EFFF2 /* SnowAndProjectilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF1D17D8011E009EFFF2 /* SnowAndProjectilesTests.m */; };
 		35F3DF2D17D80158009EFFF2 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 35F3DF2A17D80158009EFFF2 /* sprites.atlas */; };
 		35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */; };
+		5A2D0E5D18AD91BB00808E8D /* SnowballProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D0E5C18AD91BB00808E8D /* SnowballProjectile.m */; };
 		5A5D158818AD12BF00649720 /* Monster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158718AD12BF00649720 /* Monster.m */; };
 		5A5D158B18AD13C100649720 /* SnowmanMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158A18AD13C100649720 /* SnowmanMonster.m */; };
 		5A5D158F18AD31A600649720 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158E18AD31A600649720 /* Projectile.m */; };
@@ -86,6 +87,8 @@
 		35F3DF2A17D80158009EFFF2 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = sprites.atlas; sourceTree = "<group>"; };
 		35F3DF2E17D803D6009EFFF2 /* GameOverScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverScene.h; sourceTree = "<group>"; };
 		35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverScene.m; sourceTree = "<group>"; };
+		5A2D0E5B18AD91BB00808E8D /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnowballProjectile.h; sourceTree = "<group>"; };
+		5A2D0E5C18AD91BB00808E8D /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnowballProjectile.m; sourceTree = "<group>"; };
 		5A5D158618AD12BF00649720 /* Monster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Monster.h; sourceTree = "<group>"; };
 		5A5D158718AD12BF00649720 /* Monster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Monster.m; sourceTree = "<group>"; };
 		5A5D158918AD13C100649720 /* SnowmanMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnowmanMonster.h; sourceTree = "<group>"; };
@@ -246,19 +249,29 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
-		5A5D158C18AD13F100649720 /* Model */ = {
+		5A2D0E5E18AD91CA00808E8D /* Monsters */ = {
 			isa = PBXGroup;
 			children = (
-				5A5D158D18AD31A600649720 /* Projectile.h */,
-				5A5D158E18AD31A600649720 /* Projectile.m */,
 				5A5D158618AD12BF00649720 /* Monster.h */,
 				5A5D158718AD12BF00649720 /* Monster.m */,
 				5A5D159018AD58BA00649720 /* YetiMonster.h */,
 				5A5D159118AD58BA00649720 /* YetiMonster.m */,
 				5A5D158918AD13C100649720 /* SnowmanMonster.h */,
 				5A5D158A18AD13C100649720 /* SnowmanMonster.m */,
+			);
+			name = Monsters;
+			sourceTree = "<group>";
+		};
+		5A5D158C18AD13F100649720 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5A2D0E5E18AD91CA00808E8D /* Monsters */,
+				5A5D158D18AD31A600649720 /* Projectile.h */,
+				5A5D158E18AD31A600649720 /* Projectile.m */,
 				5A5D159518AD8E4300649720 /* Hero.h */,
 				5A5D159618AD8E4300649720 /* Hero.m */,
+				5A2D0E5B18AD91BB00808E8D /* SnowballProjectile.h */,
+				5A2D0E5C18AD91BB00808E8D /* SnowballProjectile.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -385,6 +398,7 @@
 				5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */,
 				5A5D159718AD8E4300649720 /* Hero.m in Sources */,
 				35F3DF0717D8011E009EFFF2 /* MyScene.m in Sources */,
+				5A2D0E5D18AD91BB00808E8D /* SnowballProjectile.m in Sources */,
 				35F3DF0417D8011E009EFFF2 /* ViewController.m in Sources */,
 				35F3DEFE17D8011E009EFFF2 /* AppDelegate.m in Sources */,
 				35F3DEFA17D8011E009EFFF2 /* main.m in Sources */,
