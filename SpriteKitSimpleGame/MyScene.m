@@ -244,6 +244,12 @@ float degToRad(float degree) {
         timeSinceLast = 1.0 / 60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
+    
+    [self updateWithTimeSinceLastUpdate:timeSinceLast];
+}
+
+-(void)didSimulatePhysics
+{
     if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
         [self.projectile removeFromParent];
@@ -253,8 +259,6 @@ float degToRad(float degree) {
     {
         [self spawnProjectile];
     }
-    
-    [self updateWithTimeSinceLastUpdate:timeSinceLast];
 }
 
 - (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster {
