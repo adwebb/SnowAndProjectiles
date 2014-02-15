@@ -60,25 +60,21 @@ static inline CGPoint rwNormalize(CGPoint a) {
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
  
-        // 1) Loading the background
+        // Loading the background
         _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
         [_background setName:@"background"];
         [_background setAnchorPoint:CGPointZero];
         [self addChild:_background];
         
-        // 2
         NSLog(@"Size: %@", NSStringFromCGSize(size));
  
-        // 3
        // self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
  
-        // 4
         self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
         self.player.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
         [self addChild:self.player];
         
         projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
-        
         
         NSString *snowPath =
         [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
@@ -132,13 +128,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGPoint location = self.projectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
-                // 4 - Bail out if you are shooting down or backwards
+                // Bail out if you are shooting down or backwards
                 if (offset.x >= 0) return;
                 
-                // 5 - OK to add now - we've double checked position
-                
-                
-                // 6 - Get the direction of where to shoot
+                // Get the direction of where to shoot
                 CGPoint direction = rwNormalize(offset);
                 CGPoint launchDirection = rwInvert(direction);
                 float force = rwLength(offset);
@@ -154,7 +147,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 
                 self.projectile.physicsBody.affectedByGravity = YES;
                 [self.projectile.physicsBody applyImpulse:launcher];
-                
             }
         }
     }
@@ -195,17 +187,20 @@ static inline CGPoint rwNormalize(CGPoint a) {
 float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
+
 - (void)addMonster {
- 
+    
     int monsterPicker = arc4random()%2+1;
     
     Monster* monster;
     
     if(monsterPicker < 2)
     {
-    monster = [SnowmanMonster makeSnowmanMonster];
-    }else{
-    monster = [YetiMonster makeYetiMonster];
+        monster = [SnowmanMonster makeSnowmanMonster];
+    }
+    else
+    {
+        monster = [YetiMonster makeYetiMonster];
     }
     
     // Determine where to spawn the monster along the Y axis
@@ -213,31 +208,31 @@ float degToRad(float degree) {
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
     [self addChild:monster];
- 
+    
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
     SKAction * actionMoveDone = [SKAction removeFromParent];
-
+    
     [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]];
 }
 
 -(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
-    {
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathMoveToPoint(path, Nil, 0, 0);
-        CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
-        
-        return path;
-    }
+{
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, Nil, 0, 0);
+    CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
+    
+    return path;
+}
 
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
     self.lastSpawnTimeInterval += timeSinceLast;
     if (self.lastSpawnTimeInterval > 3) {
         self.lastSpawnTimeInterval = 0;
-       
+        
         [self addMonster];
-        }
+    }
 }
 
 - (void)update:(NSTimeInterval)currentTime {
@@ -260,7 +255,6 @@ float degToRad(float degree) {
     }
     
     [self updateWithTimeSinceLastUpdate:timeSinceLast];
- 
 }
 
 - (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster {
@@ -294,7 +288,6 @@ float degToRad(float degree) {
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    // 1
     SKPhysicsBody *firstBody, *secondBody;
  
     if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
