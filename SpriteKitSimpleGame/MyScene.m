@@ -97,7 +97,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 -(void)spawnProjectile
 {
-    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
+    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"arrow"];
     self.projectile.physicsBody.affectedByGravity = NO;
     self.projectile.position = projectileSpawnPoint;
     self.projectile.alpha = 1;
