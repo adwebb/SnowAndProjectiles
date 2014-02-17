@@ -12,4 +12,6 @@
 
 @property float health;
 
++ (Hero*)spawnHero;
+
 @end

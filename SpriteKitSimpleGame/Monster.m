@@ -23,4 +23,7 @@ static const uint32_t projectileCategory     =  0x1 << 0;
     return monster;
 }
 
++ (Monster *) monster {
+    return nil;
+}
 @end

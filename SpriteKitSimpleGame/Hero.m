@@ -10,4 +10,10 @@
 
 @implementation Hero
 
++ (Hero*)spawnHero
+{
+    Hero* hero = [Hero spriteNodeWithImageNamed:@"hero"];
+    return hero;
+}
+
 @end

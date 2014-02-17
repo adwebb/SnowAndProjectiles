@@ -11,6 +11,7 @@
 #import "Monster.h"
 #import "SnowmanMonster.h"
 #import "YetiMonster.h"
+#import "Hero.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -67,17 +68,16 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self addChild:_background];
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
- 
-       // self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
- 
+  
         self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
         self.player.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
+        
+       // Hero* hero = [Hero spawnHero];
         [self addChild:self.player];
         
         projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
         
-        NSString *snowPath =
-        [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
+        NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
         SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
         snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
         [_background addChild:snowEmitter];
@@ -196,11 +196,11 @@ float degToRad(float degree) {
     
     if(monsterPicker < 2)
     {
-        monster = [SnowmanMonster makeSnowmanMonster];
+        monster = [SnowmanMonster monster];
     }
     else
     {
-        monster = [YetiMonster makeYetiMonster];
+        monster = [YetiMonster monster];
     }
     
     // Determine where to spawn the monster along the Y axis
