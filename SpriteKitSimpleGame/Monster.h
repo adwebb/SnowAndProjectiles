@@ -14,7 +14,7 @@
 @property float baseSpeed;
 
 + (Monster*)setMonsterProperties:(Monster*)monster;
++ (Monster *) monster;
 
-+ (Monster*)monster;
 
 @end

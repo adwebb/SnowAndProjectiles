@@ -10,6 +10,6 @@
 
 @interface SnowmanMonster : Monster
 
-+ (SnowmanMonster*)makeSnowmanMonster;
++ (SnowmanMonster*)monster;
 
 @end

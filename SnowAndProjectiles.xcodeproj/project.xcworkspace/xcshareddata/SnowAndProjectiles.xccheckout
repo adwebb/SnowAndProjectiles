@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>CA839F46-46AA-4D77-97E6-21894DD6A303</string>
+	<string>411EEA5D-AA80-4D07-8B12-7E25F0FC58AC</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SnowAndProjectiles</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>753EEBEC-8183-424A-8689-943D18F6C628</key>
+		<key>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</key>
 		<string>https://github.com/adwebb/SnowAndProjectiles.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>SnowAndProjectiles.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>753EEBEC-8183-424A-8689-943D18F6C628</key>
+		<key>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,16 +25,16 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>753EEBEC-8183-424A-8689-943D18F6C628</string>
+	<string>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>753EEBEC-8183-424A-8689-943D18F6C628</string>
+			<string>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</string>
 			<key>IDESourceControlWCCName</key>
-			<string>SpriteKitSimpleGame</string>
+			<string>SnowAndProjectiles</string>
 		</dict>
 	</array>
 </dict>

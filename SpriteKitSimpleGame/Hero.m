@@ -26,4 +26,5 @@ static const uint32_t heroCategory        =  0x11;
     
     return hero;
 }
+
 @end
