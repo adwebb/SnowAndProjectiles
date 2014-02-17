@@ -6,14 +6,18 @@
 //  Copyright (c) 2013 Razeware LLC. All rights reserved.
 //
 
+static NSString * const movableNodeName = @"movable";
+
 #import "MyScene.h"
 #import "GameOverScene.h"
 #import "Monster.h"
 #import "SnowmanMonster.h"
 #import "YetiMonster.h"
+#import "Hero.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
+static const uint32_t heroCategory           =  0x11;
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
@@ -67,14 +71,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self addChild:_background];
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
- 
-       // self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
- 
-        self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
-        self.player.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
-        [self addChild:self.player];
+  
+        Hero* hero = [Hero spawnHero];
+        hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+        [self addChild:hero];
         
-        projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
+        projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
         
         NSString *snowPath =
         [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
@@ -86,20 +88,19 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
- 
     }
     return self;
 }
 
 -(void)spawnProjectile
 {
-    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"arrow"];
+    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
     self.projectile.physicsBody.affectedByGravity = NO;
     self.projectile.position = projectileSpawnPoint;
     self.projectile.alpha = 1;
     [self.projectile setName:movableNodeName];
     [self addChild:self.projectile];
-   // [self.projectile runAction:[SKAction fadeInWithDuration:1]];
+   //  [self.projectile runAction:[SKAction fadeInWithDuration:1]];
 }
 
 - (void)didMoveToView:(SKView *)view {
@@ -261,17 +262,22 @@ float degToRad(float degree) {
     }
 }
 
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster {
-    
+- (void)monster:(Monster*)monster didCollideWithHero:(Hero*)hero
+{
+    hero.health--;
+    NSLog(@"ouch!");
+    [hero runAction:[self onHitColoration]];
+    [monster removeFromParent];
+}
+
+- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster
+{
     monster.health--;
     NSLog(@"Hit");
     
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
-    SKAction* stutter = [SKAction waitForDuration:.15];
-    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
-    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
-    [monster runAction:[SKAction sequence:@[reColor,stutter,deColor]]];
+    [monster runAction:[self onHitColoration]];
     
     if (monster.health == 0)
     {
@@ -290,6 +296,15 @@ float degToRad(float degree) {
     self.monstersDestroyed++;
 }
 
+-(SKAction *) onHitColoration
+{
+    SKAction* stutter = [SKAction waitForDuration:.15];
+    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    
+    return [SKAction sequence:@[reColor,stutter,deColor]];
+}
+
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
     SKPhysicsBody *firstBody, *secondBody;
@@ -305,9 +320,11 @@ float degToRad(float degree) {
         secondBody = contact.bodyA;
     }
  
-    // 2
-    if (firstBody.categoryBitMask == projectileCategory &&
-        secondBody.categoryBitMask == monsterCategory)
+    if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == heroCategory)
+    {
+        [self monster:(Monster*)firstBody.node didCollideWithHero:(Hero*)secondBody.node];
+    }
+    else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
     {
         [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
     }

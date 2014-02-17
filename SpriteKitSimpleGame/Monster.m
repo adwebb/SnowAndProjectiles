@@ -8,8 +8,9 @@
 
 #import "Monster.h"
 
-static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t projectileCategory     =  0x1 << 0;
+static const uint32_t monsterCategory        =  0x1 << 1;
+static const uint32_t heroCategory           =  0x11;
 
 @implementation Monster
 
@@ -18,9 +19,15 @@ static const uint32_t projectileCategory     =  0x1 << 0;
     monster.physicsBody.dynamic = YES;
     monster.physicsBody.affectedByGravity = NO;
     monster.physicsBody.categoryBitMask = monsterCategory;
-    monster.physicsBody.contactTestBitMask = projectileCategory;
+    monster.physicsBody.contactTestBitMask = heroCategory | projectileCategory;
     monster.physicsBody.collisionBitMask = 0;
+    monster.physicsBody.usesPreciseCollisionDetection = YES;
     return monster;
+}
+
++(Monster*)monster
+{
+    return nil;
 }
 
 @end

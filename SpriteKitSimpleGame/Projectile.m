@@ -11,12 +11,14 @@
 @implementation Projectile
 
 
-- (Projectile*)makeProjectile
++ (Projectile*)makeProjectile
 {
     Projectile* projectile = [Projectile new];
+
     projectile.physicsBody.affectedByGravity = NO;
     projectile.alpha = 1;
-    
+    [projectile setName:movableNodeName];
+
     return projectile;
 }
 

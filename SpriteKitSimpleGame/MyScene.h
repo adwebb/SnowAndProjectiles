@@ -8,7 +8,6 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-static NSString * const movableNodeName = @"movable";
 
 @interface MyScene : SKScene
 

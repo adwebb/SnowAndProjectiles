@@ -15,4 +15,6 @@
 
 + (Monster*)setMonsterProperties:(Monster*)monster;
 
++ (Monster*)monster;
+
 @end
