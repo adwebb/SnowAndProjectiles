@@ -1,0 +1,130 @@
+Player HP: 10
+
+Score Algorithm:
+Base Score by enemy type +5/consecutive hit.
+
+
+Enemy Types:
+	
+minion:
+	model: snowman
+	speed: 1
+	   hp: 1
+	 size: medium
+   damage: .5
+    score: 5
+	 gold: 2
+
+brute:
+	model: yeti
+	speed: 1
+	   hp: 2
+	 size: large
+   damage: 1
+    score: 10
+	 gold: 4
+	    
+skirmisher:
+	model: ?
+	speed: 2
+	   hp: 1
+	 size: small
+   damage: 1
+    score: 10
+	 gold: 6
+	 	   	 
+soldier:
+	model: ?
+	speed: .5
+	   hp: 3
+	 size: med
+   damage: 2
+    score: 15
+	 gold: 10
+	 	   
+elite:
+	model: ?
+	speed: 1
+	   hp: 5
+	 size: large
+   damage: 5
+    score: 20
+	 gold: 25
+	 	   	 
+solo:
+	model: ?
+	speed: 2
+	   hp: 5
+	 size: large
+   damage: 10
+    score: 50
+	 gold: 100	
+
+Level Outlines:
+
+Level 1:
+	Allowed Upgrades: None
+			 Enemies: 10
+		 Enemy Types: 7 minions, 3 brutes
+  Spawn Points/Paths: 1
+	   Gold subTotal: 22
+Bonus for completion: 8
+	Cumulative Total: 30
+	
+Level 2:
+	Allowed Upgrades: Fire, Split
+			 Enemies: 20
+		 Enemy Types: 7 minions, 3 brutes, 6 skirmishers, 4 soldiers
+  Spawn Points/Paths: 1
+	   Gold subTotal: 98
+Bonus for completion: 22
+	Cumulative Total: 150
+
+Level 3:
+	Allowed Upgrades: Fire, Ice, Split
+			 Enemies: 30
+		 Enemy Types: 9 minions, 5 brutes, 9 skirmishers, 5 soldiers, 2 elites 
+  Spawn Points/Paths: 2
+	   Gold subTotal: 192
+Bonus for completion: 58
+	Cumulative Total: 400
+			   
+Level 4:
+	Allowed Upgrades: Fire, Ice, Split
+			 Enemies: 40
+		 Enemy Types: 10 minion, 10 brute, 10 skirmisher, 5 soldier, 5 elites
+  Spawn Points/Paths: 2
+	   Gold subTotal: 295
+Bonus for completion: 155
+	Cumulative Total: 850
+			   
+Level 5:
+	Allowed Upgrades: Fire, Ice, Split
+			 Enemies: 50
+		 Enemy Types: 20 brute, 10 skirmisher, 10 soldier, 9 elite, 1 solo
+  Spawn Points/Paths: 3
+	   Gold subTotal: 565
+Bonus for completion: 0
+	Cumulative Total: 1415
+	
+Upgrades:
+
+Damage:
+	Rank 1: 50g, +1 damage, stacks with other types.
+	Rank 2: 100g, +1 damage
+	Rank 3: 250g, +1 damage
+
+Split Shot:
+	Rank 1: 50g, splits once, no damage change
+	Rank 2: 100g, splits twice, no damage change
+	Rank 3: 250g, splits three times, no damage change
+
+Fire Shot:
+	Rank 1: 50g, lights enemy or ground on fire, repeats damage on next turn
+	Rank 2: 100g, lights enemy AND ground on fire, +1 turn
+	Rank 3: 250g, +1 damage, +1 turn
+
+Ice Shot:	
+	Rank 1: 50g, encases one enemy in a block of ice for 1 turn, -1 damage
+	Rank 2: 100g, +1 turn, no longer carries a damage penalty
+	Rank 3: 250g, adds ground effect wide-area slow for 2 turns
