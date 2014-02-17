@@ -11,6 +11,14 @@
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t projectileCategory     =  0x1 << 0;
 
+#define ARC4RANDOM_MAX      0x100000000
+static inline CGFloat ScalarRandomRange(CGFloat min,
+                                        CGFloat max)
+{
+    return floorf(((double)arc4random() / ARC4RANDOM_MAX) *
+                  (max - min) + min);
+}
+
 @implementation Monster
 
 + (Monster*)setMonsterProperties:(Monster*)monster
