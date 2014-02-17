@@ -69,10 +69,11 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
   
-        self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
-        self.player.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
+        //self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
         
-       // Hero* hero = [Hero spawnHero];
+        Hero* hero = [Hero spawnHero];
+        hero.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
+
         [self addChild:self.player];
         
         projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
@@ -93,7 +94,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 -(void)spawnProjectile
 {
-    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
+    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"arrow"];
     self.projectile.physicsBody.affectedByGravity = NO;
     self.projectile.position = projectileSpawnPoint;
     self.projectile.alpha = 1;
@@ -244,6 +245,12 @@ float degToRad(float degree) {
         timeSinceLast = 1.0 / 60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
+    
+    [self updateWithTimeSinceLastUpdate:timeSinceLast];
+}
+
+-(void)didSimulatePhysics
+{
     if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
         [self.projectile removeFromParent];
@@ -253,8 +260,21 @@ float degToRad(float degree) {
     {
         [self spawnProjectile];
     }
+}
+
+- (void)monster:(Monster *)monster didCollideWithHero:(Hero *)hero
+{
+    hero.health--;
+    [hero runAction:[self onCollideAction]];
+}
+
+- (SKAction *) onCollideAction
+{
+    SKAction* stutter = [SKAction waitForDuration:.15];
+    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
     
-    [self updateWithTimeSinceLastUpdate:timeSinceLast];
+    return [SKAction sequence:@[reColor,stutter,deColor]];
 }
 
 - (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster {
@@ -264,10 +284,10 @@ float degToRad(float degree) {
     
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
-    SKAction* stutter = [SKAction waitForDuration:.15];
-    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
-    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
-    [monster runAction:[SKAction sequence:@[reColor,stutter,deColor]]];
+//    SKAction* stutter = [SKAction waitForDuration:.15];
+//    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+//    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    [monster runAction:[self onCollideAction]];
     
     if (monster.health == 0)
     {
