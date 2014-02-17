@@ -28,6 +28,8 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
+    Hero* hero;
+    
     UIPanGestureRecognizer* panGestureRecognizer;
     CGPoint projectileSpawnPoint;
     
@@ -40,6 +42,7 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
     SKLabelNode *_tapScreenLabel;
     
     CGFloat _score;
+    SKLabelNode *scoreLabel;
 
 
     
@@ -84,6 +87,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
  
+        _score = 0;
+        
         // Loading the background
         _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
         [_background setName:@"background"];
@@ -95,8 +100,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         // 2
         NSLog(@"Size: %@", NSStringFromCGSize(size));
-  
-        Hero* hero = [Hero spawnHero];
+        hero = [Hero spawnHero];
         hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
         [self addChild:hero];
         
@@ -313,9 +317,12 @@ float degToRad(float degree) {
 
 - (SKAction *)onHitColoration
 {
+    hero.health--;
+    
     SKAction* stutter = [SKAction waitForDuration:.15];
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    
     
     return [SKAction sequence:@[reColor,stutter,deColor]];
 }
@@ -325,6 +332,10 @@ float degToRad(float degree) {
 {
     monster.health--;
     NSLog(@"Hit");
+    _score = _score + 10;
+    NSLog(@"score %f", _score);
+
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
     
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
@@ -384,7 +395,7 @@ float degToRad(float degree) {
     [_hudLayerNode addChild:hudBarBackground];
     
     // 1
-    SKLabelNode *scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
     
     // 2
     scoreLabel.fontSize = 20.0;

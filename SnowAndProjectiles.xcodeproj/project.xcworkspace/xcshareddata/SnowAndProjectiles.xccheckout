@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>411EEA5D-AA80-4D07-8B12-7E25F0FC58AC</string>
+	<string>8910D017-C247-4FB2-B918-DD839FAF159C</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SnowAndProjectiles</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</key>
-		<string>https://github.com/adwebb/SnowAndProjectiles.git</string>
+		<key>25DA23E5-2225-4672-8C70-34CA2434BF11</key>
+		<string>https://github.com/adwebb/SnowAndProjectiles</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>SnowAndProjectiles.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</key>
+		<key>25DA23E5-2225-4672-8C70-34CA2434BF11</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/adwebb/SnowAndProjectiles.git</string>
+	<string>https://github.com/adwebb/SnowAndProjectiles</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</string>
+	<string>25DA23E5-2225-4672-8C70-34CA2434BF11</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>069552AD-16DA-415C-9BAB-CE6AA1B76DE5</string>
+			<string>25DA23E5-2225-4672-8C70-34CA2434BF11</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SnowAndProjectiles</string>
 		</dict>
