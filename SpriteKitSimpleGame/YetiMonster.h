@@ -10,6 +10,6 @@
 
 @interface YetiMonster : Monster
 
-+ (YetiMonster*)makeYetiMonster;
++ (YetiMonster*)monster;
 
 @end

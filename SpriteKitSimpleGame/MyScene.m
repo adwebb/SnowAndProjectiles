@@ -11,6 +11,7 @@
 #import "Monster.h"
 #import "SnowmanMonster.h"
 #import "YetiMonster.h"
+#import "Hero.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -80,7 +81,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
  
-        // 1) Loading the background
+        // Loading the background
         _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
         [_background setName:@"background"];
         [_background setAnchorPoint:CGPointZero];
@@ -91,18 +92,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         // 2
         NSLog(@"Size: %@", NSStringFromCGSize(size));
- 
-        // 3
-       // self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
- 
-        // 4
-        self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
-        self.player.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
+  
+        //self.player = [SKSpriteNode spriteNodeWithImageNamed:@"hero"];
+        
+        Hero* hero = [Hero spawnHero];
+        hero.position = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5);
+
         [self addChild:self.player];
         
         projectileSpawnPoint = CGPointMake(self.player.size.width*2, self.frame.size.height*2/5+self.player.size.height/2);
         
-        
+
         NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
         SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
         snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
@@ -121,7 +121,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 -(void)spawnProjectile
 {
-    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
+    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"arrow"];
     self.projectile.physicsBody.affectedByGravity = NO;
     self.projectile.position = projectileSpawnPoint;
     self.projectile.alpha = 1;
@@ -156,13 +156,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGPoint location = self.projectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
-                // 4 - Bail out if you are shooting down or backwards
+                // Bail out if you are shooting down or backwards
                 if (offset.x >= 0) return;
                 
-                // 5 - OK to add now - we've double checked position
-                
-                
-                // 6 - Get the direction of where to shoot
+                // Get the direction of where to shoot
                 CGPoint direction = rwNormalize(offset);
                 CGPoint launchDirection = rwInvert(direction);
                 float force = rwLength(offset);
@@ -178,7 +175,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 
                 self.projectile.physicsBody.affectedByGravity = YES;
                 [self.projectile.physicsBody applyImpulse:launcher];
-                
             }
         }
     }
@@ -219,6 +215,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
+
 - (void)addMonster {
  
     SKLabelNode *mainShip = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
@@ -226,6 +223,7 @@ float degToRad(float degree) {
     mainShip.fontSize = 50.0f;
     mainShip.text = @"🚀";
     mainShip.zRotation = 0.8;
+
     
     int monsterPicker = arc4random()%2+1;
     
@@ -233,9 +231,11 @@ float degToRad(float degree) {
     
     if(monsterPicker < 2)
     {
-    monster = [SnowmanMonster makeSnowmanMonster];
-    }else{
-    monster = [YetiMonster makeYetiMonster];
+        monster = [SnowmanMonster monster];
+    }
+    else
+    {
+        monster = [YetiMonster monster];
     }
     
     // Determine where to spawn the monster along the Y axis
@@ -245,22 +245,22 @@ float degToRad(float degree) {
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
     [self addChild:monster];
- 
+    
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
     SKAction * actionMoveDone = [SKAction removeFromParent];
-
+    
     [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]];
 }
 
 -(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
-    {
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathMoveToPoint(path, Nil, 0, 0);
-        CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
-        
-        return path;
-    }
+{
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, Nil, 0, 0);
+    CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
+    
+    return path;
+}
 
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
@@ -268,10 +268,11 @@ float degToRad(float degree) {
     if (self.lastSpawnTimeInterval > 3) {
         
         self.lastSpawnTimeInterval = 0;
-       
+        
         [self addMonster];
 
         }
+
 }
 
 - (void)update:(NSTimeInterval)currentTime {
@@ -283,7 +284,14 @@ float degToRad(float degree) {
         timeSinceLast = 1.0 / 60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
- 
+
+    
+    [self updateWithTimeSinceLastUpdate:timeSinceLast];
+}
+
+-(void)didSimulatePhysics
+{
+
     if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
         [self.projectile removeFromParent];
@@ -293,9 +301,21 @@ float degToRad(float degree) {
     {
         [self spawnProjectile];
     }
+}
+
+- (void)monster:(Monster *)monster didCollideWithHero:(Hero *)hero
+{
+    hero.health--;
+    [hero runAction:[self onCollideAction]];
+}
+
+- (SKAction *) onCollideAction
+{
+    SKAction* stutter = [SKAction waitForDuration:.15];
+    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
     
-    [self updateWithTimeSinceLastUpdate:timeSinceLast];
- 
+    return [SKAction sequence:@[reColor,stutter,deColor]];
 }
 
 
@@ -306,10 +326,10 @@ float degToRad(float degree) {
     
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
-    SKAction* stutter = [SKAction waitForDuration:.15];
-    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
-    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
-    [monster runAction:[SKAction sequence:@[reColor,stutter,deColor]]];
+//    SKAction* stutter = [SKAction waitForDuration:.15];
+//    SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
+//    SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    [monster runAction:[self onCollideAction]];
     
     if (monster.health == 0)
     {
@@ -330,7 +350,6 @@ float degToRad(float degree) {
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    // 1
     SKPhysicsBody *firstBody, *secondBody;
  
     if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)

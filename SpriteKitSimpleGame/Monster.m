@@ -31,4 +31,7 @@ static inline CGFloat ScalarRandomRange(CGFloat min,
     return monster;
 }
 
++ (Monster *) monster {
+    return nil;
+}
 @end

@@ -1,5 +1,5 @@
 //
-//  Monster.h
+//  Hero.h
 //  SnowAndProjectiles
 //
 //  Created by Fletcher Rhoads on 2/13/14.
@@ -8,12 +8,10 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface Monster : SKSpriteNode
+@interface Hero : SKSpriteNode
 
 @property float health;
-@property float baseSpeed;
 
-+ (Monster*)setMonsterProperties:(Monster*)monster;
-+ (Monster *) monster;
++ (Hero*)spawnHero;
 
 @end

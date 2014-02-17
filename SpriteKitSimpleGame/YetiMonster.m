@@ -10,7 +10,7 @@
 
 @implementation YetiMonster
 
-+ (YetiMonster*)makeYetiMonster
++ (YetiMonster*)monster
 {
     YetiMonster* yetiMonster = [YetiMonster spriteNodeWithImageNamed:@"yeti"];
     yetiMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:yetiMonster.size];

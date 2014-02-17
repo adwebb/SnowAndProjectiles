@@ -12,7 +12,7 @@
 
 @implementation SnowmanMonster
 
-+ (SnowmanMonster*)makeSnowmanMonster
++ (SnowmanMonster*)monster
 {
     SnowmanMonster* snowmanMonster = [SnowmanMonster spriteNodeWithImageNamed:@"snowman"];
     snowmanMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowmanMonster.size];
