@@ -12,6 +12,6 @@
 
 @property float damage;
 
-+ (SnowballProjectile*)makeSnowballProjectile;
++ (SnowballProjectile*)snowballProjectile;
 
 @end

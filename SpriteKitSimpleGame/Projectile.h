@@ -12,4 +12,10 @@ static NSString * const movableNodeName = @"movable";
 
 @interface Projectile : SKSpriteNode
 
+
++ (Projectile*)setProjectileProperties:(Projectile*)projectile;
+
++ (Projectile*)makeProjectile;
+
+
 @end

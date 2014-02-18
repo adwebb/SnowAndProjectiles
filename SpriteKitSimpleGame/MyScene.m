@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Razeware LLC. All rights reserved.
 //
 
-static NSString * const movableNodeName = @"movable";
+//static NSString * const movableNodeName = @"movable";
 
 #import "MyScene.h"
 #import "GameOverScene.h"
@@ -14,6 +14,8 @@ static NSString * const movableNodeName = @"movable";
 #import "SnowmanMonster.h"
 #import "YetiMonster.h"
 #import "Hero.h"
+#import "Projectile.h"
+#import "SnowballProjectile.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -40,10 +42,8 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
     SKLabelNode *_tapScreenLabel;
     
     CGFloat _score;
-
-
-    
 }
+
 @property (nonatomic) SKSpriteNode * player;
 @property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
 @property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
@@ -80,6 +80,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
 }
 
 @implementation MyScene
+{
+    Projectile* projectile;
+}
  
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
@@ -93,7 +96,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
         _hudLayerNode = [SKNode node];
         [self addChild:_hudLayerNode];
         
-        // 2
         NSLog(@"Size: %@", NSStringFromCGSize(size));
   
         Hero* hero = [Hero spawnHero];
@@ -102,7 +104,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
         
-
         NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
         SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
         snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
@@ -114,20 +115,24 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.physicsWorld.contactDelegate = self;
         
         [self setupUI];
-        
     }
     return self;
 }
 
--(void)spawnProjectile
+- (void)spawnProjectile
 {
-    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
-    self.projectile.physicsBody.affectedByGravity = NO;
-    self.projectile.position = projectileSpawnPoint;
-    self.projectile.alpha = 1;
-    [self.projectile setName:movableNodeName];
-    [self addChild:self.projectile];
-   //  [self.projectile runAction:[SKAction fadeInWithDuration:1]];
+    projectile = [SnowballProjectile snowballProjectile];
+    NSLog(@"Snowball?");
+    projectile.position = projectileSpawnPoint;
+    [self addChild:projectile];
+    
+    //    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
+//    self.projectile.physicsBody.affectedByGravity = NO;
+//    self.projectile.position = projectileSpawnPoint;
+//    self.projectile.alpha = 1;
+//    [self.projectile setName:movableNodeName];
+//    [self addChild:self.projectile];
+//   //  [self.projectile runAction:[SKAction fadeInWithDuration:1]];
 }
 
 - (void)didMoveToView:(SKView *)view {
@@ -136,8 +141,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
     gestureRecognizer.delegate = self;
 }
 
-- (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
-	if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
+- (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
+{
+	if(projectile.alpha == 1 && projectile.physicsBody.affectedByGravity == NO)
     {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [self convertPointFromView:touchLocation];
@@ -153,7 +159,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             
             if ([[_selectedNode name] isEqualToString:movableNodeName]) {
                 
-                CGPoint location = self.projectile.position;
+                CGPoint location = projectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
                 // Bail out if you are shooting down or backwards
@@ -166,15 +172,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGPoint multiplied = rwMult(launchDirection, force/3);
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
-                self.projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:self.projectile.size.width/2];
-                self.projectile.physicsBody.dynamic = YES;
-                self.projectile.physicsBody.categoryBitMask = projectileCategory;
-                self.projectile.physicsBody.contactTestBitMask = monsterCategory;
-                self.projectile.physicsBody.collisionBitMask = 0;
-                self.projectile.physicsBody.usesPreciseCollisionDetection = YES;
+                projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:projectile.size.width/2];
+                projectile.physicsBody.dynamic = YES;
+                projectile.physicsBody.categoryBitMask = projectileCategory;
+                projectile.physicsBody.contactTestBitMask = monsterCategory;
+                projectile.physicsBody.collisionBitMask = 0;
+                projectile.physicsBody.usesPreciseCollisionDetection = YES;
                 
-                self.projectile.physicsBody.affectedByGravity = YES;
-                [self.projectile.physicsBody applyImpulse:launcher];
+                projectile.physicsBody.affectedByGravity = YES;
+                [projectile.physicsBody applyImpulse:launcher];
             }
         }
     }
@@ -184,10 +190,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if([self isWithinSlingshotDragArea:point])
     {
-        CGPoint position = self.projectile.position;
+        CGPoint position = projectile.position;
         CGPoint newPosition = CGPointMake(position.x + translation.x, position.y + translation.y);
         if([self isWithinSlingshotDragArea:newPosition]) {
-            [self.projectile setPosition:newPosition];
+            [projectile setPosition:newPosition];
         }
     }
 }
@@ -198,8 +204,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
                                                   [SKAction rotateByAngle:0.0 duration:0.1],
                                                   [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
-    [self.projectile runAction:[SKAction repeatActionForever:sequence]];
-        _selectedNode = self.projectile;
+    [projectile runAction:[SKAction repeatActionForever:sequence]];
+        _selectedNode = projectile;
     }
 }
 
@@ -218,13 +224,6 @@ float degToRad(float degree) {
 
 - (void)addMonster {
  
-    SKLabelNode *mainShip = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
-    mainShip.name = @"mainship";
-    mainShip.fontSize = 50.0f;
-    mainShip.text = @"🚀";
-    mainShip.zRotation = 0.8;
-
-    
     int monsterPicker = arc4random()%2+1;
     
     Monster* monster;
@@ -272,7 +271,6 @@ float degToRad(float degree) {
         [self addMonster];
 
         }
-
 }
 
 - (void)update:(NSTimeInterval)currentTime {
@@ -292,12 +290,12 @@ float degToRad(float degree) {
 -(void)didSimulatePhysics
 {
 
-    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
+    if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
     {
-        [self.projectile removeFromParent];
+        [projectile removeFromParent];
     }
     
-    if(![self.children containsObject:self.projectile])
+    if(![self.children containsObject:projectile])
     {
         [self spawnProjectile];
     }
@@ -321,7 +319,7 @@ float degToRad(float degree) {
 }
 
 
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(Monster *)monster
+- (void)projectile:(Projectile *)firedProjectile didCollideWithMonster:(Monster *)monster
 {
     monster.health--;
     NSLog(@"Hit");
@@ -342,7 +340,7 @@ float degToRad(float degree) {
     
         self.monstersDestroyed++;
     }
-    [projectile removeFromParent];
+    [firedProjectile removeFromParent];
     
     self.monstersDestroyed++;
 }
@@ -368,7 +366,7 @@ float degToRad(float degree) {
     }
     else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
     {
-        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
+        [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
     }
 }
 

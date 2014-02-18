@@ -19,6 +19,7 @@
     snowmanMonster.health = 1;
     snowmanMonster = (SnowmanMonster*)[super setMonsterProperties:snowmanMonster];
     
+    
     return snowmanMonster;
 }
 

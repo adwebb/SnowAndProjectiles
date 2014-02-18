@@ -8,18 +8,27 @@
 
 #import "Projectile.h"
 
+static const uint32_t projectileCategory     =  0x1 << 0;
+static const uint32_t monsterCategory        =  0x1 << 1;
+
 @implementation Projectile
 
-
-+ (Projectile*)makeProjectile
++ (Projectile*)setProjectileProperties:(Projectile*)projectile;
 {
-    Projectile* projectile = [Projectile new];
-
     projectile.physicsBody.affectedByGravity = NO;
+    projectile.physicsBody.usesPreciseCollisionDetection = YES;
+    projectile.physicsBody.collisionBitMask = 0;
+    projectile.physicsBody.categoryBitMask = projectileCategory;
+    projectile.physicsBody.contactTestBitMask = monsterCategory;
     projectile.alpha = 1;
     [projectile setName:movableNodeName];
 
     return projectile;
+}
+
++ (Projectile*)makeProjectile
+{
+    return nil;
 }
 
 @end
