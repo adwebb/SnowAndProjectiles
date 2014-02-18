@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Razeware LLC. All rights reserved.
 //
 
-//static NSString * const movableNodeName = @"movable";
-
 #import "MyScene.h"
 #import "GameOverScene.h"
 #import "Monster.h"
@@ -16,6 +14,7 @@
 #import "Hero.h"
 #import "Projectile.h"
 #import "SnowballProjectile.h"
+#import "DragonMonster.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -233,20 +232,24 @@ float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
 
-- (void)addMonster {
-
-    int monsterPicker = arc4random()%2+1;
+- (void)addMonster
+{
+    int monsterPicker = arc4random()%3+1;
     
     Monster* monster;
     
-    if(monsterPicker < 2)
+    if(monsterPicker == 3)
     {
         monster = [SnowmanMonster monster];
     }
-    else
+    else if (monsterPicker == 2)
     {
         monster = [YetiMonster monster];
     }
+    else
+        monster = [DragonMonster monster];
+    
+
     
     // Determine where to spawn the monster along the Y axis
     // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
@@ -297,12 +300,8 @@ float degToRad(float degree) {
     
     switch (_gameState) {
         case GameRunning:
-        
-            // Update the healthbar color and length based on the...urm...players health :)
-            _playerHealthLabel.fontColor = [SKColor colorWithRed:2.0f * (1.0f - hero.health / 100.0f)
-                                                           green:2.0f * hero.health / 100.0f
-                                                            blue:0 alpha:1.0];
-            _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 100 * _healthBar.length)];
+
+            _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
             
             // If the players health has dropped to <= 0 then set the game state to game over
             if (hero.health <= 0) {
@@ -362,7 +361,6 @@ float degToRad(float degree) {
     SKAction* stutter = [SKAction waitForDuration:.15];
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
-    
     
     return [SKAction sequence:@[reColor,stutter,deColor]];
 }
@@ -453,10 +451,10 @@ float degToRad(float degree) {
         {
             [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
         }
-    }
-    
-    - (void)setupUI
-    {
+}
+
+- (void)setupUI
+{
         int barHeight = 35;
         CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
@@ -492,7 +490,8 @@ float degToRad(float degree) {
         SKLabelNode *playerHealthBackground =
         [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         playerHealthBackground.name = @"playerHealthBackground";
-        playerHealthBackground.fontColor = [SKColor darkGrayColor];
+        playerHealthBackground.color = [SKColor darkGrayColor];
+        playerHealthBackground.colorBlendFactor = .5;
         playerHealthBackground.fontSize = 10.0f;
         playerHealthBackground.text = _healthBar;
         
