@@ -30,6 +30,8 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
+    Hero* hero;
+    
     UIPanGestureRecognizer* panGestureRecognizer;
     CGPoint projectileSpawnPoint;
     
@@ -42,6 +44,10 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
     SKLabelNode *_tapScreenLabel;
     
     CGFloat _score;
+    SKLabelNode *scoreLabel;
+
+
+    
 }
 
 @property (nonatomic) SKSpriteNode * player;
@@ -81,12 +87,14 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 @implementation MyScene
 {
-    Projectile* projectile;
+    Projectile* chosenProjectile;
 }
  
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
  
+        _score = 0;
+        
         // Loading the background
         _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
         [_background setName:@"background"];
@@ -97,8 +105,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self addChild:_hudLayerNode];
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
-  
-        Hero* hero = [Hero spawnHero];
+        hero = [Hero spawnHero];
         hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
         [self addChild:hero];
         
@@ -121,10 +128,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)spawnProjectile
 {
-    projectile = [SnowballProjectile snowballProjectile];
+    chosenProjectile = [SnowballProjectile snowballProjectile];
     NSLog(@"Snowball?");
-    projectile.position = projectileSpawnPoint;
-    [self addChild:projectile];
+    chosenProjectile.position = projectileSpawnPoint;
+    [self addChild:chosenProjectile];
     
     //    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
 //    self.projectile.physicsBody.affectedByGravity = NO;
@@ -143,7 +150,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
-	if(projectile.alpha == 1 && projectile.physicsBody.affectedByGravity == NO)
+	if(chosenProjectile.alpha == 1 && chosenProjectile.physicsBody.affectedByGravity == NO)
     {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [self convertPointFromView:touchLocation];
@@ -159,7 +166,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             
             if ([[_selectedNode name] isEqualToString:movableNodeName]) {
                 
-                CGPoint location = projectile.position;
+                CGPoint location = chosenProjectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
                 // Bail out if you are shooting down or backwards
@@ -172,15 +179,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGPoint multiplied = rwMult(launchDirection, force/3);
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
-                projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:projectile.size.width/2];
-                projectile.physicsBody.dynamic = YES;
-                projectile.physicsBody.categoryBitMask = projectileCategory;
-                projectile.physicsBody.contactTestBitMask = monsterCategory;
-                projectile.physicsBody.collisionBitMask = 0;
-                projectile.physicsBody.usesPreciseCollisionDetection = YES;
+                chosenProjectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:chosenProjectile.size.width/2];
+                chosenProjectile.physicsBody.dynamic = YES;
+                chosenProjectile.physicsBody.categoryBitMask = projectileCategory;
+                chosenProjectile.physicsBody.contactTestBitMask = monsterCategory;
+                chosenProjectile.physicsBody.collisionBitMask = 0;
+                chosenProjectile.physicsBody.usesPreciseCollisionDetection = YES;
                 
-                projectile.physicsBody.affectedByGravity = YES;
-                [projectile.physicsBody applyImpulse:launcher];
+                chosenProjectile.physicsBody.affectedByGravity = YES;
+                [chosenProjectile.physicsBody applyImpulse:launcher];
             }
         }
     }
@@ -190,10 +197,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if([self isWithinSlingshotDragArea:point])
     {
-        CGPoint position = projectile.position;
+        CGPoint position = chosenProjectile.position;
         CGPoint newPosition = CGPointMake(position.x + translation.x, position.y + translation.y);
         if([self isWithinSlingshotDragArea:newPosition]) {
-            [projectile setPosition:newPosition];
+            [chosenProjectile setPosition:newPosition];
         }
     }
 }
@@ -204,8 +211,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
                                                   [SKAction rotateByAngle:0.0 duration:0.1],
                                                   [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
-    [projectile runAction:[SKAction repeatActionForever:sequence]];
-        _selectedNode = projectile;
+    [chosenProjectile runAction:[SKAction repeatActionForever:sequence]];
+        _selectedNode = chosenProjectile;
     }
 }
 
@@ -290,20 +297,20 @@ float degToRad(float degree) {
 -(void)didSimulatePhysics
 {
 
-    if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+    if(chosenProjectile.position.x > self.size.width || -chosenProjectile.position.y > self.size.height)
     {
-        [projectile removeFromParent];
+        [chosenProjectile removeFromParent];
     }
     
-    if(![self.children containsObject:projectile])
+    if(![self.children containsObject:chosenProjectile])
     {
         [self spawnProjectile];
     }
 }
 
-- (void)monster:(Monster*)monster didCollideWithHero:(Hero*)hero
+- (void)monster:(Monster*)monster didCollideWithHero:(Hero*)ourHero
 {
-    hero.health--;
+    ourHero.health--;
     NSLog(@"ouch!");
     [hero runAction:[self onHitColoration]];
     [monster removeFromParent];
@@ -311,9 +318,12 @@ float degToRad(float degree) {
 
 - (SKAction *)onHitColoration
 {
+    hero.health--;
+    
     SKAction* stutter = [SKAction waitForDuration:.15];
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+    
     
     return [SKAction sequence:@[reColor,stutter,deColor]];
 }
@@ -323,6 +333,10 @@ float degToRad(float degree) {
 {
     monster.health--;
     NSLog(@"Hit");
+    _score = _score + 10;
+    NSLog(@"score %f", _score);
+
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
     
     [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
     
@@ -330,6 +344,9 @@ float degToRad(float degree) {
     
     if (monster.health == 0)
     {
+        monster.physicsBody.contactTestBitMask = 0x0;
+        monster.physicsBody.categoryBitMask = 0x0;
+        
         NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
         SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
         [monster addChild:explosion];
@@ -382,7 +399,7 @@ float degToRad(float degree) {
     [_hudLayerNode addChild:hudBarBackground];
     
     // 1
-    SKLabelNode *scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
     
     // 2
     scoreLabel.fontSize = 20.0;
@@ -452,7 +469,7 @@ float degToRad(float degree) {
 - (void)increaseScoreBy:(float)increment
 {
     _score += increment;
-    SKLabelNode *scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
+    scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
     scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
     [scoreLabel removeAllActions];
     [scoreLabel runAction:_scoreFlashAction];
