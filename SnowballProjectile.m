@@ -10,10 +10,11 @@
 
 @implementation SnowballProjectile
 
-+ (SnowballProjectile*)makeSnowballProjectile
++ (SnowballProjectile*)snowballProjectile
 {
     SnowballProjectile* snowballProjectile = [SnowballProjectile spriteNodeWithImageNamed:@"snowball"];
     snowballProjectile.damage = 1;
+    snowballProjectile = (SnowballProjectile*)[super setProjectileProperties:snowballProjectile];
     
     return snowballProjectile;
 }
