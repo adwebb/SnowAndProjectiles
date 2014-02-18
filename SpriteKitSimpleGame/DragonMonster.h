@@ -10,4 +10,5 @@
 
 @interface DragonMonster : Monster
 
++ (DragonMonster*)monster;
 @end
