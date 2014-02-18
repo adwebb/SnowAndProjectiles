@@ -343,6 +343,9 @@ float degToRad(float degree) {
     
     if (monster.health == 0)
     {
+        monster.physicsBody.contactTestBitMask = 0x0;
+        monster.physicsBody.categoryBitMask = 0x0;
+        
         NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
         SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
         [monster addChild:explosion];
