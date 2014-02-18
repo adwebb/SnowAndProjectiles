@@ -8,6 +8,11 @@
 
 #import <SpriteKit/SpriteKit.h>
 
+typedef enum : int {
+    GameRunning      = 0,
+    GameOver         = 1,
+} GameState;
+
 
 @interface MyScene : SKScene
 
