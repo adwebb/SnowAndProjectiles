@@ -404,9 +404,9 @@ float degToRad(float degree) {
     [scoreLabel runAction:[SKAction repeatAction:_scoreFlashAction count:10]];
     
     // 1
-    _healthBar = @"==================================================================================";
-    float testHealth = 75;
-    NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 100 * _healthBar.length)];
+    _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+    float testHealth = 7;
+    NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
     // 2
     SKLabelNode *playerHealthBackground =
