@@ -81,9 +81,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
 @implementation MyScene
 {
     Projectile* chosenProjectile;
-    SKSpriteNode* regularProjectile;
-    SKSpriteNode* freezeProjectile;
-    SKSpriteNode* fireProjectile;
+    Projectile* regularProjectile;
+    Projectile* freezeProjectile;
+    Projectile* fireProjectile;
 }
 
 -(id)initWithSize:(CGSize)size
@@ -113,7 +113,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
         [_background addChild:snowEmitter];
         
-        [self spawnProjectile];
+        [self spawnProjectile:chosenProjectile];
         
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
@@ -125,7 +125,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return self;
 }
 
-- (void)spawnProjectile
+- (void)spawnProjectile: (Projectile*)projectile
 {
     chosenProjectile = [SnowballProjectile snowballProjectile];
     chosenProjectile.position = projectileSpawnPoint;
@@ -137,6 +137,23 @@ static inline CGPoint rwNormalize(CGPoint a) {
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch* touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    SKNode* node = [self nodeAtPoint:location];
+    
+    if ([node.name isEqualToString:@"regular"])
+    {
+        [self spawnProjectile: regularProjectile];
+    }
+    else if ([node.name isEqualToString:@"fire"])
+    {
+        [self spawnProjectile: regularProjectile];
+    }
+    
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
@@ -331,22 +348,25 @@ float degToRad(float degree) {
     
     if(![self.children containsObject:chosenProjectile])
     {
-        [self spawnProjectile];
+        [self spawnProjectile: chosenProjectile];
     }
 }
 
 - (void)setupProjectileButtons
 {
-    regularProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+    regularProjectile = [Projectile spriteNodeWithImageNamed:@"green"];
     regularProjectile.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
+    regularProjectile.name = @"regular";
     [self addChild:regularProjectile];
     
-    freezeProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
+    freezeProjectile = [Projectile spriteNodeWithImageNamed:@"blue"];
     freezeProjectile.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
+    regularProjectile.name = @"fire";
     [self addChild:freezeProjectile];
    
-    fireProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
+    fireProjectile = [Projectile spriteNodeWithImageNamed:@"red"];
     fireProjectile.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
+    regularProjectile.name = @"freeze";
     [self addChild:fireProjectile];
 }
 
