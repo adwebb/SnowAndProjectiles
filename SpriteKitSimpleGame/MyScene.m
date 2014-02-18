@@ -22,6 +22,13 @@ static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
+typedef enum {
+    untyped = 0,
+    split = 1,
+    fire = 2,
+    ice = 3
+} ProjectileType;
+
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
     Hero* hero;
@@ -31,17 +38,17 @@ static const uint32_t heroCategory           =  0x11;
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
-    SKAction *_scoreFlashAction;
+    SKAction    *_scoreFlashAction;
     SKAction    *_gameOverPulse;
     SKLabelNode *_gameOverLabel;
-    SKNode *_hudLayerNode;
+    SKNode      *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
+    ProjectileType projectileType;
     
     CGFloat _score;
     SKLabelNode *scoreLabel;
     int _gameState;
-    
 }
 
 @property (nonatomic) SKSpriteNode * player;
@@ -82,9 +89,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 @implementation MyScene
 
--(id)initWithSize:(CGSize)size {
-    if (self = [super initWithSize:size]) {
-        
+-(id)initWithSize:(CGSize)size
+{
+    if (self = [super initWithSize:size])
+    {
         _score = 0;
         
         // Loading the background
@@ -108,8 +116,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
         snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
         [_background addChild:snowEmitter];
         
-        [self spawnProjectile];
-        
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
         self.currency = 0;
@@ -119,18 +125,52 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return self;
 }
 
-- (void)spawnProjectile
+- (void)spawnProjectile:(ProjectileType)type
 {
-    //self.projectile = [SnowballProjectile snowballProjectile];
-    self.projectile = [FireProjectile fireProjectileOfRank:1];
+    [self.projectile removeFromParent];
+    switch (type) {
+        case untyped:
+            self.projectile = [SnowballProjectile snowballProjectile];
+            break;
+        case fire:
+            self.projectile = [FireProjectile fireProjectileOfRank:1];
+            break;
+        case ice:
+            self.projectile = [SnowballProjectile snowballProjectile];
+            break;
+        case split:
+            break;
+        default:
+            break;
+    }
     self.projectile.position = projectileSpawnPoint;
     [self addChild:self.projectile];
 }
 
-- (void)didMoveToView:(SKView *)view {
+- (void)didMoveToView:(SKView *)view
+{
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch* touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    SKNode* node = [self nodeAtPoint:location];
+    
+    if ([node.name isEqualToString:@"FreezeButton"])
+    {
+        projectileType = ice;
+        [self spawnProjectile: ice];
+    }
+    else if ([node.name isEqualToString:@"FireButton"])
+    {
+        projectileType = fire;
+        [self spawnProjectile: fire];
+    }
+    
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
@@ -190,7 +230,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
-- (void)selectNodeForTouch:(CGPoint)touchLocation {
+- (void)selectNodeForTouch:(CGPoint)touchLocation
+{
     if([self isWithinSlingshotDragArea:touchLocation])
     {
         SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
@@ -215,8 +256,8 @@ float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
 
-- (void)addMonster {
-
+- (void)addMonster
+{
     int monsterPicker = arc4random()%2+1;
     
     Monster* monster;
@@ -257,12 +298,12 @@ float degToRad(float degree) {
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
     self.lastSpawnTimeInterval += timeSinceLast;
-
+    
     if (self.lastSpawnTimeInterval > 3)
     {
         self.lastSpawnTimeInterval = 0;
         [self addMonster];
-        }
+    }
 }
 
 - (void)update:(NSTimeInterval)currentTime
@@ -324,14 +365,14 @@ float degToRad(float degree) {
     
     if(![self.children containsObject:self.projectile])
     {
-        [self spawnProjectile];
+        [self spawnProjectile: projectileType];
     }
 }
 
 - (void)monster:(Monster*)monster didCollideWithHero:(Hero*)ourHero
 {
     ourHero.health--;
-    NSLog(@"ouch!");
+    NSLog(@"ouch! I have %f life!", ourHero.health);
     [hero runAction:[self onHitColoration]];
     [monster removeFromParent];
 }
@@ -342,10 +383,8 @@ float degToRad(float degree) {
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
     
-    
     return [SKAction sequence:@[reColor,stutter,deColor]];
 }
-
 
 - (void)projectile:(Projectile *)projectile didCollideWithMonster:(Monster *)monster
 {
@@ -433,10 +472,10 @@ float degToRad(float degree) {
         {
             secondBody.node.speed = 0;
         }
-    }
-    
-    - (void)setupUI
-    {
+}
+
+- (void)setupUI
+{
         int barHeight = 35;
         CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
@@ -521,6 +560,23 @@ float degToRad(float degree) {
         _tapScreenLabel.text = @"Tap Screen To Restart";
         
         _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
+    
+   
+        SKSpriteNode* splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+        splitProjectileButton.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
+        splitProjectileButton.name = @"SplitButton";
+        [_hudLayerNode addChild:splitProjectileButton];
+        
+        SKSpriteNode* freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
+        freezeProjectileButton.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
+        freezeProjectileButton.name = @"FreezeButton";
+        [_hudLayerNode addChild:freezeProjectileButton];
+        
+        SKSpriteNode* fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
+        fireProjectileButton.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
+        fireProjectileButton.name = @"FireButton";
+        [_hudLayerNode addChild:fireProjectileButton];
+    
 }
 
 - (void)increaseScoreBy:(float)increment
@@ -530,7 +586,6 @@ float degToRad(float degree) {
         scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
         [scoreLabel removeAllActions];
         [scoreLabel runAction:_scoreFlashAction];
-
 }
 
 @end

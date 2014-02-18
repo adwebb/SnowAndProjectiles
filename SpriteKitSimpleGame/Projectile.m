@@ -27,9 +27,4 @@ static const uint32_t monsterCategory        =  0x1 << 1;
     return projectile;
 }
 
-+ (Projectile*)makeProjectile
-{
-    return nil;
-}
-
 @end

@@ -15,7 +15,5 @@ static NSString * const movableNodeName = @"movable";
 
 + (Projectile*)setProjectileProperties:(Projectile*)projectile;
 
-+ (Projectile*)makeProjectile;
-
 
 @end

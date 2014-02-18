@@ -9,5 +9,8 @@
 #import "Projectile.h"
 
 @interface IceProjectile : Projectile
+@property int potency;
+
+
 
 @end

@@ -10,4 +10,6 @@
 
 @interface FireProjectile : Projectile
 
++(FireProjectile*)fireProjectileOfRank:(int)rank;
+
 @end
