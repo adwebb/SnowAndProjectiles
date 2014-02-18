@@ -21,13 +21,6 @@ static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
-#define ARC4RANDOM_MAX      0x100000000
-static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
-{
-    return floorf(((double)arc4random() / ARC4RANDOM_MAX) *
-                  (max - min) + min);
-}
-
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
     Hero* hero;
@@ -42,6 +35,7 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
     SKLabelNode *_gameOverLabel;
     SKNode *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
+    SKLabelNode* currencyLabel;
     
     CGFloat _score;
     SKLabelNode *scoreLabel;
@@ -132,17 +126,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
 
     chosenProjectile = [SnowballProjectile snowballProjectile];
-    NSLog(@"Snowball?");
     chosenProjectile.position = projectileSpawnPoint;
     [self addChild:chosenProjectile];
-    
-    //    self.projectile = [SKSpriteNode spriteNodeWithImageNamed:@"snowball"];
-//    self.projectile.physicsBody.affectedByGravity = NO;
-//    self.projectile.position = projectileSpawnPoint;
-//    self.projectile.alpha = 1;
-//    [self.projectile setName:movableNodeName];
-//    [self addChild:self.projectile];
-//   //  [self.projectile runAction:[SKAction fadeInWithDuration:1]];
 }
 
 - (void)didMoveToView:(SKView *)view {
@@ -250,7 +235,7 @@ float degToRad(float degree) {
     
     // Determine where to spawn the monster along the Y axis
     // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-    monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, ScalarRandomRange(monster.size.height/2, self.size.height-monster.size.height/2));
+    monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
@@ -299,11 +284,8 @@ float degToRad(float degree) {
         case GameRunning:
         
             // Update the healthbar color and length based on the...urm...players health :)
-            _playerHealthLabel.fontColor = [SKColor colorWithRed:2.0f * (1.0f - hero.health / 100.0f)
-                                                           green:2.0f * hero.health / 100.0f
-                                                            blue:0 alpha:1.0];
-            _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 100 * _healthBar.length)];
-            
+            _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
+            currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
             // If the players health has dropped to <= 0 then set the game state to game over
             if (hero.health <= 0) {
                 _gameState = GameOver;
@@ -420,14 +402,12 @@ float degToRad(float degree) {
     gold.position = CGPointMake(coin.position.x+coin.size.width*1.2, coin.position.y-5);
     [coinNode addChild:gold];
     
-    [coinNode runAction:[SKAction moveByX:0 y:50 duration:2] completion:^{
+    [coinNode runAction:[SKAction waitForDuration:.4] completion:^{
         [coinNode removeFromParent];
     }];
     
     self.currency += monster.goldValue;
     self.monstersDestroyed++;
-    NSLog(@"%d",self.currency);
-
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -460,7 +440,7 @@ float degToRad(float degree) {
         int barHeight = 35;
         CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
-        SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:1.0];
+        SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:.5];
         SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
         hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
         hudBarBackground.anchorPoint = CGPointZero;
@@ -480,37 +460,46 @@ float degToRad(float degree) {
         // 5
         [_hudLayerNode addChild:scoreLabel];
         
-        _scoreFlashAction = [SKAction sequence:@[[SKAction scaleTo:1.5 duration:0.1],[SKAction scaleTo:1.0 duration:0.1]]];
-        [scoreLabel runAction:[SKAction repeatAction:_scoreFlashAction count:10]];
-        
         // 1
         _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
         float testHealth = 7;
         NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
         
         // 2
-        SKLabelNode *playerHealthBackground =
-        [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         playerHealthBackground.name = @"playerHealthBackground";
-        playerHealthBackground.fontColor = [SKColor darkGrayColor];
-        playerHealthBackground.fontSize = 10.0f;
+        playerHealthBackground.color = [SKColor darkTextColor];
+        playerHealthBackground.colorBlendFactor = .5;
+        playerHealthBackground.fontSize = 15.0f;
         playerHealthBackground.text = _healthBar;
+        
+        currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
+        coinStack.position = CGPointMake(self.size.width-coinStack.size.width-50, self.size.height-barHeight/2);
+        currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width, coinStack.position.y);
+        currencyLabel.fontSize = 20;
+        currencyLabel.text = @"0";
+        currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+        currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+        [_hudLayerNode addChild:currencyLabel];
+        [_hudLayerNode addChild:coinStack];
+        
         
         // 3
         playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
         playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight + playerHealthBackground.frame.size.height);
+        playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
         [_hudLayerNode addChild:playerHealthBackground];
         
         // 4
         _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         _playerHealthLabel.name = @"playerHealth";
         _playerHealthLabel.fontColor = [SKColor whiteColor];
-        _playerHealthLabel.fontSize = 10.0f;
+        _playerHealthLabel.fontSize = 15.0f;
         _playerHealthLabel.text = actualHealth;
         _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
         _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight +  _playerHealthLabel.frame.size.height);
+        _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
         [_hudLayerNode addChild:_playerHealthLabel];
         
         _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Arial"];

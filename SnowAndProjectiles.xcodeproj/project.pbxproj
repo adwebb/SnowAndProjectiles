@@ -51,6 +51,8 @@
 		C2B6AC0B18A98CEC007FAFE8 /* hero.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0A18A98CEC007FAFE8 /* hero.png */; };
 		C2DEF39D18AD6DC700BD31E1 /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = C2DEF39B18AD6DC700BD31E1 /* MyParticle.sks */; };
 		C2DEF39E18AD6DC700BD31E1 /* bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DEF39C18AD6DC700BD31E1 /* bokeh.png */; };
+		C2FB16C718B3EF34002C9513 /* coin2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FB16C618B3EF34002C9513 /* coin2x.png */; };
+		C2FB16C918B3EF4C002C9513 /* stack.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FB16C818B3EF4C002C9513 /* stack.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +125,8 @@
 		C2B6AC0A18A98CEC007FAFE8 /* hero.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hero.png; sourceTree = "<group>"; };
 		C2DEF39B18AD6DC700BD31E1 /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		C2DEF39C18AD6DC700BD31E1 /* bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bokeh.png; sourceTree = "<group>"; };
+		C2FB16C618B3EF34002C9513 /* coin2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coin2x.png; path = ../coin2x.png; sourceTree = "<group>"; };
+		C2FB16C818B3EF4C002C9513 /* stack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stack.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +217,8 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C2FB16C818B3EF4C002C9513 /* stack.png */,
+				C2FB16C618B3EF34002C9513 /* coin2x.png */,
 				C21C9FCD18ADA6F6003CF4F6 /* arrow.png */,
 				C22A817F18ABF69A00F25869 /* icon@2x.png */,
 				C2573AE718A992D1009790A1 /* snowball.png */,
@@ -373,6 +379,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FB16C718B3EF34002C9513 /* coin2x.png in Resources */,
 				C2B6AC0318A97F00007FAFE8 /* bg.jpg in Resources */,
 				C2573AE818A992D1009790A1 /* snowball.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
@@ -396,6 +403,7 @@
 				C23BC0FF18B3B8F300556B3D /* coin.png in Resources */,
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
 				C2B6AC0018A97D39007FAFE8 /* dog.png in Resources */,
+				C2FB16C918B3EF4C002C9513 /* stack.png in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

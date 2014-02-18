@@ -22,7 +22,7 @@ static const uint32_t heroCategory        =  0x11;
     hero.physicsBody.collisionBitMask = 0;
     hero.physicsBody.affectedByGravity = NO;
     hero.physicsBody.dynamic = YES;
-    hero.health = 100;
+    hero.health = 10;
     
     return hero;
 }
