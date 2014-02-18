@@ -16,6 +16,7 @@
 #import "Hero.h"
 #import "Projectile.h"
 #import "SnowballProjectile.h"
+#import "FireProjectile.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -47,7 +48,7 @@ static const uint32_t heroCategory           =  0x11;
 @property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
 @property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
 @property (nonatomic) int monstersDestroyed;
-@property (nonatomic) SKSpriteNode* projectile;
+@property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
 
 @end
@@ -80,10 +81,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 }
 
 @implementation MyScene
-{
-    Projectile* chosenProjectile;
-}
-
 
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
@@ -124,10 +121,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)spawnProjectile
 {
-
-    chosenProjectile = [SnowballProjectile snowballProjectile];
-    chosenProjectile.position = projectileSpawnPoint;
-    [self addChild:chosenProjectile];
+    //self.projectile = [SnowballProjectile snowballProjectile];
+    self.projectile = [FireProjectile fireProjectileOfRank:1];
+    self.projectile.position = projectileSpawnPoint;
+    [self addChild:self.projectile];
 }
 
 - (void)didMoveToView:(SKView *)view {
@@ -138,7 +135,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
-	if(chosenProjectile.alpha == 1 && chosenProjectile.physicsBody.affectedByGravity == NO)
+	if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
     {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [self convertPointFromView:touchLocation];
@@ -154,7 +151,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             
             if ([[_selectedNode name] isEqualToString:movableNodeName]) {
                 
-                CGPoint location = chosenProjectile.position;
+                CGPoint location = self.projectile.position;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
                 // Bail out if you are shooting down or backwards
@@ -167,15 +164,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGPoint multiplied = rwMult(launchDirection, force/3);
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
-                chosenProjectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:chosenProjectile.size.width/2];
-                chosenProjectile.physicsBody.dynamic = YES;
-                chosenProjectile.physicsBody.categoryBitMask = projectileCategory;
-                chosenProjectile.physicsBody.contactTestBitMask = monsterCategory;
-                chosenProjectile.physicsBody.collisionBitMask = 0;
-                chosenProjectile.physicsBody.usesPreciseCollisionDetection = YES;
+                self.projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:self.projectile.size.width/2];
+                self.projectile.physicsBody.dynamic = YES;
+                self.projectile.physicsBody.categoryBitMask = projectileCategory;
+                self.projectile.physicsBody.contactTestBitMask = monsterCategory;
+                self.projectile.physicsBody.collisionBitMask = 0;
+                self.projectile.physicsBody.usesPreciseCollisionDetection = YES;
                 
-                chosenProjectile.physicsBody.affectedByGravity = YES;
-                [chosenProjectile.physicsBody applyImpulse:launcher];
+                self.projectile.physicsBody.affectedByGravity = YES;
+                [self.projectile.physicsBody applyImpulse:launcher];
             }
         }
     }
@@ -185,10 +182,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if([self isWithinSlingshotDragArea:point])
     {
-        CGPoint position = chosenProjectile.position;
+        CGPoint position = self.projectile.position;
         CGPoint newPosition = CGPointMake(position.x + translation.x, position.y + translation.y);
         if([self isWithinSlingshotDragArea:newPosition]) {
-            [chosenProjectile setPosition:newPosition];
+            [self.projectile setPosition:newPosition];
         }
     }
 }
@@ -200,8 +197,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
                                                   [SKAction rotateByAngle:0.0 duration:0.1],
                                                   [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
 
-    [chosenProjectile runAction:[SKAction repeatActionForever:sequence]];
-        _selectedNode = chosenProjectile;
+    [self.projectile runAction:[SKAction repeatActionForever:sequence]];
+        _selectedNode = self.projectile;
     }
 }
 
@@ -320,12 +317,12 @@ float degToRad(float degree) {
 
 -(void)didSimulatePhysics
 {
-    if(chosenProjectile.position.x > self.size.width || -chosenProjectile.position.y > self.size.height)
+    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
-        [chosenProjectile removeFromParent];
+        [self.projectile removeFromParent];
     }
     
-    if(![self.children containsObject:chosenProjectile])
+    if(![self.children containsObject:self.projectile])
     {
         [self spawnProjectile];
     }
@@ -350,7 +347,7 @@ float degToRad(float degree) {
 }
 
 
-- (void)projectile:(Projectile *)firedProjectile didCollideWithMonster:(Monster *)monster
+- (void)projectile:(Projectile *)projectile didCollideWithMonster:(Monster *)monster
 {
     monster.health--;
     NSLog(@"Hit");
@@ -367,7 +364,7 @@ float degToRad(float degree) {
     {
         [self killedMonster:monster];
     }
-    [firedProjectile removeFromParent];
+    [projectile removeFromParent];
     
     self.monstersDestroyed++;
 }
@@ -432,6 +429,9 @@ float degToRad(float degree) {
         else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
         {
             [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
+        }else if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == monsterCategory)
+        {
+            secondBody.node.speed = 0;
         }
     }
     
