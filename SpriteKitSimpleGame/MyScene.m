@@ -55,6 +55,7 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
 @property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
 @property (nonatomic) int monstersDestroyed;
 @property (nonatomic) SKSpriteNode* projectile;
+@property (nonatomic) int currency;
 
 @end
 
@@ -120,6 +121,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
+        self.currency = 0;
         
         [self setupUI];
     }
@@ -256,7 +258,7 @@ float degToRad(float degree) {
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
     SKAction * actionMoveDone = [SKAction removeFromParent];
     
-    [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]];
+    [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]withKey:@"path"];
 }
 
 -(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
@@ -318,8 +320,6 @@ float degToRad(float degree) {
 
 - (SKAction *)onHitColoration
 {
-    hero.health--;
-    
     SKAction* stutter = [SKAction waitForDuration:.15];
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
@@ -344,23 +344,53 @@ float degToRad(float degree) {
     
     if (monster.health == 0)
     {
-        monster.physicsBody.contactTestBitMask = 0x0;
-        monster.physicsBody.categoryBitMask = 0x0;
-        
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
-        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        [monster addChild:explosion];
-        SKAction* wait = [SKAction waitForDuration:.5];
-        SKAction* remove = [SKAction removeFromParent];
-        SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
-        [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
-    
-        self.monstersDestroyed++;
+        [self killedMonster:monster];
     }
     [firedProjectile removeFromParent];
     
     self.monstersDestroyed++;
 }
+
+-(void)killedMonster:(Monster*)monster
+{
+    monster.physicsBody.contactTestBitMask = 0x0;
+    monster.physicsBody.categoryBitMask = 0x0;
+    [monster removeActionForKey:@"path"];
+    
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
+    SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+    [monster addChild:explosion];
+   
+    SKAction* wait = [SKAction waitForDuration:.5];
+    SKAction* remove = [SKAction removeFromParent];
+    SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
+    [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
+    
+    SKNode* coinNode = [SKNode new];
+    [self addChild:coinNode];
+    
+    SKSpriteNode* coin = [SKSpriteNode spriteNodeWithImageNamed:@"coin"];
+    coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
+    [coinNode addChild:coin];
+    
+    SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    gold.text = [NSString stringWithFormat:@"%d",monster.goldValue];
+    gold.fontSize = 15.0;
+    gold.fontColor = [UIColor colorWithRed:1 green:192/255.0 blue:0 alpha:1];
+    gold.position = CGPointMake(coin.position.x+coin.size.width*1.2, coin.position.y-5);
+    [coinNode addChild:gold];
+    
+    [coinNode runAction:[SKAction moveByX:0 y:50 duration:2] completion:^{
+        [coinNode removeFromParent];
+    }];
+    
+    self.currency += monster.goldValue;
+    self.monstersDestroyed++;
+    NSLog(@"%d",self.currency);
+
+}
+
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
@@ -399,7 +429,7 @@ float degToRad(float degree) {
     [_hudLayerNode addChild:hudBarBackground];
     
     // 1
-    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     
     // 2
     scoreLabel.fontSize = 20.0;
@@ -422,11 +452,13 @@ float degToRad(float degree) {
     
     // 2
     SKLabelNode *playerHealthBackground =
-    [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     playerHealthBackground.name = @"playerHealthBackground";
     playerHealthBackground.fontColor = [SKColor darkGrayColor];
     playerHealthBackground.fontSize = 10.0f;
     playerHealthBackground.text = _healthBar;
+    playerHealthBackground.color = [UIColor darkTextColor];
+    playerHealthBackground.colorBlendFactor = .5;
     
     // 3
     playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
@@ -435,7 +467,7 @@ float degToRad(float degree) {
     [_hudLayerNode addChild:playerHealthBackground];
     
     // 4
-    _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     _playerHealthLabel.name = @"playerHealth";
     _playerHealthLabel.fontColor = [SKColor whiteColor];
     _playerHealthLabel.fontSize = 10.0f;
@@ -445,7 +477,7 @@ float degToRad(float degree) {
     _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight +  _playerHealthLabel.frame.size.height);
     [_hudLayerNode addChild:_playerHealthLabel];
     
-    _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     _gameOverLabel.name = @"gameOver";
     _gameOverLabel.fontSize = 40.0f;
     _gameOverLabel.fontColor = [SKColor whiteColor];
@@ -454,7 +486,7 @@ float degToRad(float degree) {
     _gameOverLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     _gameOverLabel.text = @"GAME OVER";
     
-    _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"Thirteen Pixel Fonts"];
+    _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     _tapScreenLabel.name = @"tapScreen";
     _tapScreenLabel.fontSize = 20.0f;
     _tapScreenLabel.fontColor = [SKColor whiteColor];

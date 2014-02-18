@@ -18,6 +18,7 @@
     snowmanMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowmanMonster.size];
     snowmanMonster.health = 1;
     snowmanMonster = (SnowmanMonster*)[super setMonsterProperties:snowmanMonster];
+    snowmanMonster.goldValue = 2;
     
     
     return snowmanMonster;
