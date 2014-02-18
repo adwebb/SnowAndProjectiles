@@ -15,6 +15,7 @@
     YetiMonster* yetiMonster = [YetiMonster spriteNodeWithImageNamed:@"yeti"];
     yetiMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:yetiMonster.size];
     yetiMonster.health = 2;
+    yetiMonster.goldValue = 2;
     yetiMonster = (YetiMonster*)[super setMonsterProperties:yetiMonster];
     
     return yetiMonster;
