@@ -21,12 +21,12 @@ static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
-#define ARC4RANDOM_MAX      0x100000000
-static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
-{
-    return floorf(((double)arc4random() / ARC4RANDOM_MAX) *
-                  (max - min) + min);
-}
+//#define ARC4RANDOM_MAX      0x100000000
+//static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
+//{
+//    return floorf(((double)arc4random() / ARC4RANDOM_MAX) *
+//                  (max - min) + min);
+//}
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
@@ -37,16 +37,15 @@ static inline CGFloat ScalarRandomRange(CGFloat min, CGFloat max)
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
-    SKAction *_scoreFlashAction;
+    SKAction    *_scoreFlashAction;
     SKAction    *_gameOverPulse;
     SKLabelNode *_gameOverLabel;
-    SKNode *_hudLayerNode;
+    SKNode      *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
     
     CGFloat _score;
     SKLabelNode *scoreLabel;
     int _gameState;
-    
 }
 
 @property (nonatomic) SKSpriteNode * player;
@@ -88,12 +87,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
 @implementation MyScene
 {
     Projectile* chosenProjectile;
+    SKSpriteNode* regularProjectile;
+    SKSpriteNode* freezeProjectile;
+    SKSpriteNode* fireProjectile;
 }
 
-
--(id)initWithSize:(CGSize)size {
-    if (self = [super initWithSize:size]) {
-        
+-(id)initWithSize:(CGSize)size
+{
+    if (self = [super initWithSize:size])
+    {
         _score = 0;
         
         // Loading the background
@@ -124,15 +126,14 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.currency = 0;
         
         [self setupUI];
+        [self setupProjectileButtons];
     }
     return self;
 }
 
 - (void)spawnProjectile
 {
-
     chosenProjectile = [SnowballProjectile snowballProjectile];
-    NSLog(@"Snowball?");
     chosenProjectile.position = projectileSpawnPoint;
     [self addChild:chosenProjectile];
     
@@ -145,7 +146,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 //   //  [self.projectile runAction:[SKAction fadeInWithDuration:1]];
 }
 
-- (void)didMoveToView:(SKView *)view {
+- (void)didMoveToView:(SKView *)view
+{
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
@@ -208,7 +210,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
-- (void)selectNodeForTouch:(CGPoint)touchLocation {
+- (void)selectNodeForTouch:(CGPoint)touchLocation
+{
     if([self isWithinSlingshotDragArea:touchLocation])
     {
         SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
@@ -233,8 +236,8 @@ float degToRad(float degree) {
 	return degree / 180.0f * M_PI;
 }
 
-- (void)addMonster {
-
+- (void)addMonster
+{
     int monsterPicker = arc4random()%2+1;
     
     Monster* monster;
@@ -249,9 +252,10 @@ float degToRad(float degree) {
     }
     
     // Determine where to spawn the monster along the Y axis
-    // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-    monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, ScalarRandomRange(monster.size.height/2, self.size.height-monster.size.height/2));
-    
+
+   monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+    //monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, ScalarRandomRange(monster.size.height/2, self.size.height-monster.size.height/2));
+
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
     [self addChild:monster];
@@ -275,12 +279,12 @@ float degToRad(float degree) {
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
     self.lastSpawnTimeInterval += timeSinceLast;
-
+    
     if (self.lastSpawnTimeInterval > 3)
     {
         self.lastSpawnTimeInterval = 0;
         [self addMonster];
-        }
+    }
 }
 
 - (void)update:(NSTimeInterval)currentTime
@@ -349,10 +353,25 @@ float degToRad(float degree) {
     }
 }
 
+- (void)setupProjectileButtons
+{
+    regularProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+    regularProjectile.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
+    [self addChild:regularProjectile];
+    
+    freezeProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
+    freezeProjectile.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
+    [self addChild:freezeProjectile];
+   
+    fireProjectile = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
+    fireProjectile.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
+    [self addChild:fireProjectile];
+}
+
 - (void)monster:(Monster*)monster didCollideWithHero:(Hero*)ourHero
 {
     ourHero.health--;
-    NSLog(@"ouch!");
+    NSLog(@"ouch! I have %f life!", ourHero.health);
     [hero runAction:[self onHitColoration]];
     [monster removeFromParent];
 }
@@ -363,10 +382,8 @@ float degToRad(float degree) {
     SKAction* reColor = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:1.0 duration:0];
     SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
     
-    
     return [SKAction sequence:@[reColor,stutter,deColor]];
 }
-
 
 - (void)projectile:(Projectile *)firedProjectile didCollideWithMonster:(Monster *)monster
 {
@@ -427,111 +444,109 @@ float degToRad(float degree) {
     self.currency += monster.goldValue;
     self.monstersDestroyed++;
     NSLog(@"%d",self.currency);
-
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-        SKPhysicsBody *firstBody, *secondBody;
-        
-        if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
-        {
-            firstBody = contact.bodyA;
-            secondBody = contact.bodyB;
-        }
-        else
-        {
-            firstBody = contact.bodyB;
-            secondBody = contact.bodyA;
-        }
-        
-        if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == heroCategory)
-        {
-            [self monster:(Monster*)firstBody.node didCollideWithHero:(Hero*)secondBody.node];
-        }
-        else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
-        {
-            [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
-        }
+    SKPhysicsBody *firstBody, *secondBody;
+    
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
+    {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    }
+    else
+    {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
     }
     
-    - (void)setupUI
+    if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == heroCategory)
     {
-        int barHeight = 35;
-        CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
-        
-        SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:1.0];
-        SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
-        hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
-        hudBarBackground.anchorPoint = CGPointZero;
-        [_hudLayerNode addChild:hudBarBackground];
-        
-        // 1
-        scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        
-        // 2
-        scoreLabel.fontSize = 20.0;
-        scoreLabel.text = @"Score: 0";
-        scoreLabel.name = @"scoreLabel";
-        // 3
-        scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        // 4
-        scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
-        // 5
-        [_hudLayerNode addChild:scoreLabel];
-        
-        _scoreFlashAction = [SKAction sequence:@[[SKAction scaleTo:1.5 duration:0.1],[SKAction scaleTo:1.0 duration:0.1]]];
-        [scoreLabel runAction:[SKAction repeatAction:_scoreFlashAction count:10]];
-        
-        // 1
-        _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-        float testHealth = 7;
-        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
-        
-        // 2
-        SKLabelNode *playerHealthBackground =
-        [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        playerHealthBackground.name = @"playerHealthBackground";
-        playerHealthBackground.fontColor = [SKColor darkGrayColor];
-        playerHealthBackground.fontSize = 10.0f;
-        playerHealthBackground.text = _healthBar;
-        
-        // 3
-        playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
-        playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight + playerHealthBackground.frame.size.height);
-        [_hudLayerNode addChild:playerHealthBackground];
-        
-        // 4
-        _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        _playerHealthLabel.name = @"playerHealth";
-        _playerHealthLabel.fontColor = [SKColor whiteColor];
-        _playerHealthLabel.fontSize = 10.0f;
-        _playerHealthLabel.text = actualHealth;
-        _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
-        _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight +  _playerHealthLabel.frame.size.height);
-        [_hudLayerNode addChild:_playerHealthLabel];
-        
-        _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
-        _gameOverLabel.name = @"gameOver";
-        _gameOverLabel.fontSize = 40.0f;
-        _gameOverLabel.fontColor = [SKColor whiteColor];
-        _gameOverLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _gameOverLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _gameOverLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-        _gameOverLabel.text = @"GAME OVER";
-        
-        _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        _tapScreenLabel.name = @"tapScreen";
-        _tapScreenLabel.fontSize = 20.0f;
-        _tapScreenLabel.fontColor = [SKColor whiteColor];
-        _tapScreenLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _tapScreenLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _tapScreenLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2 - 100);
-        _tapScreenLabel.text = @"Tap Screen To Restart";
-        
-        _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
+        [self monster:(Monster*)firstBody.node didCollideWithHero:(Hero*)secondBody.node];
+    }
+    else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
+    {
+        [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
+    }
+}
+
+- (void)setupUI
+{
+    int barHeight = 35;
+    CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
+    
+    SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:1.0];
+    SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
+    hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
+    hudBarBackground.anchorPoint = CGPointZero;
+    [_hudLayerNode addChild:hudBarBackground];
+    
+    // 1
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    
+    // 2
+    scoreLabel.fontSize = 20.0;
+    scoreLabel.text = @"Score: 0";
+    scoreLabel.name = @"scoreLabel";
+    // 3
+    scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    // 4
+    scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
+    // 5
+    [_hudLayerNode addChild:scoreLabel];
+    
+    _scoreFlashAction = [SKAction sequence:@[[SKAction scaleTo:1.5 duration:0.1],[SKAction scaleTo:1.0 duration:0.1]]];
+    [scoreLabel runAction:[SKAction repeatAction:_scoreFlashAction count:10]];
+    
+    // 1
+    _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+    float testHealth = 7;
+    NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
+    
+    // 2
+    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    playerHealthBackground.name = @"playerHealthBackground";
+    playerHealthBackground.fontColor = [SKColor darkGrayColor];
+    playerHealthBackground.fontSize = 10.0f;
+    playerHealthBackground.text = _healthBar;
+    
+    // 3
+    playerHealthBackground.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight + playerHealthBackground.frame.size.height);
+    [_hudLayerNode addChild:playerHealthBackground];
+    
+    // 4
+    _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    _playerHealthLabel.name = @"playerHealth";
+    _playerHealthLabel.fontColor = [SKColor whiteColor];
+    _playerHealthLabel.fontSize = 10.0f;
+    _playerHealthLabel.text = actualHealth;
+    _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight +  _playerHealthLabel.frame.size.height);
+    [_hudLayerNode addChild:_playerHealthLabel];
+    
+    _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
+    _gameOverLabel.name = @"gameOver";
+    _gameOverLabel.fontSize = 40.0f;
+    _gameOverLabel.fontColor = [SKColor whiteColor];
+    _gameOverLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    _gameOverLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    _gameOverLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    _gameOverLabel.text = @"GAME OVER";
+    
+    _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    _tapScreenLabel.name = @"tapScreen";
+    _tapScreenLabel.fontSize = 20.0f;
+    _tapScreenLabel.fontColor = [SKColor whiteColor];
+    _tapScreenLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    _tapScreenLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    _tapScreenLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2 - 100);
+    _tapScreenLabel.text = @"Tap Screen To Restart";
+    
+    _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
 }
 
 - (void)increaseScoreBy:(float)increment
@@ -541,7 +556,6 @@ float degToRad(float degree) {
         scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
         [scoreLabel removeAllActions];
         [scoreLabel runAction:_scoreFlashAction];
-
 }
 
 @end
