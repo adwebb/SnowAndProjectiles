@@ -17,7 +17,6 @@
     SnowmanMonster* snowmanMonster = [SnowmanMonster spriteNodeWithImageNamed:@"snowman"];
     snowmanMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowmanMonster.size];
     snowmanMonster.health = 1;
-    snowmanMonster.goldValue = 1;
     snowmanMonster = (SnowmanMonster*)[super setMonsterProperties:snowmanMonster];
     snowmanMonster.goldValue = 2;
     
