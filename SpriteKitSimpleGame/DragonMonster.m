@@ -18,7 +18,7 @@
     dragonMonster.baseSpeed = .5;
     dragonMonster.health = 3;
     dragonMonster = (DragonMonster*)[super setMonsterProperties:dragonMonster];
-    dragonMonster.goldValue = 10;
+    dragonMonster.goldValue = 4;
     
     return dragonMonster;
 }

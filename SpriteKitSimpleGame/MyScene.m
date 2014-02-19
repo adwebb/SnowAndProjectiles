@@ -179,6 +179,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
    
     
+    if ([node.name isEqualToString:@"PauseButton"]) {
+        if (self.view.scene.paused == NO) {
+            self.view.scene.paused = YES;
+        }
+        else
+        {
+            self.view.scene.paused = NO;
+        }
+    }
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
@@ -310,12 +319,16 @@ float degToRad(float degree) {
 
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
-    self.lastSpawnTimeInterval += timeSinceLast;
-    
-    if (self.lastSpawnTimeInterval > 3)
+    if (self.view.scene.paused == NO)
     {
-        self.lastSpawnTimeInterval = 0;
-        [self addMonster];
+        self.lastSpawnTimeInterval += timeSinceLast;
+        
+        if (self.lastSpawnTimeInterval > 3)
+        {
+            self.lastSpawnTimeInterval = 0;
+            
+            [self addMonster];
+        }
     }
 }
 
@@ -548,7 +561,11 @@ float degToRad(float degree) {
         currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         [_hudLayerNode addChild:currencyLabel];
         [_hudLayerNode addChild:coinStack];
-        
+    
+        SKSpriteNode* pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
+        pauseButton.position = CGPointMake(self.size.width-coinStack.size.width - 3, self.size.height-barHeight/2);
+        pauseButton.name = @"PauseButton";
+        [_hudLayerNode addChild:pauseButton];
         
         // 3
         playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
@@ -602,7 +619,6 @@ float degToRad(float degree) {
         fireProjectileButton.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
         fireProjectileButton.name = @"FireButton";
         [_hudLayerNode addChild:fireProjectileButton];
-    
 }
 
 - (void)increaseScoreBy:(float)increment
