@@ -19,7 +19,7 @@ static const uint32_t heroCategory           =  0x11;
     monster.physicsBody.dynamic = YES;
     monster.physicsBody.affectedByGravity = NO;
     monster.physicsBody.categoryBitMask = monsterCategory;
-    monster.physicsBody.contactTestBitMask = heroCategory | projectileCategory;
+    monster.physicsBody.contactTestBitMask = heroCategory | projectileCategory | monsterCategory;
     monster.physicsBody.collisionBitMask = 0;
     monster.physicsBody.usesPreciseCollisionDetection = YES;
     return monster;

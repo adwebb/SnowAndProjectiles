@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:SnowAndProjectiles.xcodeproj">
+      location = "self:Avast!.xcodeproj">
    </FileRef>
 </Workspace>

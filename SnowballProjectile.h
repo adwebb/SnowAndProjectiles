@@ -10,8 +10,6 @@
 
 @interface SnowballProjectile : Projectile
 
-@property float damage;
-
 + (SnowballProjectile*)snowballProjectile;
 
 @end

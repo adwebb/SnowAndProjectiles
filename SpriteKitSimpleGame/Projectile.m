@@ -15,6 +15,7 @@ static const uint32_t monsterCategory        =  0x1 << 1;
 
 + (Projectile*)setProjectileProperties:(Projectile*)projectile;
 {
+    projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:projectile.size.width/2];
     projectile.physicsBody.affectedByGravity = NO;
     projectile.physicsBody.usesPreciseCollisionDetection = YES;
     projectile.physicsBody.collisionBitMask = 0;
@@ -24,11 +25,6 @@ static const uint32_t monsterCategory        =  0x1 << 1;
     [projectile setName:movableNodeName];
 
     return projectile;
-}
-
-+ (Projectile*)makeProjectile
-{
-    return nil;
 }
 
 @end
