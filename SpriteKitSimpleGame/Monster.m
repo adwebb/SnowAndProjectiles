@@ -22,12 +22,8 @@ static const uint32_t heroCategory           =  0x11;
     monster.physicsBody.contactTestBitMask = heroCategory | projectileCategory | monsterCategory;
     monster.physicsBody.collisionBitMask = 0;
     monster.physicsBody.usesPreciseCollisionDetection = YES;
+    monster.speed = monster.baseSpeed;
     return monster;
-}
-
-+(Monster*)monster
-{
-    return nil;
 }
 
 @end

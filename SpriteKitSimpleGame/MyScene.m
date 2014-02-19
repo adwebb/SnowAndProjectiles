@@ -16,6 +16,7 @@
 #import "SnowballProjectile.h"
 #import "DragonMonster.h"
 #import "FireProjectile.h"
+#import "IceProjectile.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -124,7 +125,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return self;
 }
 
-- (void)spawnProjectile:(ProjectileType)type
+- (void)spawnProjectileOfType:(ProjectileType)type
 {
     [self.projectile removeFromParent];
     switch (type) {
@@ -132,12 +133,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
             self.projectile = [SnowballProjectile snowballProjectile];
             break;
         case fire:
-            self.projectile = [FireProjectile fireProjectileOfRank:1];
+        {
+            self.projectile = [FireProjectile fireProjectileOfRank:1 inScene:self];
             break;
+        }
         case ice:
-            self.projectile = [SnowballProjectile snowballProjectile];
+            self.projectile = [IceProjectile iceProjectileOfRank:1 inScene:self];
             break;
         case split:
+            self.projectile = [SnowballProjectile snowballProjectile];
             break;
         default:
             break;
@@ -159,16 +163,21 @@ static inline CGPoint rwNormalize(CGPoint a) {
     CGPoint location = [touch locationInNode:self];
     SKNode* node = [self nodeAtPoint:location];
     
-    if ([node.name isEqualToString:@"FreezeButton"])
+    if([node.name hasSuffix:@"Button"])
+    {
+    if ([node.name isEqualToString:@"IceButton"])
     {
         projectileType = ice;
-        [self spawnProjectile: ice];
-    }
-    else if ([node.name isEqualToString:@"FireButton"])
+    }else if ([node.name isEqualToString:@"FireButton"])
     {
         projectileType = fire;
-        [self spawnProjectile: fire];
+    }else if ([node.name isEqualToString:@"SplitButton"])
+    {
+        projectileType = split;
     }
+        [self spawnProjectileOfType: projectileType];
+    }
+   
     
 }
 
@@ -369,7 +378,7 @@ float degToRad(float degree) {
     
     if(![self.children containsObject:self.projectile])
     {
-        [self spawnProjectile: projectileType];
+        [self spawnProjectileOfType: projectileType];
     }
 }
 
@@ -416,6 +425,7 @@ float degToRad(float degree) {
 {
     monster.physicsBody.contactTestBitMask = 0x0;
     monster.physicsBody.categoryBitMask = 0x0;
+    monster.speed = 1;
     [monster removeActionForKey:@"path"];
     
     
@@ -454,28 +464,36 @@ float degToRad(float degree) {
 {
         SKPhysicsBody *firstBody, *secondBody;
         
-        if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
+    {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    }else if (contact.bodyA.categoryBitMask == contact.bodyB.categoryBitMask)
+    {
+        if(contact.bodyA.node.position.x < contact.bodyB.node.position.x)
         {
             firstBody = contact.bodyA;
             secondBody = contact.bodyB;
         }
-        else
-        {
-            firstBody = contact.bodyB;
-            secondBody = contact.bodyA;
-        }
+    }else
+    {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    }
+    
+    if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == heroCategory)
+    {
+        [self monster:(Monster*)firstBody.node didCollideWithHero:(Hero*)secondBody.node];
+    }
+    else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
+    {
+        [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
+    }else if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == monsterCategory)
+    {
+        float baseSpeed = ((Monster*)secondBody.node).baseSpeed;
         
-        if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == heroCategory)
-        {
-            [self monster:(Monster*)firstBody.node didCollideWithHero:(Hero*)secondBody.node];
-        }
-        else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
-        {
-            [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
-        }else if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == monsterCategory)
-        {
-            secondBody.node.speed = 0;
-        }
+        [secondBody.node runAction:[SKAction sequence:@[[SKAction speedTo:.01 duration:0],[SKAction waitForDuration:.01], [SKAction speedTo:baseSpeed duration:2]]]];
+    }
 }
 
 - (void)setupUI
@@ -574,7 +592,7 @@ float degToRad(float degree) {
         
         SKSpriteNode* freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
         freezeProjectileButton.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
-        freezeProjectileButton.name = @"FreezeButton";
+        freezeProjectileButton.name = @"IceButton";
         [_hudLayerNode addChild:freezeProjectileButton];
         
         SKSpriteNode* fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];

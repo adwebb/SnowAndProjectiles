@@ -9,5 +9,8 @@
 #import "SplitProjectile.h"
 
 @implementation SplitProjectile
-
++(SplitProjectile*)splitProjectileOfRank:(int)rank
+{
+    return nil;
+}
 @end
