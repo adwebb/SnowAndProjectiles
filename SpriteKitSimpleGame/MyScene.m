@@ -401,7 +401,7 @@ float degToRad(float degree) {
 
 - (void)projectile:(Projectile *)projectile didCollideWithMonster:(Monster *)monster
 {
-    monster.health--;
+    monster.health = monster.health - projectile.damage;
     NSLog(@"Hit");
     _score = _score + 10;
     NSLog(@"score %f", _score);
@@ -412,9 +412,12 @@ float degToRad(float degree) {
     
     [monster runAction:[self onHitColoration]];
     
-    if (monster.health == 0)
+    if (monster.health <= 0)
     {
         [self killedMonster:monster];
+    }else if (projectileType == ice)
+    {
+        [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/4 duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
     [projectile removeFromParent];
     
