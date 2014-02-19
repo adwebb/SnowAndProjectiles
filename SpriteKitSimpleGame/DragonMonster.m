@@ -16,9 +16,8 @@
     DragonMonster* dragonMonster = [DragonMonster spriteNodeWithImageNamed:@"cuteDragonSmall"];
     dragonMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:dragonMonster.size];
     dragonMonster.health = 2;
-    dragonMonster.goldValue = 2;
     dragonMonster = (DragonMonster*)[super setMonsterProperties:dragonMonster];
-    dragonMonster.goldValue = 10;
+    dragonMonster.goldValue = 4;
     
     return dragonMonster;
 }

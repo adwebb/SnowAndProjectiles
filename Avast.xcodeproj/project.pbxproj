@@ -35,6 +35,7 @@
 		5A5D158F18AD31A600649720 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158E18AD31A600649720 /* Projectile.m */; };
 		5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159118AD58BA00649720 /* YetiMonster.m */; };
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
+		5A79AE6C18B52D4C0072F309 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A79AE6B18B52D4C0072F309 /* pause.png */; };
 		5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */; };
 		AAEF99E118B4071B00A44E7F /* DragonMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* DragonMonster.m */; };
 		AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */; };
@@ -116,6 +117,7 @@
 		5A5D159018AD58BA00649720 /* YetiMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YetiMonster.h; sourceTree = "<group>"; };
 		5A5D159118AD58BA00649720 /* YetiMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YetiMonster.m; sourceTree = "<group>"; };
 		5A5D159318AD60C100649720 /* yeti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yeti.png; path = ../yeti.png; sourceTree = "<group>"; };
+		5A79AE6B18B52D4C0072F309 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
 		AAEF99DF18B4071B00A44E7F /* DragonMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragonMonster.h; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5A79AE6B18B52D4C0072F309 /* pause.png */,
 				5A4DB9A918B3F58D0050EA7A /* blue.png */,
 				5A4DB9AA18B3F58D0050EA7A /* green.png */,
 				5A4DB9AB18B3F58D0050EA7A /* red.png */,
@@ -443,6 +446,7 @@
 				C2DEF39D18AD6DC700BD31E1 /* MyParticle.sks in Resources */,
 				5A4DB9AE18B3F58D0050EA7A /* red.png in Resources */,
 				35F3DF0917D8011E009EFFF2 /* Spaceship.png in Resources */,
+				5A79AE6C18B52D4C0072F309 /* pause.png in Resources */,
 				C23BC0FF18B3B8F300556B3D /* coin.png in Resources */,
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
 				AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */,
