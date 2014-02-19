@@ -10,7 +10,5 @@
 
 @interface IceProjectile : Projectile
 @property int potency;
-
-
-
++(IceProjectile*)iceProjectileOfRank:(int)rank inScene:(SKScene*)scene;
 @end

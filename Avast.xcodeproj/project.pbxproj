@@ -40,6 +40,7 @@
 		AAEF99E118B4071B00A44E7F /* DragonMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* DragonMonster.m */; };
 		AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */; };
 		AAEF99E518B4094300A44E7F /* cuteDragon.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E318B4094300A44E7F /* cuteDragon.png */; };
+		C221481218B5272E00A9ED15 /* iceball.sks in Resources */ = {isa = PBXBuildFile; fileRef = C221481118B5272E00A9ED15 /* iceball.sks */; };
 		C22A818018ABF69A00F25869 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C22A817F18ABF69A00F25869 /* icon@2x.png */; };
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C23BC0FF18B3B8F300556B3D /* coin.png in Resources */ = {isa = PBXBuildFile; fileRef = C23BC0FE18B3B8F300556B3D /* coin.png */; };
@@ -126,6 +127,7 @@
 		AAEF99E318B4094300A44E7F /* cuteDragon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuteDragon.png; sourceTree = "<group>"; };
 		C21C9FCB18AD9B35003CF4F6 /* defaultsnow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = defaultsnow.sks; sourceTree = "<group>"; };
 		C21C9FCD18ADA6F6003CF4F6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		C221481118B5272E00A9ED15 /* iceball.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = iceball.sks; sourceTree = "<group>"; };
 		C22A817F18ABF69A00F25869 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C23BC0FE18B3B8F300556B3D /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
@@ -221,14 +223,13 @@
 				35F3DEFF17D8011E009EFFF2 /* Main.storyboard */,
 				35F3DF0217D8011E009EFFF2 /* ViewController.h */,
 				35F3DF0317D8011E009EFFF2 /* ViewController.m */,
-				AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */,
-				AAEF99E318B4094300A44E7F /* cuteDragon.png */,
 				35F3DF0517D8011E009EFFF2 /* MyScene.h */,
 				35F3DF0617D8011E009EFFF2 /* MyScene.m */,
 				C21C9FCB18AD9B35003CF4F6 /* defaultsnow.sks */,
 				5A5D158C18AD13F100649720 /* Model */,
 				C2B6AC0418A97F5B007FAFE8 /* backgroundSnow.sks */,
 				C2FB16D318B400FA002C9513 /* fireball.sks */,
+				C221481118B5272E00A9ED15 /* iceball.sks */,
 				C2DEF39B18AD6DC700BD31E1 /* MyParticle.sks */,
 				C2DEF39C18AD6DC700BD31E1 /* bokeh.png */,
 				C2B6AC0518A97F5B007FAFE8 /* spark.png */,
@@ -247,6 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				5A79AE6B18B52D4C0072F309 /* pause.png */,
+				AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */,
+				AAEF99E318B4094300A44E7F /* cuteDragon.png */,
 				5A4DB9A918B3F58D0050EA7A /* blue.png */,
 				5A4DB9AA18B3F58D0050EA7A /* green.png */,
 				5A4DB9AB18B3F58D0050EA7A /* red.png */,
@@ -441,6 +444,7 @@
 				C2B6ABFD18A97D39007FAFE8 /* bird.png in Resources */,
 				C2B6ABFE18A97D39007FAFE8 /* blue-shooting-stars.png in Resources */,
 				5A5D159418AD60C100649720 /* yeti.png in Resources */,
+				C221481218B5272E00A9ED15 /* iceball.sks in Resources */,
 				C2B6AC0618A97F5B007FAFE8 /* backgroundSnow.sks in Resources */,
 				C2B6AC0718A97F5B007FAFE8 /* spark.png in Resources */,
 				C2DEF39D18AD6DC700BD31E1 /* MyParticle.sks in Resources */,

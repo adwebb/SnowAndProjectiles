@@ -9,5 +9,5 @@
 #import "Projectile.h"
 
 @interface SplitProjectile : Projectile
-
++(SplitProjectile*)splitProjectileOfRank:(int)rank;
 @end
