@@ -142,7 +142,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             self.projectile = [IceProjectile iceProjectileOfRank:1 inScene:self];
             break;
         case split:
-            self.projectile = [SplitProjectile splitProjectileOfRank:1];
+            self.projectile = [SplitProjectile splitProjectileOfRank:3];
             break;
         default:
             break;
@@ -250,13 +250,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx-xVariance)/12, vector.dy/12)];
             }else{
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx+xVariance)/12, vector.dy/12)];
-
             }
-            
         }
-        
-        [self.projectile runAction:[SKAction sequence:@[[SKAction waitForDuration:2], [SKAction removeFromParent]]]];
-        
     }else{
        [self.projectile.physicsBody applyImpulse:vector];
     }
@@ -361,6 +356,31 @@ float degToRad(float degree) {
 
 - (void)update:(NSTimeInterval)currentTime
 {
+    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
+    {
+        [self.projectile removeFromParent];
+    }
+    
+    if(projectileType == split)
+    {
+        for (Projectile* projectile in self.projectile.children)
+        {
+            if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+            {
+                [projectile removeFromParent];
+            }
+        }
+        if(self.projectile.children.count <= 0)
+        {
+            [self.projectile removeFromParent];
+        }
+    }
+    
+    if(![self.children containsObject:self.projectile])
+    {
+        [self spawnProjectileOfType: projectileType];
+    }
+    
     // Handle time delta.
     // If we drop below 60fps, we still want everything to move the same distance.
     CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
@@ -406,19 +426,6 @@ float degToRad(float degree) {
         default:
             NSLog(@"default case");
             break;
-    }
-}
-
--(void)didSimulatePhysics
-{
-    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
-    {
-        [self.projectile removeFromParent];
-    }
-    
-    if(![self.children containsObject:self.projectile])
-    {
-        [self spawnProjectileOfType: projectileType];
     }
 }
 
