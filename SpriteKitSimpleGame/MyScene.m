@@ -194,7 +194,7 @@ if (_gameState == GameOver)
         else
         {
             self.view.scene.paused = NO;
-            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
         }
     }
 }
@@ -401,7 +401,8 @@ float degToRad(float degree) {
         self.lastUpdateTimeInterval = currentTime;
     }
     
-    switch (_gameState) {
+    switch (_gameState)
+    {
         case GameRunning:
       
             // Update the healthbar color and length based on the...urm...players health :)
@@ -430,8 +431,6 @@ float degToRad(float degree) {
                 
                 SKColor *newColor = [SKColor colorWithRed:drand48() green:drand48() blue:drand48() alpha:1.0];
                 _gameOverLabel.fontColor = newColor;
-                
-                
             }
             break;
         }
@@ -467,14 +466,23 @@ float degToRad(float degree) {
 
     scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
     
-    [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
+    
+    if (projectileType == fire)
+    {
+        [self runAction:[SKAction playSoundFileNamed:@"fireExplosion.wav" waitForCompletion:NO]];
+    }
+    else
+    {
+        [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
+    }
     
     [monster runAction:[self onHitColoration]];
     
     if (monster.health <= 0)
     {
         [self killedMonster:monster];
-    }else if (projectileType == ice)
+    }
+    else if (projectileType == ice)
     {
         [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/4 duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
@@ -490,10 +498,18 @@ float degToRad(float degree) {
     monster.speed = 1;
     [monster removeActionForKey:@"path"];
     
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
-    SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-    [monster addChild:explosion];
+    if (projectileType == fire)
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
+        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        [monster addChild:explosion];
+    }
+    else
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
+        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        [monster addChild:explosion];
+    }
    
     SKAction* wait = [SKAction waitForDuration:.5];
     SKAction* remove = [SKAction removeFromParent];
@@ -673,11 +689,11 @@ float degToRad(float degree) {
 
 - (void)increaseScoreBy:(float)increment
 {
-        _score += increment;
-        scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-        scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
-        [scoreLabel removeAllActions];
-        [scoreLabel runAction:_scoreFlashAction];
+    _score += increment;
+    scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
+    [scoreLabel removeAllActions];
+    [scoreLabel runAction:_scoreFlashAction];
 }
 
 - (void)restartGame
