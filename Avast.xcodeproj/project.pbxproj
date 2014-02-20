@@ -37,6 +37,7 @@
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
 		5A79AE6C18B52D4C0072F309 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A79AE6B18B52D4C0072F309 /* pause.png */; };
 		5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */; };
+		AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */ = {isa = PBXBuildFile; fileRef = AA1418C518B56A07006D64AB /* fireBreath.sks */; };
 		AAEF99E118B4071B00A44E7F /* DragonMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* DragonMonster.m */; };
 		AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */; };
 		AAEF99E518B4094300A44E7F /* cuteDragon.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E318B4094300A44E7F /* cuteDragon.png */; };
@@ -122,6 +123,7 @@
 		5A79AE6B18B52D4C0072F309 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
+		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
 		AAEF99DF18B4071B00A44E7F /* DragonMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragonMonster.h; sourceTree = "<group>"; };
 		AAEF99E018B4071B00A44E7F /* DragonMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragonMonster.m; sourceTree = "<group>"; };
 		AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuteDragonSmall.png; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				5A5D158718AD12BF00649720 /* Monster.m */,
 				AAEF99DF18B4071B00A44E7F /* DragonMonster.h */,
 				AAEF99E018B4071B00A44E7F /* DragonMonster.m */,
+				AA1418C518B56A07006D64AB /* fireBreath.sks */,
 				5A5D159018AD58BA00649720 /* YetiMonster.h */,
 				5A5D159118AD58BA00649720 /* YetiMonster.m */,
 				5A5D158918AD13C100649720 /* SnowmanMonster.h */,
@@ -461,6 +464,7 @@
 				C2FB16C918B3EF4C002C9513 /* stack.png in Resources */,
 				C221481418B573AF00A9ED15 /* 8bitmusic.mp3 in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
+				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
