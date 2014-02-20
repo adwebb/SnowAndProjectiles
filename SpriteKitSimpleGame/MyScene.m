@@ -45,6 +45,7 @@ typedef enum {
     SKNode      *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
+    SKSpriteNode* pauseButton;
     ProjectileType projectileType;
     
     CGFloat _score;
@@ -185,12 +186,15 @@ if (_gameState == GameOver)
    
     
     if ([node.name isEqualToString:@"PauseButton"]) {
-        if (self.view.scene.paused == NO) {
+        if (self.view.scene.paused == NO)
+        {
             self.view.scene.paused = YES;
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
         }
         else
         {
             self.view.scene.paused = NO;
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
         }
     }
 }
@@ -608,7 +612,7 @@ float degToRad(float degree) {
         [_hudLayerNode addChild:currencyLabel];
         [_hudLayerNode addChild:coinStack];
     
-        SKSpriteNode* pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
+        pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
         pauseButton.position = CGPointMake(self.size.width-coinStack.size.width - 3, self.size.height-barHeight/2);
         pauseButton.name = @"PauseButton";
         [_hudLayerNode addChild:pauseButton];
