@@ -21,7 +21,7 @@
 {
     [super viewWillLayoutSubviews];
     NSError *error;
-    NSURL * backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"winterHoliday" withExtension:@"mp3"];
+    NSURL * backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"8bitmusic" withExtension:@"mp3"];
     self.backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:backgroundMusicURL error:&error];
     self.backgroundMusicPlayer.numberOfLoops = -1;
     [self.backgroundMusicPlayer prepareToPlay];
