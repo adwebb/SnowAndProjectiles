@@ -17,16 +17,17 @@
 #import "DragonMonster.h"
 #import "FireProjectile.h"
 #import "IceProjectile.h"
+#import "SplitProjectile.h"
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
 typedef enum {
-    untyped = 0,
-    split = 1,
-    fire = 2,
-    ice = 3
+    untyped,
+    split,
+    fire,
+    ice
 } ProjectileType;
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
@@ -141,7 +142,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             self.projectile = [IceProjectile iceProjectileOfRank:1 inScene:self];
             break;
         case split:
-            self.projectile = [SnowballProjectile snowballProjectile];
+            self.projectile = [SplitProjectile splitProjectileOfRank:1];
             break;
         default:
             break;
@@ -196,7 +197,7 @@ if (_gameState == GameOver)
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
-	if(self.projectile.alpha == 1 && self.projectile.physicsBody.affectedByGravity == NO)
+	if(self.projectile.physicsBody.affectedByGravity == NO)
     {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [self convertPointFromView:touchLocation];
@@ -225,17 +226,43 @@ if (_gameState == GameOver)
                 CGPoint multiplied = rwMult(launchDirection, force/3);
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
-                self.projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:self.projectile.size.width/2];
-                self.projectile.physicsBody.dynamic = YES;
-                self.projectile.physicsBody.categoryBitMask = projectileCategory;
-                self.projectile.physicsBody.contactTestBitMask = monsterCategory;
-                self.projectile.physicsBody.collisionBitMask = 0;
-                self.projectile.physicsBody.usesPreciseCollisionDetection = YES;
+                [self launchProjectileWithImpulse:launcher];
                 
-                self.projectile.physicsBody.affectedByGravity = YES;
-                [self.projectile.physicsBody applyImpulse:launcher];
             }
         }
+    }
+}
+
+-(void)launchProjectileWithImpulse:(CGVector)vector
+{
+    self.projectile.physicsBody.dynamic = YES;
+    self.projectile.physicsBody.affectedByGravity = YES;
+    
+    if(projectileType == split)
+    {
+        [self.projectile removeAllActions];
+        NSLog(@"split");
+        for (SplitProjectile* projectile in self.projectile.children) {
+            int xVariance = arc4random()%5+1;
+            int sign = arc4random()%2;
+            
+            projectile.physicsBody.dynamic = YES;
+            projectile.physicsBody.affectedByGravity = YES;
+           
+            if(sign == 0)
+            {
+                [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx-xVariance)/12, vector.dy/12)];
+            }else{
+                [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx+xVariance)/12, vector.dy/12)];
+
+            }
+            
+        }
+        
+        [self.projectile runAction:[SKAction sequence:@[[SKAction waitForDuration:2], [SKAction removeFromParent]]]];
+        
+    }else{
+       [self.projectile.physicsBody applyImpulse:vector];
     }
 }
 
