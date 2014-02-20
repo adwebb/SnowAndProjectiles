@@ -35,7 +35,8 @@
 		5A5D158F18AD31A600649720 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158E18AD31A600649720 /* Projectile.m */; };
 		5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159118AD58BA00649720 /* YetiMonster.m */; };
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
-		5A79AE6C18B52D4C0072F309 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A79AE6B18B52D4C0072F309 /* pause.png */; };
+		5ABA1A9018B68B0A002CC95A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A8F18B68B0A002CC95A /* play.png */; };
+		5ABA1A9218B68B3D002CC95A /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9118B68B3D002CC95A /* pause.png */; };
 		5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */; };
 		AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */ = {isa = PBXBuildFile; fileRef = AA1418C518B56A07006D64AB /* fireBreath.sks */; };
 		AAEF99E118B4071B00A44E7F /* DragonMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* DragonMonster.m */; };
@@ -121,7 +122,8 @@
 		5A5D159018AD58BA00649720 /* YetiMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YetiMonster.h; sourceTree = "<group>"; };
 		5A5D159118AD58BA00649720 /* YetiMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YetiMonster.m; sourceTree = "<group>"; };
 		5A5D159318AD60C100649720 /* yeti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yeti.png; path = ../yeti.png; sourceTree = "<group>"; };
-		5A79AE6B18B52D4C0072F309 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
+		5ABA1A8F18B68B0A002CC95A /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		5ABA1A9118B68B3D002CC95A /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
 		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
@@ -260,6 +262,8 @@
 				AAEF99E318B4094300A44E7F /* cuteDragon.png */,
 				5A4DB9A918B3F58D0050EA7A /* blue.png */,
 				5A4DB9AA18B3F58D0050EA7A /* green.png */,
+				5ABA1A8F18B68B0A002CC95A /* play.png */,
+				5ABA1A9118B68B3D002CC95A /* pause.png */,
 				5A4DB9AB18B3F58D0050EA7A /* red.png */,
 				C2FB16C818B3EF4C002C9513 /* stack.png */,
 				C2FB16C618B3EF34002C9513 /* coin2x.png */,
@@ -437,6 +441,7 @@
 				C2B6AC0318A97F00007FAFE8 /* bg.jpg in Resources */,
 				AAEF99E518B4094300A44E7F /* cuteDragon.png in Resources */,
 				5A4DB9AC18B3F58D0050EA7A /* blue.png in Resources */,
+				5ABA1A9218B68B3D002CC95A /* pause.png in Resources */,
 				C2573AE818A992D1009790A1 /* snowball.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
 				C2B6AC0B18A98CEC007FAFE8 /* hero.png in Resources */,
@@ -461,9 +466,9 @@
 				C2DEF39D18AD6DC700BD31E1 /* MyParticle.sks in Resources */,
 				5A4DB9AE18B3F58D0050EA7A /* red.png in Resources */,
 				35F3DF0917D8011E009EFFF2 /* Spaceship.png in Resources */,
-				5A79AE6C18B52D4C0072F309 /* pause.png in Resources */,
 				C23BC0FF18B3B8F300556B3D /* coin.png in Resources */,
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
+				5ABA1A9018B68B0A002CC95A /* play.png in Resources */,
 				AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */,
 				C2B6AC0018A97D39007FAFE8 /* dog.png in Resources */,
 				C2FB16C918B3EF4C002C9513 /* stack.png in Resources */,
