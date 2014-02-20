@@ -163,6 +163,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
     CGPoint location = [touch locationInNode:self];
     SKNode* node = [self nodeAtPoint:location];
     
+if (_gameState == GameOver)
+    [self restartGame];
+
+    
     if([node.name hasSuffix:@"Button"])
     {
     if ([node.name isEqualToString:@"IceButton"])
@@ -289,9 +293,11 @@ float degToRad(float degree) {
         monster = [YetiMonster monster];
     }
     else
-        monster = [DragonMonster monster];
-    
-
+    {
+        
+    monster = [DragonMonster monster];
+ 
+    }
     
     // Determine where to spawn the monster along the Y axis
     // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
@@ -373,6 +379,8 @@ float degToRad(float degree) {
                 
                 SKColor *newColor = [SKColor colorWithRed:drand48() green:drand48() blue:drand48() alpha:1.0];
                 _gameOverLabel.fontColor = newColor;
+                
+                
             }
             break;
         }
@@ -514,6 +522,10 @@ float degToRad(float degree) {
 
 - (void)setupUI
 {
+        [[_hudLayerNode childNodeWithName:@"scoreLabel"] removeFromParent];
+        [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
+        [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
+    
         int barHeight = 35;
         CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
@@ -629,5 +641,29 @@ float degToRad(float degree) {
         [scoreLabel removeAllActions];
         [scoreLabel runAction:_scoreFlashAction];
 }
+
+- (void)restartGame
+{
+    // Reset the state of the game
+    _gameState = GameRunning;
+    
+    // Set up the entities again and the score
+    [self setupUI];
+    _score = 0;
+    
+    // Reset the score and the players health
+  //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
+    hero.health = 10;
+
+    hero = [Hero spawnHero];
+    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+    [self addChild:hero];
+
+    // Remove the game over HUD labels
+    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
+}
+
 
 @end
