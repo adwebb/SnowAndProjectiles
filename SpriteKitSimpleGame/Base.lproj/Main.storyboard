@@ -81,6 +81,14 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="myView" destination="k1c-6e-Znh" id="Yxg-5g-7Mk"/>
+                        <outletCollection property="outlets" destination="2Ap-Yd-MeD" id="wtD-aK-457"/>
+                        <outletCollection property="outlets" destination="QFa-4x-TpQ" id="5ES-Pf-tzI"/>
+                        <outletCollection property="outlets" destination="k1c-6e-Znh" id="3Qo-fD-MBH"/>
+                        <outletCollection property="outlets" destination="HRU-VD-Vfh" id="dyv-SZ-q7g"/>
+                        <outletCollection property="outlets" destination="x7F-8S-guc" id="Dbc-q2-BCk"/>
+                        <outletCollection property="outlets" destination="A5W-Pz-SsF" id="1a7-SI-j1a"/>
+                        <outletCollection property="outlets" destination="n64-zV-2o5" id="aAH-87-7qo"/>
+                        <outletCollection property="outlets" destination="o2x-2X-rw9" id="bOA-tt-pcm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btX-cZ-eVz" sceneMemberID="firstResponder"/>
