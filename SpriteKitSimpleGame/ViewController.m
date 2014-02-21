@@ -17,10 +17,12 @@
     IBOutletCollection(id) NSArray *outlets;
     
     __weak IBOutlet UIView *myView;
+    BOOL muted;
 }
 
 @property (nonatomic) AVAudioPlayer * backgroundMusicPlayer;
 @property (nonatomic) AVAudioPlayer* gameMusicPlayer;
+@property (nonatomic) MyScene* myScene;
 @end
 
 @implementation ViewController
@@ -33,13 +35,13 @@
     self.backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:backgroundMusicURL error:&error];
     self.backgroundMusicPlayer.numberOfLoops = 1;
     [self.backgroundMusicPlayer prepareToPlay];
+    if(!muted)
     [self.backgroundMusicPlayer play];
     
     NSURL * gameMusicURL = [[NSBundle mainBundle] URLForResource:@"bg" withExtension:@"mp3"];
     self.gameMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:gameMusicURL error:&error];
     self.gameMusicPlayer.numberOfLoops = -1;
     [self.gameMusicPlayer prepareToPlay];
-    
     
     myView.layer.cornerRadius = 10;
     myView.layer.masksToBounds = YES;
@@ -57,12 +59,34 @@
         view.hidden = !toggle;
     }
 }
+- (IBAction)onSoundTogglePressed:(UIButton *)sender
+{
+    muted = !muted;
+    
+    if(self.myScene != nil)
+    {
+    self.myScene.muted = muted;
+    }
+    if(muted)
+    {
+        [sender setImage:[UIImage imageNamed:@"soundOff"] forState:UIControlStateNormal];
+        self.backgroundMusicPlayer.volume = 0;
+        self.gameMusicPlayer.volume = 0;
+    }else{
+        [sender setImage:[UIImage imageNamed:@"soundOn"] forState:UIControlStateNormal];
+        self.backgroundMusicPlayer.volume = 1;
+        self.gameMusicPlayer.volume = 1;
+    }
+}
 
 - (IBAction)onNewGameButtonPressed:(id)sender {
    
     [self.backgroundMusicPlayer stop];
     self.backgroundMusicPlayer.currentTime = 0;
+    
+    if(!muted)
     [self.gameMusicPlayer play];
+    
     [self showIntroScreen:NO];
     
     SKView * skView = (SKView *)self.view;
@@ -72,8 +96,12 @@
         NSLog(@"%@",NSStringFromCGSize(self.view.frame.size));
         
         // Create and configure the scene.
-        SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
+        MyScene * scene = [MyScene sceneWithSize:skView.bounds.size];
         scene.scaleMode = SKSceneScaleModeAspectFill;
+        
+        scene.muted = muted;
+        
+        self.myScene = scene;
         
         // Present the scene.
         [skView presentScene:scene];

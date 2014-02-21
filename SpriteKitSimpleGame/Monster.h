@@ -13,6 +13,8 @@
 @property float health;
 @property float baseSpeed;
 @property int goldValue;
+@property int damage;
+@property int ScoreValue;
 
 + (Monster*)setMonsterProperties:(Monster*)monster;
 

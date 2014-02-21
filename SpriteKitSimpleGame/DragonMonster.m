@@ -18,6 +18,8 @@
 
     dragonMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:dragonMonster.size];
     dragonMonster.baseSpeed = .5;
+    dragonMonster.damage = 2;
+    dragonMonster.ScoreValue = 15;
     
     dragonMonster.health = 3;
     dragonMonster = (DragonMonster*)[super setMonsterProperties:dragonMonster];

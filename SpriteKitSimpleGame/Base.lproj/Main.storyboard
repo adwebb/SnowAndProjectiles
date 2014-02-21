@@ -21,23 +21,15 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k1c-6e-Znh">
-                                <rect key="frame" x="201" y="129" width="167" height="171"/>
+                                <rect key="frame" x="201" y="129" width="167" height="137"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRU-VD-Vfh">
-                                <rect key="frame" x="203" y="254" width="162" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7F-8S-guc">
                                 <rect key="frame" x="203" y="215" width="162" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
-                                <state key="normal" title="Scoreboard">
+                                <state key="normal" title="Tutorial">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -74,6 +66,16 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ab-ia-3KH">
+                                <rect key="frame" x="537" y="2.5" width="28" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="soundOn.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onSoundTogglePressed:" destination="LVB-YS-i5n" eventType="touchUpInside" id="2lC-GF-a52"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -84,7 +86,6 @@
                         <outletCollection property="outlets" destination="2Ap-Yd-MeD" id="wtD-aK-457"/>
                         <outletCollection property="outlets" destination="QFa-4x-TpQ" id="5ES-Pf-tzI"/>
                         <outletCollection property="outlets" destination="k1c-6e-Znh" id="3Qo-fD-MBH"/>
-                        <outletCollection property="outlets" destination="HRU-VD-Vfh" id="dyv-SZ-q7g"/>
                         <outletCollection property="outlets" destination="x7F-8S-guc" id="Dbc-q2-BCk"/>
                         <outletCollection property="outlets" destination="A5W-Pz-SsF" id="1a7-SI-j1a"/>
                         <outletCollection property="outlets" destination="n64-zV-2o5" id="aAH-87-7qo"/>
@@ -97,6 +98,7 @@
     </scenes>
     <resources>
         <image name="introbg.png" width="568" height="320"/>
+        <image name="soundOn.png" width="32" height="33"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <nil key="statusBar"/>
