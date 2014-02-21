@@ -51,6 +51,10 @@ typedef enum {
     CGFloat _score;
     SKLabelNode *scoreLabel;
     int _gameState;
+    
+    NSMutableArray* monstersForWave;
+    
+    
 }
 
 @property (nonatomic) SKSpriteNode * player;
@@ -59,6 +63,7 @@ typedef enum {
 @property (nonatomic) int monstersDestroyed;
 @property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
+@property (nonatomic) int wave;
 
 @end
 
@@ -105,6 +110,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         _hudLayerNode = [SKNode node];
         [self addChild:_hudLayerNode];
+        
+        self.wave = 1;
+        [self initializeMonsterWave:self.wave];
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
         hero = [Hero spawnHero];
@@ -167,7 +175,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
 if (_gameState == GameOver)
     [self restartGame];
-
     
     if([node.name hasSuffix:@"Button"])
     {
@@ -194,7 +201,7 @@ if (_gameState == GameOver)
         else
         {
             self.view.scene.paused = NO;
-            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
         }
     }
 }
@@ -349,6 +356,47 @@ float degToRad(float degree) {
     return path;
 }
 
+-(void)initializeMonsterWave:(int)wave
+{
+    monstersForWave = [NSMutableArray new];
+    
+    switch (wave) {
+        case 1:
+        {
+            monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2].mutableCopy;
+            break;
+        }
+        case 2:
+        {
+            monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2,
+                                @4, @4, @4, @4, @4, @4, @3, @3, @3, @3].mutableCopy;
+            break;
+        }
+        case 3:
+        {
+            
+            break;
+        }
+        case 4:
+        {
+            break;
+        }
+        case 5:
+        {
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+-(void)spawnMonsters
+{
+    
+}
+
+
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
 {
     if (self.view.scene.paused == NO)
@@ -461,19 +509,18 @@ float degToRad(float degree) {
 {
     monster.health = monster.health - projectile.damage;
     NSLog(@"Hit");
-    _score = _score + 10;
-    NSLog(@"score %f", _score);
-
-    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
+    [self increaseScoreBy:10];
     
-    
-    if (projectileType == fire)
+    if(!self.muted)
     {
-        [self runAction:[SKAction playSoundFileNamed:@"fireExplosion.wav" waitForCompletion:NO]];
-    }
-    else
-    {
-        [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
+        if (projectileType == fire)
+        {
+            [self runAction:[SKAction playSoundFileNamed:@"fireExplosion.wav" waitForCompletion:NO]];
+        }
+        else
+        {
+            [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
+        }
     }
     
     [monster runAction:[self onHitColoration]];
@@ -497,6 +544,8 @@ float degToRad(float degree) {
     monster.physicsBody.categoryBitMask = 0x0;
     monster.speed = 1;
     [monster removeActionForKey:@"path"];
+    
+    [self increaseScoreBy:monster.ScoreValue];
     
     if (projectileType == fire)
     {
@@ -605,9 +654,9 @@ float degToRad(float degree) {
         
         // 1
         _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-        float testHealth = 7;
-        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
-        
+//        float testHealth = 7;
+//        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
+    
         // 2
         SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         playerHealthBackground.name = @"playerHealthBackground";
@@ -619,8 +668,8 @@ float degToRad(float degree) {
         
         currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
-        coinStack.position = CGPointMake(self.size.width-coinStack.size.width-50, self.size.height-barHeight/2);
-        currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width, coinStack.position.y);
+        coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
+        currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
         currencyLabel.fontSize = 20;
         currencyLabel.text = @"0";
         currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
@@ -629,7 +678,7 @@ float degToRad(float degree) {
         [_hudLayerNode addChild:coinStack];
     
         pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
-        pauseButton.position = CGPointMake(self.size.width-coinStack.size.width - 3, self.size.height-barHeight/2);
+        pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
         pauseButton.name = @"PauseButton";
         [_hudLayerNode addChild:pauseButton];
         
@@ -644,7 +693,7 @@ float degToRad(float degree) {
         _playerHealthLabel.name = @"playerHealth";
         _playerHealthLabel.fontColor = [SKColor whiteColor];
         _playerHealthLabel.fontSize = 15.0f;
-        _playerHealthLabel.text = actualHealth;
+        //_playerHealthLabel.text = actualHealth;
         _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
         _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
         _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
@@ -703,7 +752,9 @@ float degToRad(float degree) {
     
     // Set up the entities again and the score
     [self setupUI];
-    _score = 0;
+    [self increaseScoreBy:-_score];
+    self.wave = 1;
+    [self initializeMonsterWave:self.wave];
     
     // Reset the score and the players health
   //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];

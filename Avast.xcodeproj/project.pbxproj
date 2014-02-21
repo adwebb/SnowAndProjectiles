@@ -45,6 +45,15 @@
 		AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */; };
 		AAEF99E518B4094300A44E7F /* cuteDragon.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E318B4094300A44E7F /* cuteDragon.png */; };
 		C221481218B5272E00A9ED15 /* iceball.sks in Resources */ = {isa = PBXBuildFile; fileRef = C221481118B5272E00A9ED15 /* iceball.sks */; };
+		C225473518B6C6DD00A0AFC2 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C225473418B6C6DD00A0AFC2 /* settings.png */; };
+		C225473818B6CD6200A0AFC2 /* soundOff.png in Resources */ = {isa = PBXBuildFile; fileRef = C225473618B6CD6200A0AFC2 /* soundOff.png */; };
+		C225473918B6CD6200A0AFC2 /* soundOn.png in Resources */ = {isa = PBXBuildFile; fileRef = C225473718B6CD6200A0AFC2 /* soundOn.png */; };
+		C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */ = {isa = PBXBuildFile; fileRef = C225473B18B7DE9B00A0AFC2 /* Skirmisher.m */; };
+		C225473F18B7DEA200A0AFC2 /* Elite.m in Sources */ = {isa = PBXBuildFile; fileRef = C225473E18B7DEA200A0AFC2 /* Elite.m */; };
+		C225474218B7DEA900A0AFC2 /* Boss.m in Sources */ = {isa = PBXBuildFile; fileRef = C225474118B7DEA900A0AFC2 /* Boss.m */; };
+		C225474418B7E25000A0AFC2 /* crab.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474318B7E25000A0AFC2 /* crab.png */; };
+		C225474718B7E25E00A0AFC2 /* fish.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474518B7E25E00A0AFC2 /* fish.png */; };
+		C225474818B7E25E00A0AFC2 /* kraken.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474618B7E25E00A0AFC2 /* kraken.png */; };
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C23BC0FF18B3B8F300556B3D /* coin.png in Resources */ = {isa = PBXBuildFile; fileRef = C23BC0FE18B3B8F300556B3D /* coin.png */; };
 		C2573AE818A992D1009790A1 /* snowball.png in Resources */ = {isa = PBXBuildFile; fileRef = C2573AE718A992D1009790A1 /* snowball.png */; };
@@ -138,6 +147,18 @@
 		C21C9FCB18AD9B35003CF4F6 /* defaultsnow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = defaultsnow.sks; sourceTree = "<group>"; };
 		C21C9FCD18ADA6F6003CF4F6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		C221481118B5272E00A9ED15 /* iceball.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = iceball.sks; sourceTree = "<group>"; };
+		C225473418B6C6DD00A0AFC2 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		C225473618B6CD6200A0AFC2 /* soundOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soundOff.png; sourceTree = "<group>"; };
+		C225473718B6CD6200A0AFC2 /* soundOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soundOn.png; sourceTree = "<group>"; };
+		C225473A18B7DE9B00A0AFC2 /* Skirmisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skirmisher.h; sourceTree = "<group>"; };
+		C225473B18B7DE9B00A0AFC2 /* Skirmisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Skirmisher.m; sourceTree = "<group>"; };
+		C225473D18B7DEA200A0AFC2 /* Elite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Elite.h; sourceTree = "<group>"; };
+		C225473E18B7DEA200A0AFC2 /* Elite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Elite.m; sourceTree = "<group>"; };
+		C225474018B7DEA900A0AFC2 /* Boss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boss.h; sourceTree = "<group>"; };
+		C225474118B7DEA900A0AFC2 /* Boss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Boss.m; sourceTree = "<group>"; };
+		C225474318B7E25000A0AFC2 /* crab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crab.png; sourceTree = "<group>"; };
+		C225474518B7E25E00A0AFC2 /* fish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fish.png; sourceTree = "<group>"; };
+		C225474618B7E25E00A0AFC2 /* kraken.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kraken.png; sourceTree = "<group>"; };
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C23BC0FE18B3B8F300556B3D /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
 		C2573AE718A992D1009790A1 /* snowball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowball.png; sourceTree = "<group>"; };
@@ -260,10 +281,15 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C225474518B7E25E00A0AFC2 /* fish.png */,
+				C225474618B7E25E00A0AFC2 /* kraken.png */,
+				C225474318B7E25000A0AFC2 /* crab.png */,
+				C225473618B6CD6200A0AFC2 /* soundOff.png */,
+				C225473718B6CD6200A0AFC2 /* soundOn.png */,
+				C225473418B6C6DD00A0AFC2 /* settings.png */,
 				5ABA1A9518B69F67002CC95A /* fireExplosion.wav */,
 				C29470A318B693E200037F86 /* introbg@2x.png */,
 				C29470A118B693D400037F86 /* icon@2x.png */,
-				5A79AE6B18B52D4C0072F309 /* pause.png */,
 				AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */,
 				AAEF99E318B4094300A44E7F /* cuteDragon.png */,
 				5A4DB9A918B3F58D0050EA7A /* blue.png */,
@@ -334,6 +360,12 @@
 				5A5D159118AD58BA00649720 /* YetiMonster.m */,
 				5A5D158918AD13C100649720 /* SnowmanMonster.h */,
 				5A5D158A18AD13C100649720 /* SnowmanMonster.m */,
+				C225473A18B7DE9B00A0AFC2 /* Skirmisher.h */,
+				C225473B18B7DE9B00A0AFC2 /* Skirmisher.m */,
+				C225473D18B7DEA200A0AFC2 /* Elite.h */,
+				C225473E18B7DEA200A0AFC2 /* Elite.m */,
+				C225474018B7DEA900A0AFC2 /* Boss.h */,
+				C225474118B7DEA900A0AFC2 /* Boss.m */,
 			);
 			name = Monsters;
 			sourceTree = "<group>";
@@ -449,8 +481,11 @@
 				5A4DB9AC18B3F58D0050EA7A /* blue.png in Resources */,
 				5ABA1A9218B68B3D002CC95A /* pause.png in Resources */,
 				C2573AE818A992D1009790A1 /* snowball.png in Resources */,
+				C225474418B7E25000A0AFC2 /* crab.png in Resources */,
+				C225473918B6CD6200A0AFC2 /* soundOn.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
 				C2B6AC0B18A98CEC007FAFE8 /* hero.png in Resources */,
+				C225474718B7E25E00A0AFC2 /* fish.png in Resources */,
 				C2B6AC0918A989C1007FAFE8 /* snowman.png in Resources */,
 				C29470A018B683CB00037F86 /* intro.mp3 in Resources */,
 				C29470A418B693E200037F86 /* introbg@2x.png in Resources */,
@@ -461,8 +496,8 @@
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
 				5ABA1A9618B69F67002CC95A /* fireExplosion.wav in Resources */,
-
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
+				C225474818B7E25E00A0AFC2 /* kraken.png in Resources */,
 				C29470A218B693D400037F86 /* icon@2x.png in Resources */,
 				C2B6AC0118A97D39007FAFE8 /* turtle.png in Resources */,
 				C2B6ABFD18A97D39007FAFE8 /* bird.png in Resources */,
@@ -478,8 +513,10 @@
 				C23BC0FF18B3B8F300556B3D /* coin.png in Resources */,
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
 				5ABA1A9018B68B0A002CC95A /* play.png in Resources */,
+				C225473818B6CD6200A0AFC2 /* soundOff.png in Resources */,
 				AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */,
 				C2B6AC0018A97D39007FAFE8 /* dog.png in Resources */,
+				C225473518B6C6DD00A0AFC2 /* settings.png in Resources */,
 				C2FB16C918B3EF4C002C9513 /* stack.png in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
@@ -507,11 +544,14 @@
 				5A5D158B18AD13C100649720 /* SnowmanMonster.m in Sources */,
 				C2FB16CC18B3FF10002C9513 /* FireProjectile.m in Sources */,
 				5A5D158818AD12BF00649720 /* Monster.m in Sources */,
+				C225474218B7DEA900A0AFC2 /* Boss.m in Sources */,
 				5A3C54F918B26B2C007A7E60 /* Hero.m in Sources */,
 				35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */,
+				C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */,
 				C2FB16D218B3FF26002C9513 /* SplitProjectile.m in Sources */,
 				5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */,
 				35F3DF0717D8011E009EFFF2 /* MyScene.m in Sources */,
+				C225473F18B7DEA200A0AFC2 /* Elite.m in Sources */,
 				35F3DF0417D8011E009EFFF2 /* ViewController.m in Sources */,
 				35F3DEFE17D8011E009EFFF2 /* AppDelegate.m in Sources */,
 				5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */,

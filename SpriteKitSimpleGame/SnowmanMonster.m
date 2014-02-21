@@ -18,6 +18,8 @@
     snowmanMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowmanMonster.size];
     snowmanMonster.health = 1;
     snowmanMonster.baseSpeed = 1;
+    snowmanMonster.ScoreValue = 5;
+    snowmanMonster.damage = 1;
     snowmanMonster = (SnowmanMonster*)[super setMonsterProperties:snowmanMonster];
     snowmanMonster.goldValue = 2;
     
