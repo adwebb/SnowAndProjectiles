@@ -121,6 +121,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.physicsWorld.contactDelegate = self;
         self.currency = 0;
         
+    
+        
         [self setupUI];
     }
     return self;
