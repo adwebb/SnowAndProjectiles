@@ -35,6 +35,7 @@
 		5A5D158F18AD31A600649720 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158E18AD31A600649720 /* Projectile.m */; };
 		5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159118AD58BA00649720 /* YetiMonster.m */; };
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
+		5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AB1C56E18B7F03E0010F703 /* iceHit.wav */; };
 		5ABA1A9018B68B0A002CC95A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A8F18B68B0A002CC95A /* play.png */; };
 		5ABA1A9218B68B3D002CC95A /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9118B68B3D002CC95A /* pause.png */; };
 		5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9318B6993E002CC95A /* FireDeath.sks */; };
@@ -124,10 +125,11 @@
 		5A5D159018AD58BA00649720 /* YetiMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YetiMonster.h; sourceTree = "<group>"; };
 		5A5D159118AD58BA00649720 /* YetiMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YetiMonster.m; sourceTree = "<group>"; };
 		5A5D159318AD60C100649720 /* yeti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yeti.png; path = ../yeti.png; sourceTree = "<group>"; };
+		5AB1C56E18B7F03E0010F703 /* iceHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = iceHit.wav; sourceTree = "<group>"; };
 		5ABA1A8F18B68B0A002CC95A /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		5ABA1A9118B68B3D002CC95A /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		5ABA1A9318B6993E002CC95A /* FireDeath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireDeath.sks; sourceTree = "<group>"; };
-		5ABA1A9518B69F67002CC95A /* fireExplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fireExplosion.wav; sourceTree = "<group>"; };
+		5ABA1A9518B69F67002CC95A /* fireExplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = fireExplosion.wav; path = ../fireExplosion.wav; sourceTree = "<group>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
 		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
@@ -260,10 +262,8 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5ABA1A9518B69F67002CC95A /* fireExplosion.wav */,
 				C29470A318B693E200037F86 /* introbg@2x.png */,
 				C29470A118B693D400037F86 /* icon@2x.png */,
-				5A79AE6B18B52D4C0072F309 /* pause.png */,
 				AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */,
 				AAEF99E318B4094300A44E7F /* cuteDragon.png */,
 				5A4DB9A918B3F58D0050EA7A /* blue.png */,
@@ -317,6 +317,8 @@
 			children = (
 				C294709D18B683BE00037F86 /* bg.mp3 */,
 				C294709F18B683CB00037F86 /* intro.mp3 */,
+				5AB1C56E18B7F03E0010F703 /* iceHit.wav */,
+				5ABA1A9518B69F67002CC95A /* fireExplosion.wav */,
 				C2573AEB18AA84DE009790A1 /* plop.mp3 */,
 			);
 			path = Sounds;
@@ -451,6 +453,7 @@
 				C2573AE818A992D1009790A1 /* snowball.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
 				C2B6AC0B18A98CEC007FAFE8 /* hero.png in Resources */,
+				5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */,
 				C2B6AC0918A989C1007FAFE8 /* snowman.png in Resources */,
 				C29470A018B683CB00037F86 /* intro.mp3 in Resources */,
 				C29470A418B693E200037F86 /* introbg@2x.png in Resources */,
@@ -461,7 +464,6 @@
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
 				5ABA1A9618B69F67002CC95A /* fireExplosion.wav in Resources */,
-
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
 				C29470A218B693D400037F86 /* icon@2x.png in Resources */,
 				C2B6AC0118A97D39007FAFE8 /* turtle.png in Resources */,

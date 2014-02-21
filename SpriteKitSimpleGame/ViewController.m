@@ -39,7 +39,7 @@
     self.gameMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:gameMusicURL error:&error];
     self.gameMusicPlayer.numberOfLoops = -1;
     [self.gameMusicPlayer prepareToPlay];
-    [self.gameMusicPlayer play];
+    
     
     myView.layer.cornerRadius = 10;
     myView.layer.masksToBounds = YES;

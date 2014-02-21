@@ -186,6 +186,7 @@ if (_gameState == GameOver)
    
     
     if ([node.name isEqualToString:@"PauseButton"]) {
+        
         if (self.view.scene.paused == NO)
         {
             self.view.scene.paused = YES;
@@ -194,10 +195,12 @@ if (_gameState == GameOver)
         else
         {
             self.view.scene.paused = NO;
-            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
+
         }
     }
 }
+
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
@@ -260,7 +263,9 @@ if (_gameState == GameOver)
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx+xVariance)/12, vector.dy/12)];
             }
         }
-    }else{
+    }
+    else
+    {
        [self.projectile.physicsBody applyImpulse:vector];
     }
 }
@@ -299,7 +304,8 @@ if (_gameState == GameOver)
     return NO;
 }
 
-float degToRad(float degree) {
+float degToRad(float degree)
+{
 	return degree / 180.0f * M_PI;
 }
 
@@ -307,7 +313,6 @@ float degToRad(float degree) {
 {
     int monsterPicker = arc4random()%3+1;
 
-    
     Monster* monster;
     
     if(monsterPicker == 3)
@@ -470,13 +475,18 @@ float degToRad(float degree) {
     if (projectileType == fire)
     {
         [self runAction:[SKAction playSoundFileNamed:@"fireExplosion.wav" waitForCompletion:NO]];
+        [monster runAction:[self onHitColoration]];
     }
-    else
+    else if (projectileType == ice)
     {
-        [self runAction:[SKAction playSoundFileNamed:@"plop.mp3" waitForCompletion:NO]];
+        [self runAction:[SKAction playSoundFileNamed:@"iceHit.wav" waitForCompletion:NO]];
+        SKAction* stutter = [SKAction waitForDuration:.4];
+        SKAction* reColor = [SKAction colorizeWithColor:[UIColor blueColor] colorBlendFactor:1.0 duration:0];
+        SKAction* deColor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:0.0 duration:0];
+        [monster runAction:[SKAction sequence:@[reColor, stutter, deColor]]];
     }
     
-    [monster runAction:[self onHitColoration]];
+    //[monster runAction:[self onHitColoration]];
     
     if (monster.health <= 0)
     {
@@ -514,6 +524,8 @@ float degToRad(float degree) {
     SKAction* wait = [SKAction waitForDuration:.5];
     SKAction* remove = [SKAction removeFromParent];
     SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
+    SKAction* burnOut = [SKAction colorizeWithColor:[UIColor blackColor] colorBlendFactor:0.8f duration:0.8f];
+    [monster runAction:burnOut];
     [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
     
     SKNode* coinNode = [SKNode new];
