@@ -113,7 +113,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if (self = [super initWithSize:size])
     {
-        _score = 0;
+        
         
         // Loading the background
         _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
@@ -124,8 +124,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         _hudLayerNode = [SKNode node];
         [self addChild:_hudLayerNode];
         
-        self.wave = 1;
-        [self initializeMonsterWave:self.wave];
+        
         self.monsterLayer = [SKNode node];
         [self addChild:self.monsterLayer];
         
@@ -143,10 +142,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
-        self.currency = 0;
         
         [self setupUI];
-        [self spawnMonsters];
     }
     return self;
 }
@@ -181,6 +178,16 @@ static inline CGPoint rwNormalize(CGPoint a) {
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
+    
+    if(_continued)
+    {
+        [self load];
+    }else
+    {
+        _score = 0;
+        _currency = 0;
+        [self advanceToWave:1];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -464,8 +471,9 @@ float degToRad(float degree)
         waveComplete.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         waveComplete.text = [NSString stringWithFormat:@"Wave %d Complete!",self.wave];
         [self addChild:waveComplete];
+        self.wave++;
         [self save];
-        [self advanceToWave:self.wave++];
+        [self advanceToWave:self.wave];
     }
     
 }

@@ -22,5 +22,6 @@ typedef enum : int {
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;
 @property (nonatomic) BOOL muted;
+@property (nonatomic) BOOL continued;
 
 @end
