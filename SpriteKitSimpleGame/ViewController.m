@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "MyScene.h"
 #import <QuartzCore/QuartzCore.h>
+#import <GameKit/GameKit.h>
 
 @import AVFoundation;
 

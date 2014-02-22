@@ -59,6 +59,7 @@ typedef enum {
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
     SKSpriteNode* pauseButton;
+    SKLabelNode* waveComplete;
     ProjectileType projectileType;
     
     CGFloat _score;
@@ -70,11 +71,12 @@ typedef enum {
     
 }
 
-@property (nonatomic) SKSpriteNode * player;
 @property (nonatomic) int monstersDestroyed;
 @property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
 @property (nonatomic) int wave;
+@property (nonatomic) SKNode* monsterLayer;
+@property (nonatomic) NSDictionary* upgrades;
 
 @end
 
@@ -124,6 +126,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         self.wave = 1;
         [self initializeMonsterWave:self.wave];
+        self.monsterLayer = [SKNode node];
+        [self addChild:self.monsterLayer];
         
         NSLog(@"Size: %@", NSStringFromCGSize(size));
         hero = [Hero spawnHero];
@@ -358,7 +362,7 @@ float degToRad(float degree)
     
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
-    [self addChild:monster];
+    [self.monsterLayer addChild:monster];
     
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
@@ -435,16 +439,24 @@ float degToRad(float degree)
         [monstersForWave removeObjectAtIndex:0];
     }];
     
+    //If we want to add in difficulty levels, the below waitForDuration is a great place to do so. It controls
+    //monster-spawn spacing. Current timing may be too hard to be considered "normal".
+    
     SKAction* pauseAndAdd = [SKAction sequence:@[[SKAction waitForDuration:2 withRange:1], addMonster]];
     
-    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count]];
+    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count] completion:^{
+        [self runAction:[SKAction waitForDuration:5] completion:^{
+            [self waveComplete];
+        }];
+    }];
+  
 }
 
--(void)advanceToNextWave
+-(void)waveComplete
 {
     if(self.wave <= 5)
     {
-        SKLabelNode* waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
         waveComplete.fontSize = 20;
         waveComplete.fontColor = [SKColor whiteColor];
@@ -452,18 +464,25 @@ float degToRad(float degree)
         waveComplete.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         waveComplete.text = [NSString stringWithFormat:@"Wave %d Complete!",self.wave];
         [self addChild:waveComplete];
-        
-        self.wave++;
-        [self initializeMonsterWave:self.wave];
-        
-        [self runAction:[SKAction waitForDuration:3] completion:^{
-            waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
-            [self runAction:[SKAction waitForDuration:3] completion:^{
-                [self spawnMonsters];
-            }];
-        }];
+        [self save];
+        [self advanceToWave:self.wave++];
     }
+    
+}
+
+-(void)advanceToWave:(int)waveNumber
+{
+    self.wave = waveNumber;
+    
+    [self initializeMonsterWave:self.wave];
         
+    [self runAction:[SKAction waitForDuration:3] completion:^{
+        waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
+        [self runAction:[SKAction waitForDuration:3] completion:^{
+            [waveComplete removeFromParent];
+            [self spawnMonsters];
+        }];
+    }];
 }
 
 
@@ -505,11 +524,6 @@ float degToRad(float degree)
             if(![self.children containsObject:self.projectile])
             {
                 [self spawnProjectileOfType: projectileType];
-            }
-            
-            if(monstersForWave.count == 0)
-            {
-                [self advanceToNextWave];
             }
             
             break;
@@ -638,6 +652,7 @@ float degToRad(float degree)
     
     self.currency += monster.goldValue;
     self.monstersDestroyed++;
+    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -822,6 +837,32 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
+
+-(void)save
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@(self.wave) forKey:@"wave"];
+    [userDefaults setObject:@(hero.health) forKey:@"health"];
+    [userDefaults setObject:self.upgrades forKey:@"upgrades"];
+    [userDefaults setObject:@(self.currency) forKey:@"currency"];
+    [userDefaults setObject:@(_score) forKey:@"score"];
+    [userDefaults synchronize];
+}
+
+-(void)load
+{
+   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    self.wave = ((NSNumber*)[userDefaults objectForKey:@"wave"]).intValue;
+    hero.health = ((NSNumber*)[userDefaults objectForKey:@"health"]).floatValue;
+    self.upgrades = [userDefaults objectForKey:@"upgrades"];
+    self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
+    _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
+    [self advanceToWave:self.wave];
+}
+
+
+
+
 
 
 @end
