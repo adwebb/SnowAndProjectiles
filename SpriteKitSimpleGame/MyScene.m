@@ -11,6 +11,9 @@
 #import "Monster.h"
 #import "SnowmanMonster.h"
 #import "YetiMonster.h"
+#import "Skirmisher.h"
+#import "Elite.h"
+#import "Boss.h"
 #import "Hero.h"
 #import "Projectile.h"
 #import "SnowballProjectile.h"
@@ -19,9 +22,18 @@
 #import "IceProjectile.h"
 #import "SplitProjectile.h"
 
+
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
+
+typedef NS_ENUM(int32_t, PCGameState)
+{
+    PCGameStateStartingLevel,
+    PCGameStatePlaying,
+    PCGameStateInLevelMenu,
+    PCGameStateInReloadMenu,
+};
 
 typedef enum {
     untyped,
@@ -29,6 +41,15 @@ typedef enum {
     fire,
     ice
 } ProjectileType;
+
+typedef enum {
+    minion = 1,
+    brute = 2,
+    soldier = 3,
+    skirmisher = 4,
+    elite = 5,
+    boss = 6
+}monsterType;
 
 @interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
@@ -47,10 +68,10 @@ typedef enum {
     SKLabelNode* currencyLabel;
     SKSpriteNode* pauseButton;
     SKSpriteNode* upgradeArrow;
-    
+    SKLabelNode* waveComplete;
     ProjectileType projectileType;
     
-    CGFloat _score;
+    int _score;
     SKLabelNode *scoreLabel;
     int _gameState;
     
@@ -59,14 +80,12 @@ typedef enum {
     BOOL upgradeMode;
 }
 
-@property (nonatomic) SKSpriteNode * player;
-@property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
-@property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
 @property (nonatomic) int monstersDestroyed;
 @property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
 @property (nonatomic) int wave;
 @property (nonatomic) NSMutableDictionary* upgrades;
+@property (nonatomic) SKNode* monsterLayer;
 
 @end
 
@@ -103,35 +122,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if (self = [super initWithSize:size])
     {
-        _score = 0;
-        
-        // Loading the background
-        _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
-        [_background setName:@"background"];
-        [_background setAnchorPoint:CGPointZero];
-        [self addChild:_background];
-        
-        _hudLayerNode = [SKNode node];
-        [self addChild:_hudLayerNode];
-        
-        self.wave = 1;
-        [self initializeMonsterWave:self.wave];
-        
-        NSLog(@"Size: %@", NSStringFromCGSize(size));
-        hero = [Hero spawnHero];
-        hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-        [self addChild:hero];
-        
-        projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
-        
-        NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
-        SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
-        snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
-        [_background addChild:snowEmitter];
-        
-        self.physicsWorld.gravity = CGVectorMake(0,-5);
-        self.physicsWorld.contactDelegate = self;
-        self.currency = 0;
         
         [self setupUI];
         [self upgrades];
@@ -171,6 +161,16 @@ static inline CGPoint rwNormalize(CGPoint a) {
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
+    
+    if(_continued)
+    {
+        [self load];
+    }else
+    {
+        _score = 0;
+        _currency = 0;
+        [self advanceToWave:1];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -375,7 +375,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
                 [self launchProjectileWithImpulse:launcher];
-                
             }
         }
     }
@@ -400,7 +399,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if(sign == 0)
             {
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx-xVariance)/12, vector.dy/12)];
-            }else{
+            }
+            else
+            {
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx+xVariance)/12, vector.dy/12)];
             }
         }
@@ -450,34 +451,38 @@ float degToRad(float degree)
 	return degree / 180.0f * M_PI;
 }
 
-- (void)addMonster
+- (void)addMonsterOfType:(monsterType)type
 {
-    int monsterPicker = arc4random()%3+1;
-
     Monster* monster;
     
-    if(monsterPicker == 3)
-    {
-        monster = [SnowmanMonster monster];
+    switch (type) {
+        case minion:
+            monster = [SnowmanMonster monster];
+            break;
+        case brute:
+            monster = [YetiMonster monster];
+            break;
+        case soldier:
+            monster = [DragonMonster monster];
+            break;
+        case skirmisher:
+            monster = [Skirmisher monster];
+            break;
+        case elite:
+            monster = [Elite monster];
+            break;
+        case boss:
+            monster = [Boss monster];
+        default:
+            break;
     }
-    else if (monsterPicker == 2)
-    {
-        monster = [YetiMonster monster];
-    }
-    else
-    {
-        
-    monster = [DragonMonster monster];
- 
-    }
-    
     // Determine where to spawn the monster along the Y axis
     // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
-    [self addChild:monster];
+    [self.monsterLayer addChild:monster];
     
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
@@ -513,15 +518,31 @@ float degToRad(float degree)
         }
         case 3:
         {
-            
+            monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @1, @1, @2,
+                                @2, @2, @2, @2, @3, @3, @3, @3, @3, @4,
+                                @4, @4, @4, @4, @4, @4, @4, @4, @5, @5].mutableCopy;
             break;
         }
         case 4:
         {
+            monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @1, @1, @1,
+                                @2, @2, @2, @2, @2, @2, @2, @2, @2, @2,
+                                @4, @4, @4, @4, @4, @4, @4, @4, @4, @4,
+                                @3, @3, @3, @3, @3, @5, @5, @5, @5, @5].mutableCopy;
             break;
         }
         case 5:
         {
+            monstersForWave = @[@2, @2, @2, @2, @2, @2, @2, @2, @2, @2,
+                                @2, @2, @2, @2, @2, @2, @2, @2, @2, @2,
+                                @4, @4, @4, @4, @4, @4, @4, @4, @4, @4,
+                                @3, @3, @3, @3, @3, @3, @3, @3, @3, @3,
+                                @5, @5, @5, @5, @5, @5, @5, @5, @5, @5].mutableCopy;
+            break;
+        }
+        case 6:
+        {
+            monstersForWave = @[@6].mutableCopy;
             break;
         }
             
@@ -532,73 +553,61 @@ float degToRad(float degree)
 
 -(void)spawnMonsters
 {
+    SKAction* addMonster = [SKAction customActionWithDuration:0 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
+        monsterType type = ((NSNumber*)monstersForWave.firstObject).intValue;
+        [self addMonsterOfType:type];
+        [monstersForWave removeObjectAtIndex:0];
+    }];
+    
+    //If we want to add in difficulty levels, the below waitForDuration is a great place to do so. It controls
+    //monster-spawn spacing. Current timing may be too hard to be considered "normal".
+    
+    SKAction* pauseAndAdd = [SKAction sequence:@[[SKAction waitForDuration:2 withRange:1], addMonster]];
+    
+    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count] completion:^{
+        [self runAction:[SKAction waitForDuration:5] completion:^{
+            [self waveComplete];
+        }];
+    }];
+  
+}
+
+-(void)waveComplete
+{
+    if(self.wave <= 5)
+    {
+        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
+        waveComplete.fontSize = 20;
+        waveComplete.fontColor = [SKColor whiteColor];
+        waveComplete.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+        waveComplete.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+        waveComplete.text = [NSString stringWithFormat:@"Wave %d Complete!",self.wave];
+        [self addChild:waveComplete];
+        self.wave++;
+        [self save];
+        [self advanceToWave:self.wave];
+    }
     
 }
 
-
-- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast
+-(void)advanceToWave:(int)waveNumber
 {
-    if (self.view.scene.paused == NO)
-    {
-        self.lastSpawnTimeInterval += timeSinceLast;
+    self.wave = waveNumber;
+    [self initializeMonsterWave:self.wave];
         
-        if (self.lastSpawnTimeInterval > 3)
-        {
-            self.lastSpawnTimeInterval = 0;
-            
-            [self addMonster];
-        }
-    }
+    [self runAction:[SKAction waitForDuration:3] completion:^{
+        waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
+        [self runAction:[SKAction waitForDuration:3] completion:^{
+            [waveComplete removeFromParent];
+            [self spawnMonsters];
+        }];
+    }];
 }
+
 
 - (void)update:(NSTimeInterval)currentTime
 {
-    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
-    {
-        [self.projectile removeFromParent];
-    }
-    
-    if(projectileType == split)
-    {
-        for (Projectile* projectile in self.projectile.children)
-        {
-//            if ([self containsPoint:projectile.position])
-            
-            NSUInteger index = [self.projectile.children indexOfObject:projectile];
-            if (index == 0) {
-                NSLog(@"Projectile %d, %@", index, NSStringFromCGPoint(projectile.position));
-            }
-            
-            CGPoint childPositionInScene = [self convertPoint:projectile.position fromNode:self.projectile];
-            
-            if(childPositionInScene.x > self.size.width || -childPositionInScene.y > self.size.height)
-            {
-                [projectile removeFromParent];
-            }
-        }
-        if(self.projectile.children.count <= 0)
-        {
-            [self.projectile removeFromParent];
-        }
-//    } else {
-//        NSLog(@"Other projectile, %@", index, NSStringFromCGPoint(self.projectile.position));
-    }
-    
-    if(![self.children containsObject:self.projectile])
-    {
-        [self spawnProjectileOfType: projectileType];
-    }
-    
-    // Handle time delta.
-    // If we drop below 60fps, we still want everything to move the same distance.
-    CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
-    self.lastUpdateTimeInterval = currentTime;
-    if (timeSinceLast > 1)
-    { // more than a second since last update
-        timeSinceLast = 1.0 / 60.0;
-        self.lastUpdateTimeInterval = currentTime;
-    }
-    
     switch (_gameState)
     {
         case GameRunning:
@@ -636,10 +645,32 @@ float degToRad(float degree)
             // If the players health has dropped to <= 0 then set the game state to game over
             if (hero.health <= 0) {
                 _gameState = GameOver;
+                break;
             }
-            else
+            
+            if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
             {
-                [self updateWithTimeSinceLastUpdate:timeSinceLast];
+                [self.projectile removeFromParent];
+            }
+            
+            if(projectileType == split)
+            {
+                for (Projectile* projectile in self.projectile.children)
+                {
+                    if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+                    {
+                        [projectile removeFromParent];
+                    }
+                }
+                if(self.projectile.children.count <= 0)
+                {
+                    [self.projectile removeFromParent];
+                }
+            }
+            
+            if(![self.children containsObject:self.projectile])
+            {
+                [self spawnProjectileOfType: projectileType];
             }
             
             break;
@@ -768,6 +799,7 @@ float degToRad(float degree)
     
     self.currency += monster.goldValue;
     self.monstersDestroyed++;
+    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -808,6 +840,36 @@ float degToRad(float degree)
 
 - (void)setupUI
 {
+    
+    _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
+    [_background setName:@"background"];
+    [_background setAnchorPoint:CGPointZero];
+    [self addChild:_background];
+    
+    _hudLayerNode = [SKNode node];
+    [self addChild:_hudLayerNode];
+    
+    
+    self.monsterLayer = [SKNode node];
+    [self addChild:self.monsterLayer];
+    
+  //  NSLog(@"Size: %@", NSStringFromCGSize(self.size));
+    hero = [Hero spawnHero];
+    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+    [self addChild:hero];
+    
+    projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
+    
+    NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
+    SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
+    snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
+    [_background addChild:snowEmitter];
+    
+    self.physicsWorld.gravity = CGVectorMake(0,-5);
+    self.physicsWorld.contactDelegate = self;
+    
+    self.currency = 0;
+
         [[_hudLayerNode childNodeWithName:@"scoreLabel"] removeFromParent];
         [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
         [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
@@ -934,7 +996,7 @@ float degToRad(float degree)
 {
     _score += increment;
     scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
     [scoreLabel removeAllActions];
     [scoreLabel runAction:_scoreFlashAction];
 }
@@ -963,6 +1025,63 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
+
+//- (void)encodeWithCoder:(NSCoder *)aCoder
+//{
+//    //1
+//    [super encodeWithCoder:aCoder];
+//    //2
+//    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
+//    [aCoder encodeObject:hero forKey:@"hero"];
+//    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
+//    [aCoder encodeObject:_background forKey:@"background"];
+//    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
+//    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
+//    
+//    
+//}
+//
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    //1
+//    if (self = [super initWithCoder:aDecoder]) {
+//        //2
+//        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
+//        hero = [aDecoder decodeObjectForKey:@"hero"];
+//        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
+//        _background = [aDecoder decodeObjectForKey:@"background"];
+//        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
+//        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
+//       
+//    }
+//   
+//    return self;
+//    
+//}
+
+
+-(void)save
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@(self.wave) forKey:@"wave"];
+    [userDefaults setObject:@(hero.health) forKey:@"health"];
+    [userDefaults setObject:self.upgrades forKey:@"upgrades"];
+    [userDefaults setObject:@(self.currency) forKey:@"currency"];
+    [userDefaults setObject:@(_score) forKey:@"score"];
+    [userDefaults synchronize];
+}
+
+-(void)load
+{
+   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    self.wave = ((NSNumber*)[userDefaults objectForKey:@"wave"]).intValue;
+    hero.health = ((NSNumber*)[userDefaults objectForKey:@"health"]).floatValue;
+    self.upgrades = [userDefaults objectForKey:@"upgrades"];
+    self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
+    _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
+    [self advanceToWave:self.wave];
+}
+
 
 
 @end
