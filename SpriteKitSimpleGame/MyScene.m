@@ -67,6 +67,7 @@ typedef enum {
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
     SKSpriteNode* pauseButton;
+    SKLabelNode* waveComplete;
     ProjectileType projectileType;
     
     int _score;
@@ -78,11 +79,12 @@ typedef enum {
     
 }
 
-@property (nonatomic) SKSpriteNode * player;
 @property (nonatomic) int monstersDestroyed;
 @property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
 @property (nonatomic) int wave;
+@property (nonatomic) SKNode* monsterLayer;
+@property (nonatomic) NSDictionary* upgrades;
 
 @end
 
@@ -119,39 +121,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if (self = [super initWithSize:size])
     {
-        _score = 0;
-        
-        // Loading the background
-        _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
-        [_background setName:@"background"];
-        [_background setAnchorPoint:CGPointZero];
-        [self addChild:_background];
-        
-        _hudLayerNode = [SKNode node];
-        [self addChild:_hudLayerNode];
-        
-        self.wave = 1;
-        [self initializeMonsterWave:self.wave];
-        
-        NSLog(@"Size: %@", NSStringFromCGSize(size));
-        hero = [Hero spawnHero];
-        hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-        [self addChild:hero];
-        
-        projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
-        
-        NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
-        SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
-        snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
-        [_background addChild:snowEmitter];
-        
-        self.physicsWorld.gravity = CGVectorMake(0,-5);
-        self.physicsWorld.contactDelegate = self;
-       
-        self.currency = 0;
         
         [self setupUI];
-        [self spawnMonsters];
     }
     return self;
 }
@@ -186,6 +157,16 @@ static inline CGPoint rwNormalize(CGPoint a) {
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
+    
+    if(_continued)
+    {
+        [self load];
+    }else
+    {
+        _score = 0;
+        _currency = 0;
+        [self advanceToWave:1];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -367,7 +348,7 @@ float degToRad(float degree)
     
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
     
-    [self addChild:monster];
+    [self.monsterLayer addChild:monster];
     
     // Create the actions
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
@@ -444,16 +425,24 @@ float degToRad(float degree)
         [monstersForWave removeObjectAtIndex:0];
     }];
     
+    //If we want to add in difficulty levels, the below waitForDuration is a great place to do so. It controls
+    //monster-spawn spacing. Current timing may be too hard to be considered "normal".
+    
     SKAction* pauseAndAdd = [SKAction sequence:@[[SKAction waitForDuration:2 withRange:1], addMonster]];
     
-    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count]];
+    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count] completion:^{
+        [self runAction:[SKAction waitForDuration:5] completion:^{
+            [self waveComplete];
+        }];
+    }];
+  
 }
 
--(void)advanceToNextWave
+-(void)waveComplete
 {
     if(self.wave <= 5)
     {
-        SKLabelNode* waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
         waveComplete.fontSize = 20;
         waveComplete.fontColor = [SKColor whiteColor];
@@ -461,18 +450,26 @@ float degToRad(float degree)
         waveComplete.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         waveComplete.text = [NSString stringWithFormat:@"Wave %d Complete!",self.wave];
         [self addChild:waveComplete];
-        
         self.wave++;
-        [self initializeMonsterWave:self.wave];
-        
-        [self runAction:[SKAction waitForDuration:3] completion:^{
-            waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
-            [self runAction:[SKAction waitForDuration:3] completion:^{
-                [self spawnMonsters];
-            }];
-        }];
+        [self save];
+        [self advanceToWave:self.wave];
     }
+    
+}
+
+-(void)advanceToWave:(int)waveNumber
+{
+    self.wave = waveNumber;
+    
+    [self initializeMonsterWave:self.wave];
         
+    [self runAction:[SKAction waitForDuration:3] completion:^{
+        waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
+        [self runAction:[SKAction waitForDuration:3] completion:^{
+            [waveComplete removeFromParent];
+            [self spawnMonsters];
+        }];
+    }];
 }
 
 
@@ -514,11 +511,6 @@ float degToRad(float degree)
             if(![self.children containsObject:self.projectile])
             {
                 [self spawnProjectileOfType: projectileType];
-            }
-            
-            if(monstersForWave.count == 0)
-            {
-                [self advanceToNextWave];
             }
             
             break;
@@ -647,6 +639,7 @@ float degToRad(float degree)
     
     self.currency += monster.goldValue;
     self.monstersDestroyed++;
+    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -687,6 +680,36 @@ float degToRad(float degree)
 
 - (void)setupUI
 {
+    
+    _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
+    [_background setName:@"background"];
+    [_background setAnchorPoint:CGPointZero];
+    [self addChild:_background];
+    
+    _hudLayerNode = [SKNode node];
+    [self addChild:_hudLayerNode];
+    
+    
+    self.monsterLayer = [SKNode node];
+    [self addChild:self.monsterLayer];
+    
+  //  NSLog(@"Size: %@", NSStringFromCGSize(self.size));
+    hero = [Hero spawnHero];
+    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+    [self addChild:hero];
+    
+    projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
+    
+    NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
+    SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
+    snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
+    [_background addChild:snowEmitter];
+    
+    self.physicsWorld.gravity = CGVectorMake(0,-5);
+    self.physicsWorld.contactDelegate = self;
+    
+    self.currency = 0;
+
         [[_hudLayerNode childNodeWithName:@"scoreLabel"] removeFromParent];
         [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
         [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
@@ -832,82 +855,62 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    //1
-    [super encodeWithCoder:aCoder];
-    //2
-    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
-    [aCoder encodeObject:hero forKey:@"hero"];
-    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
-    [aCoder encodeObject:_background forKey:@"background"];
-    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
-    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
-    
-    
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    //1
-    if (self = [super initWithCoder:aDecoder]) {
-        //2
-        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
-        hero = [aDecoder decodeObjectForKey:@"hero"];
-        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
-        _background = [aDecoder decodeObjectForKey:@"background"];
-        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
-        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
-       
-    }
-//
-//    switch (_gameState)
-//    {
-//        case PCGameStateInReloadMenu:
-//        
-//        case PCGameStatePlaying:
-//        {
-//            _gameState = PCGameStateInReloadMenu;
-//            
-//            [self showReloadMenu];
-//            break;
-//        }
-//        default:
-//        break;
-//    }
-//    
-    return self;
-    
-}
-//
-//
-//
-//- (void)showReloadMenu
+//- (void)encodeWithCoder:(NSCoder *)aCoder
 //{
-//    SKLabelNode* label = (SKLabelNode*)[self childNodeWithName:@"msgLabel"];
-//    label.text = @"Found a Save File";
-//    label.hidden = NO;
-//    SKLabelNode* continueLabel = (SKLabelNode*) [self childNodeWithName:@"continueLabel"];
-//    if (!continueLabel)
-//    {
-//        continueLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
-//        continueLabel.text = @"Continue?";
-//        continueLabel.name = @"continueLabel";
-//        continueLabel.fontSize = 28;
-//        continueLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
-//        continueLabel.position = CGPointMake(0-20, -40);
-//        [self addChild:continueLabel];
-//      
-//        SKLabelNode* restartLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
-//        restartLabel.text = @"Restart Level?";
-//        restartLabel.name = @"restartLabel";
-//        restartLabel.fontSize = 28;
-//        restartLabel.horizontalAlignmentMode =
-//        SKLabelHorizontalAlignmentModeLeft;
-//        restartLabel.position = CGPointMake(0+20, -40);
-//        [self addChild:restartLabel];
-//    }
+//    //1
+//    [super encodeWithCoder:aCoder];
+//    //2
+//    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
+//    [aCoder encodeObject:hero forKey:@"hero"];
+//    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
+//    [aCoder encodeObject:_background forKey:@"background"];
+//    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
+//    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
+//    
+//    
 //}
 //
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    //1
+//    if (self = [super initWithCoder:aDecoder]) {
+//        //2
+//        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
+//        hero = [aDecoder decodeObjectForKey:@"hero"];
+//        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
+//        _background = [aDecoder decodeObjectForKey:@"background"];
+//        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
+//        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
+//       
+//    }
+//   
+//    return self;
+//    
+//}
+
+
+-(void)save
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@(self.wave) forKey:@"wave"];
+    [userDefaults setObject:@(hero.health) forKey:@"health"];
+    [userDefaults setObject:self.upgrades forKey:@"upgrades"];
+    [userDefaults setObject:@(self.currency) forKey:@"currency"];
+    [userDefaults setObject:@(_score) forKey:@"score"];
+    [userDefaults synchronize];
+}
+
+-(void)load
+{
+   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    self.wave = ((NSNumber*)[userDefaults objectForKey:@"wave"]).intValue;
+    hero.health = ((NSNumber*)[userDefaults objectForKey:@"health"]).floatValue;
+    self.upgrades = [userDefaults objectForKey:@"upgrades"];
+    self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
+    _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
+    [self advanceToWave:self.wave];
+}
+
+
 
 @end

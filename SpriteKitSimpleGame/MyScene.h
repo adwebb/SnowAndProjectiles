@@ -17,8 +17,12 @@ typedef enum : int {
 
 @interface MyScene : SKScene <NSCoding>
 
+-(void)save;
+-(void)load;
+
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;
 @property (nonatomic) BOOL muted;
+@property (nonatomic) BOOL continued;
 
 @end

@@ -40,6 +40,9 @@
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onContinueButtonPressed:" destination="LVB-YS-i5n" eventType="touchUpInside" id="5zc-1I-2mX"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5W-Pz-SsF">
                                 <rect key="frame" x="203" y="145" width="162" height="22"/>

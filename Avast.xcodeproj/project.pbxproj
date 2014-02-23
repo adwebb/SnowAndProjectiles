@@ -56,6 +56,7 @@
 		C225474418B7E25000A0AFC2 /* crab.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474318B7E25000A0AFC2 /* crab.png */; };
 		C225474718B7E25E00A0AFC2 /* fish.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474518B7E25E00A0AFC2 /* fish.png */; };
 		C225474818B7E25E00A0AFC2 /* kraken.png in Resources */ = {isa = PBXBuildFile; fileRef = C225474618B7E25E00A0AFC2 /* kraken.png */; };
+		C225474A18B92D0C00A0AFC2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C225474918B92D0C00A0AFC2 /* GameKit.framework */; };
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C23BC0FF18B3B8F300556B3D /* coin.png in Resources */ = {isa = PBXBuildFile; fileRef = C23BC0FE18B3B8F300556B3D /* coin.png */; };
 		C2573AE818A992D1009790A1 /* snowball.png in Resources */ = {isa = PBXBuildFile; fileRef = C2573AE718A992D1009790A1 /* snowball.png */; };
@@ -140,7 +141,6 @@
 		5ABA1A8F18B68B0A002CC95A /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		5ABA1A9118B68B3D002CC95A /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		5ABA1A9318B6993E002CC95A /* FireDeath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireDeath.sks; sourceTree = "<group>"; };
-		5ABA1A9518B69F67002CC95A /* fireExplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = fireExplosion.wav; path = "/Users/fletcher/Desktop/Final Project/SnowAndProjectiles/fireExplosion.wav"; sourceTree = "<absolute>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
 		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
@@ -164,6 +164,7 @@
 		C225474318B7E25000A0AFC2 /* crab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crab.png; sourceTree = "<group>"; };
 		C225474518B7E25E00A0AFC2 /* fish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fish.png; sourceTree = "<group>"; };
 		C225474618B7E25E00A0AFC2 /* kraken.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kraken.png; sourceTree = "<group>"; };
+		C225474918B92D0C00A0AFC2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C23BC0FE18B3B8F300556B3D /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
 		C2573AE718A992D1009790A1 /* snowball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowball.png; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C225474A18B92D0C00A0AFC2 /* GameKit.framework in Frameworks */,
 				35F3DEEE17D8011E009EFFF2 /* CoreGraphics.framework in Frameworks */,
 				35F3DEF017D8011E009EFFF2 /* UIKit.framework in Frameworks */,
 				35F3DEF217D8011E009EFFF2 /* SpriteKit.framework in Frameworks */,
@@ -243,6 +245,7 @@
 		35F3DEEA17D8011E009EFFF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C225474918B92D0C00A0AFC2 /* GameKit.framework */,
 				35F3DEEB17D8011E009EFFF2 /* Foundation.framework */,
 				35F3DEED17D8011E009EFFF2 /* CoreGraphics.framework */,
 				35F3DEEF17D8011E009EFFF2 /* UIKit.framework */,
@@ -349,7 +352,6 @@
 				C294709D18B683BE00037F86 /* bg.mp3 */,
 				C294709F18B683CB00037F86 /* intro.mp3 */,
 				5AB1C56E18B7F03E0010F703 /* iceHit.wav */,
-				5ABA1A9518B69F67002CC95A /* fireExplosion.wav */,
 				5AAC65B418B7F646007FC4C2 /* fireExplosion.wav */,
 				C2573AEB18AA84DE009790A1 /* plop.mp3 */,
 			);

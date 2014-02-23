@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "MyScene.h"
 #import <QuartzCore/QuartzCore.h>
+#import <GameKit/GameKit.h>
 
 @import AVFoundation;
 
@@ -79,13 +80,13 @@
     }
 }
 
-- (IBAction)onNewGameButtonPressed:(id)sender {
-   
+-(void)beginGame:(BOOL)continued
+{
     [self.backgroundMusicPlayer stop];
     self.backgroundMusicPlayer.currentTime = 0;
     
     if(!muted)
-    [self.gameMusicPlayer play];
+        [self.gameMusicPlayer play];
     
     [self showIntroScreen:NO];
     
@@ -100,11 +101,28 @@
         scene.scaleMode = SKSceneScaleModeAspectFill;
         
         scene.muted = muted;
-        
+        scene.continued = continued;
         self.myScene = scene;
+        
         
         // Present the scene.
         [skView presentScene:scene];
+    }
+
+}
+
+- (IBAction)onNewGameButtonPressed:(id)sender
+{
+    [self beginGame:NO];
+}
+
+
+- (IBAction)onContinueButtonPressed:(id)sender
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"wave"])
+    {
+        [self beginGame:YES];
     }
 }
 
