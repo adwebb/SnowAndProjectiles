@@ -15,8 +15,7 @@
     IceProjectile* iceProjectile = [IceProjectile spriteNodeWithImageNamed:@"snowball"];
     iceProjectile.color = [SKColor colorWithRed:0 green:144/255.0 blue:1 alpha:1];
     iceProjectile.colorBlendFactor = .5;
-    iceProjectile.potency = rank;
-    iceProjectile.damage = rank;
+    iceProjectile.damage = 1 + rank/3;
     iceProjectile = (IceProjectile*)[super setProjectileProperties:iceProjectile];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"iceball" ofType:@"sks"];
@@ -24,7 +23,6 @@
     iceEmitter.targetNode = scene;
     [iceProjectile addChild:iceEmitter];
 
-    
     return iceProjectile;
 }
 
