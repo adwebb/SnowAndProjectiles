@@ -76,7 +76,6 @@ typedef enum {
     
     NSMutableArray* monstersForWave;
     
-    
 }
 
 @property (nonatomic) int monstersDestroyed;
@@ -354,7 +353,7 @@ float degToRad(float degree)
     SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
     SKAction * actionMoveDone = [SKAction removeFromParent];
     
-    [monster runAction:[SKAction sequence:@[actionMove/*, loseAction*/, actionMoveDone]]withKey:@"path"];
+    [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]withKey:@"path"];
 }
 
 -(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
@@ -420,9 +419,10 @@ float degToRad(float degree)
 -(void)spawnMonsters
 {
     SKAction* addMonster = [SKAction customActionWithDuration:0 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
-        monsterType type = ((NSNumber*)monstersForWave.firstObject).intValue;
+        int randomMonsterFromArray = arc4random()%monstersForWave.count;
+        monsterType type = ((NSNumber*)monstersForWave[randomMonsterFromArray]).intValue;
         [self addMonsterOfType:type];
-        [monstersForWave removeObjectAtIndex:0];
+        [monstersForWave removeObjectAtIndex:randomMonsterFromArray];
     }];
     
     //If we want to add in difficulty levels, the below waitForDuration is a great place to do so. It controls
@@ -462,14 +462,20 @@ float degToRad(float degree)
     self.wave = waveNumber;
     
     [self initializeMonsterWave:self.wave];
-        
+    
+    
     [self runAction:[SKAction waitForDuration:3] completion:^{
+      if (GameRunning){
+
         waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
+        }
         [self runAction:[SKAction waitForDuration:3] completion:^{
             [waveComplete removeFromParent];
             [self spawnMonsters];
         }];
     }];
+    
+
 }
 
 
@@ -520,6 +526,7 @@ float degToRad(float degree)
             if (!_gameOverLabel.parent)
             {
                 [hero removeFromParent];
+                
                 
                 [_hudLayerNode addChild:_gameOverLabel];
                 [_hudLayerNode addChild:_tapScreenLabel];
@@ -588,6 +595,8 @@ float degToRad(float degree)
     [projectile removeFromParent];
     
     self.monstersDestroyed++;
+    
+
 }
 
 -(void)killedMonster:(Monster*)monster
@@ -804,7 +813,6 @@ float degToRad(float degree)
         
         _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
     
-   
         SKSpriteNode* splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
         splitProjectileButton.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
         splitProjectileButton.name = @"SplitButton";
@@ -834,7 +842,7 @@ float degToRad(float degree)
 {
     // Reset the state of the game
     _gameState = GameRunning;
-    
+
     // Set up the entities again and the score
     [self setupUI];
     [self increaseScoreBy:-_score];
@@ -848,6 +856,8 @@ float degToRad(float degree)
     hero = [Hero spawnHero];
     hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
     [self addChild:hero];
+    
+    
 
     // Remove the game over HUD labels
     [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
