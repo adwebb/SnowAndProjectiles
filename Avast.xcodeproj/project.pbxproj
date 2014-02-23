@@ -36,6 +36,7 @@
 		5A5D159218AD58BA00649720 /* YetiMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D159118AD58BA00649720 /* YetiMonster.m */; };
 		5A5D159418AD60C100649720 /* yeti.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D159318AD60C100649720 /* yeti.png */; };
 		5AAC65B518B7F646007FC4C2 /* fireExplosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AAC65B418B7F646007FC4C2 /* fireExplosion.wav */; };
+		5AAC65B718B7FD94007FC4C2 /* upgradeArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AAC65B618B7FD94007FC4C2 /* upgradeArrow.png */; };
 		5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AB1C56E18B7F03E0010F703 /* iceHit.wav */; };
 		5ABA1A9018B68B0A002CC95A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A8F18B68B0A002CC95A /* play.png */; };
 		5ABA1A9218B68B3D002CC95A /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9118B68B3D002CC95A /* pause.png */; };
@@ -135,6 +136,7 @@
 		5A5D159118AD58BA00649720 /* YetiMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YetiMonster.m; sourceTree = "<group>"; };
 		5A5D159318AD60C100649720 /* yeti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yeti.png; path = ../yeti.png; sourceTree = "<group>"; };
 		5AAC65B418B7F646007FC4C2 /* fireExplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fireExplosion.wav; sourceTree = "<group>"; };
+		5AAC65B618B7FD94007FC4C2 /* upgradeArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upgradeArrow.png; sourceTree = "<group>"; };
 		5AB1C56E18B7F03E0010F703 /* iceHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = iceHit.wav; sourceTree = "<group>"; };
 		5ABA1A8F18B68B0A002CC95A /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		5ABA1A9118B68B3D002CC95A /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5AAC65B618B7FD94007FC4C2 /* upgradeArrow.png */,
 				C225474518B7E25E00A0AFC2 /* fish.png */,
 				C225474618B7E25E00A0AFC2 /* kraken.png */,
 				C225474318B7E25000A0AFC2 /* crab.png */,
@@ -501,6 +504,7 @@
 				35F3DF2D17D80158009EFFF2 /* sprites.atlas in Resources */,
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
+				5AAC65B718B7FD94007FC4C2 /* upgradeArrow.png in Resources */,
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
 				C225474818B7E25E00A0AFC2 /* kraken.png in Resources */,
 				C29470A218B693D400037F86 /* icon@2x.png in Resources */,

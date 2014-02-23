@@ -12,6 +12,7 @@ static NSString * const movableNodeName = @"movable";
 
 @interface Projectile : SKSpriteNode
 @property float damage;
+@property int rank;
 
 + (Projectile*)setProjectileProperties:(Projectile*)projectile;
 

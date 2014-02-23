@@ -46,6 +46,8 @@ typedef enum {
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
     SKSpriteNode* pauseButton;
+    SKSpriteNode* upgradeArrow;
+    
     ProjectileType projectileType;
     
     CGFloat _score;
@@ -54,7 +56,7 @@ typedef enum {
     
     NSMutableArray* monstersForWave;
     
-    
+    BOOL upgradeMode;
 }
 
 @property (nonatomic) SKSpriteNode * player;
@@ -64,6 +66,7 @@ typedef enum {
 @property (nonatomic) Projectile* projectile;
 @property (nonatomic) int currency;
 @property (nonatomic) int wave;
+@property (nonatomic) NSMutableDictionary* upgrades;
 
 @end
 
@@ -131,6 +134,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.currency = 0;
         
         [self setupUI];
+        [self upgrades];
     }
     return self;
 }
@@ -144,19 +148,21 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
         case fire:
         {
-            self.projectile = [FireProjectile fireProjectileOfRank:1 inScene:self];
+            self.projectile = [FireProjectile fireProjectileOfRank:[[_upgrades objectForKey:@"fire"]integerValue] inScene:self];
             break;
         }
         case ice:
-            self.projectile = [IceProjectile iceProjectileOfRank:1 inScene:self];
+            self.projectile = [IceProjectile iceProjectileOfRank:[[_upgrades objectForKey:@"ice"]integerValue] inScene:self];
             break;
         case split:
-            self.projectile = [SplitProjectile splitProjectileOfRank:3];
+            self.projectile = [SplitProjectile splitProjectileOfRank:[[_upgrades objectForKey:@"split"]integerValue] + 1];
             break;
         default:
             break;
     }
     self.projectile.position = projectileSpawnPoint;
+
+    
     [self addChild:self.projectile];
 }
 
@@ -173,27 +179,51 @@ static inline CGPoint rwNormalize(CGPoint a) {
     CGPoint location = [touch locationInNode:self];
     SKNode* node = [self nodeAtPoint:location];
     
-if (_gameState == GameOver)
-    [self restartGame];
+    if (_gameState == GameOver)
+    {
+        [self restartGame];
+    }
     
     if([node.name hasSuffix:@"Button"])
     {
-    if ([node.name isEqualToString:@"IceButton"])
-    {
-        projectileType = ice;
-    }else if ([node.name isEqualToString:@"FireButton"])
-    {
-        projectileType = fire;
-    }else if ([node.name isEqualToString:@"SplitButton"])
-    {
-        projectileType = split;
+        if ([node.name isEqualToString:@"IceButton"])
+        {
+            if (upgradeMode == YES)
+            {
+                [self upgradeProjectile:ice];
+            }
+            if ([[_upgrades objectForKey:@"ice"] integerValue] > 0)
+            {
+                projectileType = ice;
+            }
+        }
+        else if (([node.name isEqualToString:@"FireButton"] && [[_upgrades objectForKey:@"fire"] integerValue] > 0) || upgradeMode == YES)
+        {
+            if (upgradeMode == YES)
+            {
+                [self upgradeProjectile:fire];
+            }
+            if ([[_upgrades objectForKey:@"fire"] integerValue] > 0)
+            {
+                projectileType = fire;
+            }
+        }
+        else if (([node.name isEqualToString:@"SplitButton"] && [[_upgrades objectForKey:@"split"] integerValue] > 0) || upgradeMode == YES)
+        {
+            if (upgradeMode == YES)
+            {
+                [self upgradeProjectile:split];
+            }
+            if ([[_upgrades objectForKey:@"split"] integerValue] > 0)
+            {
+                projectileType = split;
+            }
+        }
     }
-        [self spawnProjectileOfType: projectileType];
-    }
-   
+    [self spawnProjectileOfType: projectileType];
     
-    if ([node.name isEqualToString:@"PauseButton"]) {
-        
+    if ([node.name isEqualToString:@"PauseButton"])
+    {
         if (self.view.scene.paused == NO)
         {
             self.view.scene.paused = YES;
@@ -205,8 +235,113 @@ if (_gameState == GameOver)
             [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
         }
     }
+    if ([node.name isEqualToString:@"upgradeArrow"])
+    {
+        upgradeMode = YES;
+        
+//        if ([node.name isEqualToString:@"IceButton"] && upgradeMode == YES)
+//        {
+//            if ([node.name isEqualToString:@"FireButton"])
+//            {
+//                NSInteger currentLevel = [[_upgrades objectForKey:@"fire"] integerValue];
+//                currentLevel += 1;
+//                
+//                if (currentLevel == 1)
+//                {
+//                    self.currency -= 50;
+//                }
+//                else if (currentLevel == 2)
+//                {
+//                    self.currency -= 100;
+//                }
+//                else if (currentLevel == 3)
+//                {
+//                    self.currency -= 250;
+//                }
+//                
+//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"fire"];
+//                
+//                upgradeArrow.hidden = YES;
+//            }
+//            else if ([node.name isEqualToString:@"SplitButton"])
+//            {
+//                NSInteger currentLevel = [[_upgrades objectForKey:@"split"] integerValue];
+//                currentLevel += 1;
+//                
+//                if (currentLevel == 1)
+//                {
+//                    self.currency -= 50;
+//                }
+//                else if (currentLevel == 2)
+//                {
+//                    self.currency -= 100;
+//                }
+//                else if (currentLevel == 3)
+//                {
+//                    self.currency -= 250;
+//                }
+//                
+//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"split"];
+//                
+//                upgradeArrow.hidden = YES;
+//                
+//            }
+//            [self spawnProjectileOfType: projectileType];
+//        }
+    }
 }
 
+-(void)upgradeProjectile:(ProjectileType)type
+{
+    NSString* typeString;
+    
+    switch (type)
+    {
+        case fire:
+            typeString = @"fire";
+            break;
+        case ice:
+            typeString = @"ice";
+            break;
+        case split:
+            typeString = @"split";
+        default:
+            break;
+    }
+    
+    NSInteger currentLevel = [[_upgrades objectForKey:typeString] integerValue];
+    currentLevel += 1;
+    
+    if (currentLevel == 1)
+    {
+        self.currency -= 50;
+    }
+    else if (currentLevel == 2)
+    {
+        self.currency -= 100;
+    }
+    else if (currentLevel == 3)
+    {
+        self.currency -= 250;
+    }
+    
+    [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:typeString];
+    
+    upgradeMode = NO;
+    upgradeArrow.hidden = YES;
+    NSLog(@"%@ level %@",typeString, [_upgrades objectForKey:typeString]);
+}
+
+- (NSMutableDictionary*)upgrades
+{
+    if (!_upgrades)
+    {
+        _upgrades = [NSMutableDictionary new];
+    }
+    _upgrades = [@{@"fire": @0, @"ice": @0, @"split": @0} mutableCopy];
+    
+    return _upgrades;
+}
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
@@ -427,7 +562,16 @@ float degToRad(float degree)
     {
         for (Projectile* projectile in self.projectile.children)
         {
-            if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+//            if ([self containsPoint:projectile.position])
+            
+            NSUInteger index = [self.projectile.children indexOfObject:projectile];
+            if (index == 0) {
+                NSLog(@"Projectile %d, %@", index, NSStringFromCGPoint(projectile.position));
+            }
+            
+            CGPoint childPositionInScene = [self convertPoint:projectile.position fromNode:self.projectile];
+            
+            if(childPositionInScene.x > self.size.width || -childPositionInScene.y > self.size.height)
             {
                 [projectile removeFromParent];
             }
@@ -436,6 +580,8 @@ float degToRad(float degree)
         {
             [self.projectile removeFromParent];
         }
+//    } else {
+//        NSLog(@"Other projectile, %@", index, NSStringFromCGPoint(self.projectile.position));
     }
     
     if(![self.children containsObject:self.projectile])
@@ -456,10 +602,37 @@ float degToRad(float degree)
     switch (_gameState)
     {
         case GameRunning:
-      
+            
             // Update the healthbar color and length based on the...urm...players health :)
             _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
             currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+            
+            for (NSArray* value in [_upgrades allValues])
+            {
+                NSArray* value = [_upgrades allValues];
+
+                if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
+                {
+                    upgradeArrow.hidden = NO;
+                }
+                else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
+                {
+                    upgradeArrow.hidden = NO;
+                }
+                else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
+                {
+                    upgradeArrow.hidden = NO;
+                }
+                else
+                {
+                    upgradeArrow.hidden = YES;
+                }
+            }
+    
+//            if (([_upgrades allValues]) && self.currency >= 50)
+//            {
+//                upgradeArrow.hidden = NO;
+//            }
             // If the players health has dropped to <= 0 then set the game state to game over
             if (hero.health <= 0) {
                 _gameState = GameOver;
@@ -539,7 +712,7 @@ float degToRad(float degree)
     }
     else if (projectileType == ice)
     {
-        [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/4 duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
+        [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/([[_upgrades objectForKey:@"ice"]integerValue] +2) duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
     [projectile removeFromParent];
     
@@ -733,17 +906,28 @@ float degToRad(float degree)
         SKSpriteNode* splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
         splitProjectileButton.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
         splitProjectileButton.name = @"SplitButton";
+        splitProjectileButton.hidden = NO;
         [_hudLayerNode addChild:splitProjectileButton];
         
         SKSpriteNode* freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
         freezeProjectileButton.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
         freezeProjectileButton.name = @"IceButton";
+        freezeProjectileButton.hidden = NO;
+
         [_hudLayerNode addChild:freezeProjectileButton];
         
         SKSpriteNode* fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
         fireProjectileButton.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
         fireProjectileButton.name = @"FireButton";
+        fireProjectileButton.hidden = NO;
+
         [_hudLayerNode addChild:fireProjectileButton];
+    
+    upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
+    upgradeArrow.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/7);
+    upgradeArrow.hidden = YES;
+    upgradeArrow.name = @"upgradeArrow";
+    [_hudLayerNode addChild:upgradeArrow];
 }
 
 - (void)increaseScoreBy:(float)increment
