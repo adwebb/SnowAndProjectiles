@@ -42,6 +42,7 @@
 		5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9318B6993E002CC95A /* FireDeath.sks */; };
 		5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */; };
 		AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */ = {isa = PBXBuildFile; fileRef = AA1418C518B56A07006D64AB /* fireBreath.sks */; };
+		AA14191618B80955006D64AB /* Screen Shot 2014-02-21 at 3.32.09 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = AA14191518B80955006D64AB /* Screen Shot 2014-02-21 at 3.32.09 PM.png */; };
 		AAEF99E118B4071B00A44E7F /* DragonMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* DragonMonster.m */; };
 		AAEF99E418B4094300A44E7F /* cuteDragonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */; };
 		AAEF99E518B4094300A44E7F /* cuteDragon.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF99E318B4094300A44E7F /* cuteDragon.png */; };
@@ -143,6 +144,7 @@
 		5AFFF16E18B29C9A00F7BFF5 /* SnowballProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnowballProjectile.h; path = ../SnowballProjectile.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* SnowballProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SnowballProjectile.m; path = ../SnowballProjectile.m; sourceTree = "<group>"; };
 		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
+		AA14191518B80955006D64AB /* Screen Shot 2014-02-21 at 3.32.09 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screen Shot 2014-02-21 at 3.32.09 PM.png"; sourceTree = "<group>"; };
 		AAEF99DF18B4071B00A44E7F /* DragonMonster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragonMonster.h; sourceTree = "<group>"; };
 		AAEF99E018B4071B00A44E7F /* DragonMonster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragonMonster.m; sourceTree = "<group>"; };
 		AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuteDragonSmall.png; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 		35F3DEDF17D8011E009EFFF2 = {
 			isa = PBXGroup;
 			children = (
+				AA14191518B80955006D64AB /* Screen Shot 2014-02-21 at 3.32.09 PM.png */,
 				35F3DEF317D8011E009EFFF2 /* Avast */,
 				35F3DF1717D8011E009EFFF2 /* AvastTests */,
 				35F3DEEA17D8011E009EFFF2 /* Frameworks */,
@@ -525,6 +528,7 @@
 				C225473518B6C6DD00A0AFC2 /* settings.png in Resources */,
 				C2FB16C918B3EF4C002C9513 /* stack.png in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
+				AA14191618B80955006D64AB /* Screen Shot 2014-02-21 at 3.32.09 PM.png in Resources */,
 				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,10 +11,11 @@
 typedef enum : int {
     GameRunning      = 0,
     GameOver         = 1,
+    GameSave         = 2,
 } GameState;
 
 
-@interface MyScene : SKScene
+@interface MyScene : SKScene <NSCoding>
 
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;

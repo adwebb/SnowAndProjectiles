@@ -27,6 +27,14 @@ static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
+typedef NS_ENUM(int32_t, PCGameState)
+{
+    PCGameStateStartingLevel,
+    PCGameStatePlaying,
+    PCGameStateInLevelMenu,
+    PCGameStateInReloadMenu,
+};
+
 typedef enum {
     untyped,
     split,
@@ -61,7 +69,7 @@ typedef enum {
     SKSpriteNode* pauseButton;
     ProjectileType projectileType;
     
-    CGFloat _score;
+    int _score;
     SKLabelNode *scoreLabel;
     int _gameState;
     
@@ -139,9 +147,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         
         self.physicsWorld.gravity = CGVectorMake(0,-5);
         self.physicsWorld.contactDelegate = self;
+       
         self.currency = 0;
-        
-    
         
         [self setupUI];
         [self spawnMonsters];
@@ -221,7 +228,6 @@ if (_gameState == GameOver)
     }
 }
 
-
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer
 {
 	if(self.projectile.physicsBody.affectedByGravity == NO)
@@ -254,7 +260,6 @@ if (_gameState == GameOver)
                 CGVector launcher = CGVectorMake(multiplied.x, multiplied.y);
                 
                 [self launchProjectileWithImpulse:launcher];
-                
             }
         }
     }
@@ -279,7 +284,9 @@ if (_gameState == GameOver)
             if(sign == 0)
             {
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx-xVariance)/12, vector.dy/12)];
-            }else{
+            }
+            else
+            {
                 [projectile.physicsBody applyImpulse:CGVectorMake((vector.dx+xVariance)/12, vector.dy/12)];
             }
         }
@@ -795,7 +802,7 @@ float degToRad(float degree)
 {
     _score += increment;
     scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0f", _score];
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
     [scoreLabel removeAllActions];
     [scoreLabel runAction:_scoreFlashAction];
 }
@@ -825,5 +832,82 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    //1
+    [super encodeWithCoder:aCoder];
+    //2
+    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
+    [aCoder encodeObject:hero forKey:@"hero"];
+    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
+    [aCoder encodeObject:_background forKey:@"background"];
+    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
+    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
+    
+    
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    //1
+    if (self = [super initWithCoder:aDecoder]) {
+        //2
+        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
+        hero = [aDecoder decodeObjectForKey:@"hero"];
+        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
+        _background = [aDecoder decodeObjectForKey:@"background"];
+        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
+        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
+       
+    }
+//
+//    switch (_gameState)
+//    {
+//        case PCGameStateInReloadMenu:
+//        
+//        case PCGameStatePlaying:
+//        {
+//            _gameState = PCGameStateInReloadMenu;
+//            
+//            [self showReloadMenu];
+//            break;
+//        }
+//        default:
+//        break;
+//    }
+//    
+    return self;
+    
+}
+//
+//
+//
+//- (void)showReloadMenu
+//{
+//    SKLabelNode* label = (SKLabelNode*)[self childNodeWithName:@"msgLabel"];
+//    label.text = @"Found a Save File";
+//    label.hidden = NO;
+//    SKLabelNode* continueLabel = (SKLabelNode*) [self childNodeWithName:@"continueLabel"];
+//    if (!continueLabel)
+//    {
+//        continueLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+//        continueLabel.text = @"Continue?";
+//        continueLabel.name = @"continueLabel";
+//        continueLabel.fontSize = 28;
+//        continueLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+//        continueLabel.position = CGPointMake(0-20, -40);
+//        [self addChild:continueLabel];
+//      
+//        SKLabelNode* restartLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+//        restartLabel.text = @"Restart Level?";
+//        restartLabel.name = @"restartLabel";
+//        restartLabel.fontSize = 28;
+//        restartLabel.horizontalAlignmentMode =
+//        SKLabelHorizontalAlignmentModeLeft;
+//        restartLabel.position = CGPointMake(0+20, -40);
+//        [self addChild:restartLabel];
+//    }
+//}
+//
 
 @end
