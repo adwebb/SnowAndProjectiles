@@ -181,6 +181,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     if (_gameState == GameOver)
     {
+        
         [self restartGame];
     }
     
@@ -565,11 +566,10 @@ float degToRad(float degree)
     
     SKAction* pauseAndAdd = [SKAction sequence:@[[SKAction waitForDuration:2 withRange:1], addMonster]];
     
-    [self runAction:[SKAction repeatAction:pauseAndAdd count:monstersForWave.count] completion:^{
-        [self runAction:[SKAction waitForDuration:5] completion:^{
-            [self waveComplete];
-        }];
-    }];
+        SKAction *sq = [SKAction sequence:@[[SKAction repeatAction:pauseAndAdd count:monstersForWave.count],[SKAction waitForDuration:5], [SKAction performSelector:@selector(waveComplete) onTarget:self]]];
+    
+    [self.monsterLayer runAction:sq];
+    
   
 }
 
@@ -609,7 +609,6 @@ float degToRad(float degree)
         }];
     }];
     
-
 }
 
 
@@ -687,7 +686,8 @@ float degToRad(float degree)
             if (!_gameOverLabel.parent)
             {
                 [hero removeFromParent];
-                
+                [_monsterLayer removeFromParent];
+
                 
                 [_hudLayerNode addChild:_gameOverLabel];
                 [_hudLayerNode addChild:_tapScreenLabel];
@@ -756,7 +756,6 @@ float degToRad(float degree)
     [projectile removeFromParent];
     
     self.monstersDestroyed++;
-    
 
 }
 
@@ -1029,6 +1028,7 @@ float degToRad(float degree)
     hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
     [self addChild:hero];
     
+    [self advanceToWave:self.wave];
     
 
     // Remove the game over HUD labels
@@ -1070,7 +1070,6 @@ float degToRad(float degree)
 //    
 //}
 
-
 -(void)save
 {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1090,6 +1089,9 @@ float degToRad(float degree)
     self.upgrades = [userDefaults objectForKey:@"upgrades"];
     self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
     _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
+    //restore value of score
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
+
     [self advanceToWave:self.wave];
 }
 
