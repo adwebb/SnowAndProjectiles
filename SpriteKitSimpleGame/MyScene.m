@@ -622,6 +622,7 @@ float degToRad(float degree)
             // Update the healthbar color and length based on the...urm...players health :)
             _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
             currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+            scoreLabel.text = [NSString stringWithFormat:@"%d",_score];
             
             for (NSArray* value in [_upgrades allValues])
             {
@@ -1019,7 +1020,7 @@ float degToRad(float degree)
     [self setupUI];
     [self increaseScoreBy:-_score];
     self.wave = 1;
-    [self initializeMonsterWave:self.wave];
+    [self advanceToWave:self.wave];
     
     // Reset the score and the players health
   //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
@@ -1091,6 +1092,7 @@ float degToRad(float degree)
     self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
     _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
     [self advanceToWave:self.wave];
+    
 }
 
 
