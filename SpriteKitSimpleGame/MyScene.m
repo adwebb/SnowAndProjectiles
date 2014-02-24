@@ -850,6 +850,8 @@ float degToRad(float degree)
 - (void)setupUI
 {
     
+    [self removeAllChildren];
+    
     _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
     [_background setName:@"background"];
     [_background setAnchorPoint:CGPointZero];
