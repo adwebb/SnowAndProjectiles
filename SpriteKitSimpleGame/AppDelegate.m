@@ -32,24 +32,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-  // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-  // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-//    
-//    //1
-//    SKView *view = (SKView*)self.window.rootViewController.view; SKScene *scene = view.scene;
-//    //2
-//    NSString *documentsDirectory = [AppDelegate getPrivateDocsDir];
-//    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"autosaved-scene"];
-//    //3
-//    NSMutableData *data = [[NSMutableData alloc] init];
-//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-//    //4
-//    [archiver encodeObject:scene forKey:@"AppDelegateSceneKey"];
-//    [archiver finishEncoding];
-//    [data writeToFile:filePath atomically:YES];
+  // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 
-//    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
-//    [myScene save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -72,18 +56,6 @@
 //    [myScene save];
 }
 
-+ (NSString *)getPrivateDocsDir
-{
-    NSArray *paths =
-    NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:@"Private Documents"];
-    
-    NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory withIntermediateDirectories:YES attributes:nil error:&error];
-    
-    return documentsDirectory;
-}
 
 
 
