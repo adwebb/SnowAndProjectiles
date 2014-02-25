@@ -60,7 +60,6 @@ typedef enum {
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
-    SKAction    *_scoreFlashAction;
     SKAction    *_gameOverPulse;
     SKLabelNode *_gameOverLabel;
     SKNode      *_hudLayerNode;
@@ -128,7 +127,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     {
         
         [self setupUI];
-        [self upgrades];
     }
     return self;
 }
@@ -269,29 +267,29 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
     }
     
-    NSInteger currentLevel = [[_upgrades objectForKey:typeString] integerValue];
-    
-    if (currentLevel == 1)
+    int currentLevel = [self.upgrades[typeString] intValue];
+
+    if (currentLevel == 0 && self.currency >= 50)
     {
         self.currency -= 50;
         currentLevel++;
     }
-    else if (currentLevel == 2)
+    else if (currentLevel == 1 && self.currency >= 100)
     {
         self.currency -= 100;
         currentLevel++;
     }
-    else if (currentLevel == 3)
+    else if (currentLevel == 2 && self.currency >= 250)
     {
         self.currency -= 250;
         currentLevel++;
     }
     
-    [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:typeString];
+    [_upgrades setObject:@(currentLevel) forKey:typeString];
     
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
-    NSLog(@"%@ level %@",typeString, [_upgrades objectForKey:typeString]);
+    //NSLog(@"%@ level %@",typeString, [_upgrades objectForKey:typeString]);
 }
 
 - (NSMutableDictionary*)upgrades
@@ -350,7 +348,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(projectileType == split)
     {
         [self.projectile removeAllActions];
-        NSLog(@"split");
+       // NSLog(@"split");
         for (SplitProjectile* projectile in self.projectile.children) {
             int xVariance = arc4random()%5+1;
             int sign = arc4random()%2;
@@ -438,8 +436,7 @@ float degToRad(float degree)
         default:
             break;
     }
-    // Determine where to spawn the monster along the Y axis
-    // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+    
     monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     NSValue *value = [NSValue valueWithCGPoint:monster.position];
@@ -457,7 +454,7 @@ float degToRad(float degree)
 {
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, Nil, 0, 0);
-    CGPathAddCurveToPoint(path, nil, -100, 100, -200, -100, -560, -50);
+    CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
     
     return path;
 }
@@ -579,12 +576,6 @@ float degToRad(float degree)
     {
         case GameRunning:
             
-            // Update the healthbar color and length based on the...urm...players health :)
-            _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
-            
-            currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
-            scoreLabel.text = [NSString stringWithFormat:@"%d",_score];
-            
             for (NSArray* value in [_upgrades allValues])
             {
                 NSArray* value = [_upgrades allValues];
@@ -662,15 +653,13 @@ float degToRad(float degree)
             break;
         }
         default:
-            NSLog(@"default case");
             break;
     }
 }
 
 - (void)monster:(Monster*)monster didCollideWithHero:(Hero*)ourHero
 {
-    ourHero.health--;
-    NSLog(@"ouch! I have %f life!", ourHero.health);
+    [self takeDamage:monster.damage];
     [hero runAction:[self onHitColoration]];
     [monster removeFromParent];
 }
@@ -686,8 +675,8 @@ float degToRad(float degree)
 
 - (void)projectile:(Projectile *)projectile didCollideWithMonster:(Monster *)monster
 {
-    monster.health = monster.health - projectile.damage;
-    NSLog(@"Hit");
+   // monster.health = monster.health - projectile.damage;
+    [self dealDamage:projectile.damage toMonster:monster];
     [self increaseScoreBy:10];
     
     if(!self.muted)
@@ -695,7 +684,6 @@ float degToRad(float degree)
         if (projectileType == fire)
         {
             [self runAction:[SKAction playSoundFileNamed:@"fireExplosion.wav" waitForCompletion:NO]];
-            [monster runAction:[self onHitColoration]];
         }
         else if (projectileType == ice)
         {
@@ -706,7 +694,8 @@ float degToRad(float degree)
             [monster runAction:[SKAction sequence:@[reColor, stutter, deColor]]];
         }
     }
-    //[monster runAction:[self onHitColoration]];
+    if(projectileType != ice)
+    [monster runAction:[self onHitColoration]];
     
     if (monster.health <= 0)
     {
@@ -720,6 +709,11 @@ float degToRad(float degree)
     
     self.monstersDestroyed++;
 
+}
+
+-(void)dealDamage:(int)amount toMonster:(Monster*)monster
+{
+    monster.health -= amount;
 }
 
 -(void)killedMonster:(Monster*)monster
@@ -769,7 +763,7 @@ float degToRad(float degree)
         [coinNode removeFromParent];
     }];
     
-    self.currency += monster.goldValue;
+    [self increaseCurrencyBy:monster.goldValue];
     self.monstersDestroyed++;
     
 }
@@ -802,12 +796,19 @@ float degToRad(float degree)
     else if (firstBody.categoryBitMask == projectileCategory && secondBody.categoryBitMask == monsterCategory)
     {
         [self projectile:(Projectile *) firstBody.node didCollideWithMonster:(Monster *) secondBody.node];
-    }else if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == monsterCategory)
-    {
-        float baseSpeed = ((Monster*)secondBody.node).baseSpeed;
-        
-        [secondBody.node runAction:[SKAction sequence:@[[SKAction speedTo:.01 duration:0],[SKAction waitForDuration:.01], [SKAction speedTo:baseSpeed duration:2]]]];
     }
+    else if (firstBody.categoryBitMask == monsterCategory && secondBody.categoryBitMask == monsterCategory)
+    {
+        [self monster:(Monster*)firstBody.node didCollideWithMonster:(Monster*)secondBody.node];
+    }
+}
+
+-(void)monster:(Monster*)monster1 didCollideWithMonster:(Monster*)monster2
+{
+    float baseSpeed = monster2.baseSpeed;
+    
+    [monster2 runAction:[SKAction sequence:@[[SKAction speedTo:.01 duration:0],[SKAction waitForDuration:.01], [SKAction speedTo:baseSpeed duration:2]]]];
+    
 }
 
 - (void)setupUI
@@ -969,41 +970,52 @@ float degToRad(float degree)
         
         _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
     
-   
+
         splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
-        splitProjectileButton.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/15);
+        splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
         splitProjectileButton.name = @"SplitButton";
         splitProjectileButton.hidden = NO;
         [_hudLayerNode addChild:splitProjectileButton];
         
         freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
-        freezeProjectileButton.position = CGPointMake(self.frame.size.height/3.2, self.frame.size.width/15);
+        freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2, freezeProjectileButton.size.height/2);
         freezeProjectileButton.name = @"IceButton";
         freezeProjectileButton.hidden = NO;
 
         [_hudLayerNode addChild:freezeProjectileButton];
         
         fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
-        fireProjectileButton.position = CGPointMake(self.frame.size.height/2, self.frame.size.width/15);
+        fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
         fireProjectileButton.name = @"FireButton";
         fireProjectileButton.hidden = NO;
 
         [_hudLayerNode addChild:fireProjectileButton];
     
+    [self upgrades];
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
-    upgradeArrow.position = CGPointMake(self.frame.size.height/8, self.frame.size.width/7);
+    upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*3.5, fireProjectileButton.size.height/2);
     upgradeArrow.hidden = YES;
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
+    [self takeDamage:0];
 }
 
-- (void)increaseScoreBy:(float)increment
+-(void)takeDamage:(int)amount
+{
+    hero.health -= amount;
+    _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
+}
+
+- (void)increaseScoreBy:(int)increment
 {
     _score += increment;
-    scoreLabel = (SKLabelNode*)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
-    [scoreLabel removeAllActions];
-    [scoreLabel runAction:_scoreFlashAction];
+    scoreLabel.text = [NSString stringWithFormat:@"Score: %d", _score];
+}
+
+-(void)increaseCurrencyBy:(int)increment
+{
+    self.currency += increment;
+    currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
 }
 
 - (void)restartGame
