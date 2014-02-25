@@ -13,8 +13,7 @@
 
 + (Soldier*)monster
 {
-    Soldier* dragonMonster = [Soldier spriteNodeWithImageNamed:@"cuteDragon"];
-    dragonMonster.size = CGSizeMake(55, 55);
+    Soldier* dragonMonster = [Soldier spriteNodeWithImageNamed:@"cuteDragonSmall"];
 
     dragonMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:dragonMonster.size];
     dragonMonster.baseSpeed = .5;
@@ -24,12 +23,6 @@
     dragonMonster.health = 3;
     dragonMonster = (Soldier*)[super setMonsterProperties:dragonMonster];
     dragonMonster.goldValue = 6;
-    
-    SKEmitterNode *dragonBreath = [NSKeyedUnarchiver unarchiveObjectWithFile: [[NSBundle mainBundle] pathForResource:@"fireBreath" ofType:@"sks"]];
-    dragonBreath.position = CGPointMake(-30, -15);
-    dragonBreath.name = @"fireBreath";
-    
-    [dragonMonster addChild:dragonBreath];
     
     return dragonMonster;
 }

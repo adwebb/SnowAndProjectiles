@@ -267,7 +267,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
         case split:
             typeString = @"split";
-        default:
+            break;
+        case untyped:
+            typeString = @"";
             break;
     }
     
@@ -288,7 +290,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.currency -= 250;
         currentLevel++;
     }
-    
+    if(![typeString isEqualToString:@""])
     [_upgrades setObject:@(currentLevel) forKey:typeString];
     
     upgradeMode = NO;
@@ -443,24 +445,19 @@ float degToRad(float degree)
     
     monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
-    NSValue *value = [NSValue valueWithCGPoint:monster.position];
-    
     [self.monsterLayer addChild:monster];
     
-    // Create the actions
-    SKAction * actionMove = [SKAction followPath:[self generateCurvePath:@[value]] asOffset:YES orientToPath:NO duration:5.0];
-    SKAction * actionMoveDone = [SKAction removeFromParent];
-    
-    [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]withKey:@"path"];
-}
-
--(CGMutablePathRef)generateCurvePath:(NSArray*)coordinates
-{
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, Nil, 0, 0);
     CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
     
-    return path;
+    // Create the actions
+    SKAction * actionMove = [SKAction followPath:path asOffset:YES orientToPath:NO duration:5.0];
+    SKAction * actionMoveDone = [SKAction removeFromParent];
+    
+    CGPathRelease(path);
+    
+    [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]withKey:@"path"];
 }
 
 -(void)initializeMonsterWave:(int)wave
@@ -997,7 +994,7 @@ float degToRad(float degree)
     
     [self upgrades];
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
-    upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*3.5, fireProjectileButton.size.height/2);
+    upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*4, fireProjectileButton.size.height/2);
     upgradeArrow.hidden = YES;
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
@@ -1007,6 +1004,7 @@ float degToRad(float degree)
 -(void)takeDamage:(int)amount
 {
     hero.health -= amount;
+    if(hero.health >= 0)
     _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
 }
 
@@ -1050,24 +1048,6 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
-- (SKSpriteNode *) createArrowNode
-{
-    SKSpriteNode *arrow =
-    [[SKSpriteNode alloc] initWithImageNamed:@"arrow_clipped_rev_1.png"];
-    
-    arrow.position = CGPointMake(CGRectGetMinX(self.frame)+100, CGRectGetMidY(self.frame));
-    
-    arrow.name = @"arrowNode";
-    
-    arrow.physicsBody =
-    [SKPhysicsBody bodyWithRectangleOfSize:arrow.frame.size];
-    
-    arrow.physicsBody.usesPreciseCollisionDetection = YES;
-    
-    return arrow;
-}
-
-
 -(void)save
 {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1091,7 +1071,6 @@ float degToRad(float degree)
     scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
 
     [self advanceToWave:self.wave];
-    
 }
 
 @end
