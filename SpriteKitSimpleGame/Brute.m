@@ -6,19 +6,19 @@
 //  Copyright (c) 2014 Razeware LLC. All rights reserved.
 //
 
-#import "YetiMonster.h"
+#import "Brute.h"
 
-@implementation YetiMonster
+@implementation Brute
 
-+ (YetiMonster*)monster
++ (Brute*)monster
 {
-    YetiMonster* yetiMonster = [YetiMonster spriteNodeWithImageNamed:@"yeti"];
+    Brute* yetiMonster = [Brute spriteNodeWithImageNamed:@"squid_mouth"];
     yetiMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:yetiMonster.size];
     yetiMonster.baseSpeed = 1;
     yetiMonster.damage = 1;
     yetiMonster.ScoreValue = 10;
     yetiMonster.health = 2;
-    yetiMonster = (YetiMonster*)[super setMonsterProperties:yetiMonster];
+    yetiMonster = (Brute*)[super setMonsterProperties:yetiMonster];
     yetiMonster.goldValue = 4;
     
     return yetiMonster;

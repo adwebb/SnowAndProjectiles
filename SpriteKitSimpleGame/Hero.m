@@ -15,7 +15,7 @@ static const uint32_t heroCategory        =  0x11;
 
 +(Hero*)spawnHero
 {
-    Hero* hero = [Hero spriteNodeWithImageNamed:@"hero"];
+    Hero* hero = [Hero spriteNodeWithImageNamed:@"captain"];
     hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:hero.size];
     hero.physicsBody.categoryBitMask = heroCategory;
     hero.physicsBody.contactTestBitMask = monsterCategory;

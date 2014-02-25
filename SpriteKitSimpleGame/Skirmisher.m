@@ -17,7 +17,7 @@
     skirmisher.baseSpeed = 2;
     skirmisher.damage = 1;
     skirmisher.ScoreValue = 10;
-    skirmisher.health = 2;
+    skirmisher.health = 1;
     skirmisher = (Skirmisher*)[super setMonsterProperties:skirmisher];
     skirmisher.goldValue = 6;
     

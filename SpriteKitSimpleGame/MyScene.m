@@ -9,15 +9,15 @@
 #import "MyScene.h"
 #import "GameOverScene.h"
 #import "Monster.h"
-#import "SnowmanMonster.h"
-#import "YetiMonster.h"
+#import "Minion.h"
+#import "Brute.h"
 #import "Skirmisher.h"
 #import "Elite.h"
 #import "Boss.h"
 #import "Hero.h"
 #import "Projectile.h"
 #import "SnowballProjectile.h"
-#import "DragonMonster.h"
+#import "Soldier.h"
 #import "FireProjectile.h"
 #import "IceProjectile.h"
 #import "SplitProjectile.h"
@@ -429,13 +429,13 @@ float degToRad(float degree)
     
     switch (type) {
         case minion:
-            monster = [SnowmanMonster monster];
+            monster = [Minion monster];
             break;
         case brute:
-            monster = [YetiMonster monster];
+            monster = [Brute monster];
             break;
         case soldier:
-            monster = [DragonMonster monster];
+            monster = [Soldier monster];
             break;
         case skirmisher:
             monster = [Skirmisher monster];
@@ -592,6 +592,7 @@ float degToRad(float degree)
             // Update the healthbar color and length based on the...urm...players health :)
             _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
             currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+            scoreLabel.text = [NSString stringWithFormat:@"%d",_score];
             
             for (NSArray* value in [_upgrades allValues])
             {
@@ -824,29 +825,59 @@ float degToRad(float degree)
     [self removeAllChildren];
     [self removeAllActions];
     
-    _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
+    _background = [SKSpriteNode spriteNodeWithImageNamed:@"fullscreen_background"];
     [_background setName:@"background"];
-    [_background setAnchorPoint:CGPointZero];
+    [_background setPosition:(CGPointMake(self.size.width/2, self.size.height/2+35))];
+    //[_background setAnchorPoint:CGPointZero];
     [self addChild:_background];
     
-    _hudLayerNode = [SKNode node];
-    [self addChild:_hudLayerNode];
+    SKSpriteNode* bgWave = [SKSpriteNode spriteNodeWithImageNamed:@"back_wave"];
+    [self addChild:bgWave];
+    [bgWave setPosition: CGPointMake(self.size.width/2,bgWave.size.height/2)];
     
+    SKAction* toWaveMove = [SKAction moveByX:-100 y:0 duration:4];
+    toWaveMove.timingMode = SKActionTimingEaseInEaseOut;
+    SKAction* froWaveMove = [SKAction moveByX:100 y:0 duration:4];
+    froWaveMove.timingMode = SKActionTimingEaseInEaseOut;
+    [bgWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[toWaveMove, froWaveMove]]]];
     
     self.monsterLayer = [SKNode node];
     [self addChild:self.monsterLayer];
     
+    SKSpriteNode* backOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_back"];
+    [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.25)];
+    [self addChild:backOfBoat];
+    
   //  NSLog(@"Size: %@", NSStringFromCGSize(self.size));
     hero = [Hero spawnHero];
-    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+    hero.position = CGPointMake(hero.size.width, self.frame.size.height*2/5);
     [self addChild:hero];
     
-    projectileSpawnPoint = CGPointMake(hero.size.width*2, self.frame.size.height*2/5+hero.size.height/2);
+    projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
     
-    NSString *snowPath = [[NSBundle mainBundle] pathForResource:@"backgroundSnow" ofType:@"sks"];
-    SKEmitterNode* snowEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:snowPath];
-    snowEmitter.position = CGPointMake(self.frame.size.width/2, self.frame.size.height+10);
-    [_background addChild:snowEmitter];
+    SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
+    [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.25)];
+    [self addChild:frontOfBoat];
+    
+    toWaveMove = [SKAction moveByX:-100 y:0 duration:6];
+    froWaveMove = [SKAction moveByX:100 y:0 duration:6];
+    
+    SKSpriteNode* fWave = [SKSpriteNode spriteNodeWithImageNamed:@"front_wave"];
+    [self addChild:fWave];
+    [fWave setPosition: CGPointMake(self.size.width/2,fWave.size.height/2)];
+    [fWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[froWaveMove, toWaveMove]]]];
+    
+    SKSpriteNode* kraken = [SKSpriteNode spriteNodeWithImageNamed:@"kraken"];
+    [self addChild:kraken];
+    [kraken setPosition:CGPointMake(self.size.width-kraken.size.width/4, kraken.size.height/2)];
+    
+    NSString *catPath= [[NSBundle mainBundle] pathForResource:@"catSun" ofType:@"sks"];
+    SKEmitterNode* catSunEmitter= [NSKeyedUnarchiver unarchiveObjectWithFile:catPath];
+    catSunEmitter.position = CGPointMake(self.frame.size.width*2/3+8, self.frame.size.height-48);
+    [self addChild:catSunEmitter];
+    
+    _hudLayerNode = [SKNode node];
+    [self addChild:_hudLayerNode];
     
     self.physicsWorld.gravity = CGVectorMake(0,-5);
     self.physicsWorld.contactDelegate = self;
@@ -992,7 +1023,7 @@ float degToRad(float degree)
     [self setupUI];
     [self increaseScoreBy:-_score];
     self.wave = 1;
-    [self initializeMonsterWave:self.wave];
+    [self advanceToWave:self.wave];
     
     // Reset the score and the players health
   //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
@@ -1052,6 +1083,7 @@ float degToRad(float degree)
     scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
 
     [self advanceToWave:self.wave];
+    
 }
 
 @end

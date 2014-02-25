@@ -10,6 +10,7 @@
 #import <SpriteKit/SpriteKit.h>
 #import "MyScene.h"
 @import SpriteKit;
+@import GameKit;
 
 @implementation AppDelegate
 
@@ -83,6 +84,8 @@
     
     return documentsDirectory;
 }
+
+
 
 
 @end
