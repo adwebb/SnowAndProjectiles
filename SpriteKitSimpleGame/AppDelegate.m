@@ -33,22 +33,22 @@
 {
   // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
   // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
-    //1
-    SKView *view = (SKView*)self.window.rootViewController.view; SKScene *scene = view.scene;
-    //2
-    NSString *documentsDirectory = [AppDelegate getPrivateDocsDir];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"autosaved-scene"];
-    //3
-    NSMutableData *data = [[NSMutableData alloc] init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    //4
-    [archiver encodeObject:scene forKey:@"AppDelegateSceneKey"];
-    [archiver finishEncoding];
-    [data writeToFile:filePath atomically:YES];
+//    
+//    //1
+//    SKView *view = (SKView*)self.window.rootViewController.view; SKScene *scene = view.scene;
+//    //2
+//    NSString *documentsDirectory = [AppDelegate getPrivateDocsDir];
+//    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"autosaved-scene"];
+//    //3
+//    NSMutableData *data = [[NSMutableData alloc] init];
+//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+//    //4
+//    [archiver encodeObject:scene forKey:@"AppDelegateSceneKey"];
+//    [archiver finishEncoding];
+//    [data writeToFile:filePath atomically:YES];
 
-    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
-    [myScene save];
+//    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
+//    [myScene save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -67,8 +67,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
-    [myScene save];
+//    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
+//    [myScene save];
 }
 
 + (NSString *)getPrivateDocsDir

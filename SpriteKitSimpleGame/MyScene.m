@@ -185,6 +185,25 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self restartGame];
     }
     
+//    SKNode *archerNode = [self childNodeWithName:@"archerNode"];
+    
+    if (hero != nil)
+    {
+      
+        SKAction *shootArrow = [SKAction runBlock:^{
+            
+            SKNode *arrowNode = [self createArrowNode];
+            
+            [self addChild:arrowNode];
+            [arrowNode.physicsBody applyImpulse:CGVectorMake(35.0, 0)];
+        }];
+        
+        SKAction *sequence =
+        [SKAction sequence:@[shootArrow]];
+        
+        [hero runAction:sequence];
+    }
+    
     if([node.name hasSuffix:@"Button"])
     {
         if ([node.name isEqualToString:@"IceButton"])
@@ -240,55 +259,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     {
         upgradeMode = YES;
         
-//        if ([node.name isEqualToString:@"IceButton"] && upgradeMode == YES)
-//        {
-//            if ([node.name isEqualToString:@"FireButton"])
-//            {
-//                NSInteger currentLevel = [[_upgrades objectForKey:@"fire"] integerValue];
-//                currentLevel += 1;
-//                
-//                if (currentLevel == 1)
-//                {
-//                    self.currency -= 50;
-//                }
-//                else if (currentLevel == 2)
-//                {
-//                    self.currency -= 100;
-//                }
-//                else if (currentLevel == 3)
-//                {
-//                    self.currency -= 250;
-//                }
-//                
-//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"fire"];
-//                
-//                upgradeArrow.hidden = YES;
-//            }
-//            else if ([node.name isEqualToString:@"SplitButton"])
-//            {
-//                NSInteger currentLevel = [[_upgrades objectForKey:@"split"] integerValue];
-//                currentLevel += 1;
-//                
-//                if (currentLevel == 1)
-//                {
-//                    self.currency -= 50;
-//                }
-//                else if (currentLevel == 2)
-//                {
-//                    self.currency -= 100;
-//                }
-//                else if (currentLevel == 3)
-//                {
-//                    self.currency -= 250;
-//                }
-//                
-//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"split"];
-//                
-//                upgradeArrow.hidden = YES;
-//                
-//            }
-//            [self spawnProjectileOfType: projectileType];
-//        }
+
     }
 }
 
@@ -851,6 +822,7 @@ float degToRad(float degree)
 {
     
     [self removeAllChildren];
+    [self removeAllActions];
     
     _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.jpg"];
     [_background setName:@"background"];
@@ -1039,38 +1011,23 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
-//- (void)encodeWithCoder:(NSCoder *)aCoder
-//{
-//    //1
-//    [super encodeWithCoder:aCoder];
-//    //2
-//    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
-//    [aCoder encodeObject:hero forKey:@"hero"];
-//    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
-//    [aCoder encodeObject:_background forKey:@"background"];
-//    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
-//    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
-//    
-//    
-//}
-//
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    //1
-//    if (self = [super initWithCoder:aDecoder]) {
-//        //2
-//        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
-//        hero = [aDecoder decodeObjectForKey:@"hero"];
-//        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
-//        _background = [aDecoder decodeObjectForKey:@"background"];
-//        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
-//        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
-//       
-//    }
-//   
-//    return self;
-//    
-//}
+- (SKSpriteNode *) createArrowNode
+{
+    SKSpriteNode *arrow =
+    [[SKSpriteNode alloc] initWithImageNamed:@"arrow_clipped_rev_1.png"];
+    
+    arrow.position = CGPointMake(CGRectGetMinX(self.frame)+100, CGRectGetMidY(self.frame));
+    
+    arrow.name = @"arrowNode";
+    
+    arrow.physicsBody =
+    [SKPhysicsBody bodyWithRectangleOfSize:arrow.frame.size];
+    
+    arrow.physicsBody.usesPreciseCollisionDetection = YES;
+    
+    return arrow;
+}
+
 
 -(void)save
 {
@@ -1096,7 +1053,5 @@ float degToRad(float degree)
 
     [self advanceToWave:self.wave];
 }
-
-
 
 @end
