@@ -236,8 +236,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
             fireProjectileButton.hidden = YES;
             freezeProjectileButton.hidden = YES;
             splitProjectileButton.hidden = YES;
-
-            
         }
         else
         {
@@ -250,8 +248,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if ([node.name isEqualToString:@"upgradeArrow"])
     {
         upgradeMode = YES;
-        
-
     }
 }
 
