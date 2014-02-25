@@ -16,6 +16,12 @@
     snowballProjectile.damage = 1;
     snowballProjectile = (SnowballProjectile*)[super setProjectileProperties:snowballProjectile];
     
+    
+ //   snowballProjectile.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowballProjectile.frame.size];
+    
+    snowballProjectile.physicsBody.usesPreciseCollisionDetection = YES;
+    [snowballProjectile.physicsBody applyTorque:4.0];
+    
     return snowballProjectile;
 }
 

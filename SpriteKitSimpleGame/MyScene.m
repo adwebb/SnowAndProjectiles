@@ -138,6 +138,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     {
         case untyped:
             self.projectile = [SnowballProjectile snowballProjectile];
+            [self.projectile.physicsBody applyForce:CGVectorMake(25.0, 0)];
+            
             break;
         case fire:
             self.projectile = [FireProjectile fireProjectileOfRank:[[_upgrades objectForKey:@"fire"]integerValue] inScene:self];
@@ -223,6 +225,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             }
         }
     }
+    
+    
     [self spawnProjectileOfType: projectileType];
     
     if ([node.name isEqualToString:@"PauseButton"])
@@ -243,13 +247,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
             [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
             fireProjectileButton.hidden = NO;
             freezeProjectileButton.hidden = NO;
-            splitProjectileButton.hidden = NO;        }
+            splitProjectileButton.hidden = NO;
+        }
     }
     if ([node.name isEqualToString:@"upgradeArrow"])
     {
         upgradeMode = YES;
-        
-
     }
 }
 
@@ -706,6 +709,9 @@ float degToRad(float degree)
     {
         [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/([[_upgrades objectForKey:@"ice"]integerValue] +2) duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
+    
+    
+    
     [projectile removeFromParent];
     
     self.monstersDestroyed++;
