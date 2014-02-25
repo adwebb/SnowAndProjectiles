@@ -15,7 +15,8 @@
     parentProjectile.physicsBody.affectedByGravity = NO;
     [parentProjectile setName:movableNodeName];
     
-    for (NSInteger i = 0; i < rank + 1; i++) {
+    for (NSInteger i = 0; i < rank + 1; i++)
+    {
         SplitProjectile* splitProjectile4 = [SplitProjectile spriteNodeWithImageNamed:@"snowball"];
         splitProjectile4.size = CGSizeMake(splitProjectile4.size.width/3, splitProjectile4.size.height/3);
         splitProjectile4.color = [SKColor colorWithRed:177/255.0 green:198/255.0 blue:0 alpha:1];

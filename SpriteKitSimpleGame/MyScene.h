@@ -15,7 +15,7 @@ typedef enum : int {
 } GameState;
 
 
-@interface MyScene : SKScene <NSCoding>
+@interface MyScene : SKScene
 
 -(void)save;
 -(void)load;

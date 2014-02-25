@@ -60,6 +60,7 @@
         view.hidden = !toggle;
     }
 }
+
 - (IBAction)onSoundTogglePressed:(UIButton *)sender
 {
     muted = !muted;
