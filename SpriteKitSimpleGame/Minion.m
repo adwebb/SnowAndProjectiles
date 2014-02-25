@@ -8,19 +8,19 @@
 
 
 
-#import "SnowmanMonster.h"
+#import "Minion.h"
 
-@implementation SnowmanMonster
+@implementation Minion
 
-+ (SnowmanMonster*)monster
++ (Minion*)monster
 {
-    SnowmanMonster* snowmanMonster = [SnowmanMonster spriteNodeWithImageNamed:@"snowman"];
+    Minion* snowmanMonster = [Minion spriteNodeWithImageNamed:@"shark_fish"];
     snowmanMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowmanMonster.size];
     snowmanMonster.health = 1;
     snowmanMonster.baseSpeed = 1;
     snowmanMonster.ScoreValue = 5;
     snowmanMonster.damage = 1;
-    snowmanMonster = (SnowmanMonster*)[super setMonsterProperties:snowmanMonster];
+    snowmanMonster = (Minion*)[super setMonsterProperties:snowmanMonster];
     snowmanMonster.goldValue = 2;
     
     

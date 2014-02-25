@@ -14,7 +14,7 @@
 {
     Boss* boss = [Boss spriteNodeWithImageNamed:@"kraken"];
     boss.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:boss.size];
-    boss.baseSpeed = 2;
+    boss.baseSpeed = 1.5;
     boss.damage = 10;
     boss.ScoreValue = 500;
     boss.health = 10;

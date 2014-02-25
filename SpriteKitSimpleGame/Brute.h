@@ -8,8 +8,8 @@
 
 #import "Monster.h"
 
-@interface YetiMonster : Monster
+@interface Brute : Monster
 
-+ (YetiMonster*)monster;
++ (Brute*)monster;
 
 @end

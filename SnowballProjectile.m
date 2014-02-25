@@ -12,7 +12,7 @@
 
 + (SnowballProjectile*)snowballProjectile
 {
-    SnowballProjectile* snowballProjectile = [SnowballProjectile spriteNodeWithImageNamed:@"snowball"];
+    SnowballProjectile* snowballProjectile = [SnowballProjectile spriteNodeWithImageNamed:@"harpoon_arrow"];
     snowballProjectile.damage = 1;
     snowballProjectile = (SnowballProjectile*)[super setProjectileProperties:snowballProjectile];
     

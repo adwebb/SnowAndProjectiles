@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Razeware LLC. All rights reserved.
 //
 
-#import "DragonMonster.h"
+#import "Soldier.h"
 
-@implementation DragonMonster
+@implementation Soldier
 
 
-+ (DragonMonster*)monster
++ (Soldier*)monster
 {
-    DragonMonster* dragonMonster = [DragonMonster spriteNodeWithImageNamed:@"cuteDragon"];
+    Soldier* dragonMonster = [Soldier spriteNodeWithImageNamed:@"cuteDragon"];
     dragonMonster.size = CGSizeMake(55, 55);
 
     dragonMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:dragonMonster.size];
@@ -22,7 +22,7 @@
     dragonMonster.ScoreValue = 15;
     
     dragonMonster.health = 3;
-    dragonMonster = (DragonMonster*)[super setMonsterProperties:dragonMonster];
+    dragonMonster = (Soldier*)[super setMonsterProperties:dragonMonster];
     dragonMonster.goldValue = 6;
     
     SKEmitterNode *dragonBreath = [NSKeyedUnarchiver unarchiveObjectWithFile: [[NSBundle mainBundle] pathForResource:@"fireBreath" ofType:@"sks"]];

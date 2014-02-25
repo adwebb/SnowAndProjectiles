@@ -14,10 +14,10 @@
 {
     Elite* elite = [Elite spriteNodeWithImageNamed:@"crab"];
     elite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:elite.size];
-    elite.baseSpeed = 1;
+    elite.baseSpeed = .75;
     elite.damage = 5;
     elite.ScoreValue = 20;
-    elite.health = 5;
+    elite.health = 4;
     elite = (Elite*)[super setMonsterProperties:elite];
     elite.goldValue = 25;
     
