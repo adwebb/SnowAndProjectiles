@@ -10,6 +10,7 @@
 #import <SpriteKit/SpriteKit.h>
 #import "MyScene.h"
 @import SpriteKit;
+@import GameKit;
 
 @implementation AppDelegate
 
@@ -47,8 +48,8 @@
     [archiver finishEncoding];
     [data writeToFile:filePath atomically:YES];
 
-    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
-    [myScene save];
+//    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
+//    [myScene save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -67,8 +68,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
-    [myScene save];
+//    MyScene* myScene = ((MyScene*)((SKView*)self.window.rootViewController.view).scene);
+//    [myScene save];
 }
 
 + (NSString *)getPrivateDocsDir
@@ -83,6 +84,8 @@
     
     return documentsDirectory;
 }
+
+
 
 
 @end
