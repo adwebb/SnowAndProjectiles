@@ -135,6 +135,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     switch (type) {
         case untyped:
             self.projectile = [SnowballProjectile snowballProjectile];
+            [self.projectile.physicsBody applyForce:CGVectorMake(25.0, 0)];
+            
             break;
         case fire:
         {
@@ -220,6 +222,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             }
         }
     }
+    
+    
     [self spawnProjectileOfType: projectileType];
     
     if ([node.name isEqualToString:@"PauseButton"])
@@ -238,56 +242,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if ([node.name isEqualToString:@"upgradeArrow"])
     {
         upgradeMode = YES;
-        
-//        if ([node.name isEqualToString:@"IceButton"] && upgradeMode == YES)
-//        {
-//            if ([node.name isEqualToString:@"FireButton"])
-//            {
-//                NSInteger currentLevel = [[_upgrades objectForKey:@"fire"] integerValue];
-//                currentLevel += 1;
-//                
-//                if (currentLevel == 1)
-//                {
-//                    self.currency -= 50;
-//                }
-//                else if (currentLevel == 2)
-//                {
-//                    self.currency -= 100;
-//                }
-//                else if (currentLevel == 3)
-//                {
-//                    self.currency -= 250;
-//                }
-//                
-//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"fire"];
-//                
-//                upgradeArrow.hidden = YES;
-//            }
-//            else if ([node.name isEqualToString:@"SplitButton"])
-//            {
-//                NSInteger currentLevel = [[_upgrades objectForKey:@"split"] integerValue];
-//                currentLevel += 1;
-//                
-//                if (currentLevel == 1)
-//                {
-//                    self.currency -= 50;
-//                }
-//                else if (currentLevel == 2)
-//                {
-//                    self.currency -= 100;
-//                }
-//                else if (currentLevel == 3)
-//                {
-//                    self.currency -= 250;
-//                }
-//                
-//                [_upgrades setObject:[NSNumber numberWithInt:currentLevel] forKey:@"split"];
-//                
-//                upgradeArrow.hidden = YES;
-//                
-//            }
-//            [self spawnProjectileOfType: projectileType];
-//        }
     }
 }
 
@@ -754,6 +708,9 @@ float degToRad(float degree)
     {
         [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/([[_upgrades objectForKey:@"ice"]integerValue] +2) duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
+    
+    
+    
     [projectile removeFromParent];
     
     self.monstersDestroyed++;
@@ -1068,38 +1025,7 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
-//- (void)encodeWithCoder:(NSCoder *)aCoder
-//{
-//    //1
-//    [super encodeWithCoder:aCoder];
-//    //2
-//    [aCoder encodeObject:_hudLayerNode forKey:@"hud"];
-//    [aCoder encodeObject:hero forKey:@"hero"];
-//    [aCoder encodeObject:monstersForWave forKey:@"monsters"];
-//    [aCoder encodeObject:_background forKey:@"background"];
-//    [aCoder encodeObject:_playerHealthLabel forKey:@"playerHealth"];
-//    [aCoder encodeObject:_selectedNode forKey:@"selectedNode"];
-//    
-//    
-//}
-//
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    //1
-//    if (self = [super initWithCoder:aDecoder]) {
-//        //2
-//        _hudLayerNode = [aDecoder decodeObjectForKey:@"hud"];
-//        hero = [aDecoder decodeObjectForKey:@"hero"];
-//        monstersForWave = [aDecoder decodeObjectForKey:@"monsters"];
-//        _background = [aDecoder decodeObjectForKey:@"background"];
-//        _playerHealthLabel = [aDecoder decodeObjectForKey:@"playerHealth"];
-//        _selectedNode = [aDecoder decodeObjectForKey:@"selectedNode"];
-//       
-//    }
-//   
-//    return self;
-//    
-//}
+
 
 
 -(void)save
