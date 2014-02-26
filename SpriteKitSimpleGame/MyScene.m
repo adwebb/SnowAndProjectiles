@@ -65,6 +65,9 @@ typedef enum {
     SKNode      *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
+    SKLabelNode* splitLabel;
+    SKLabelNode* fireLabel;
+    SKLabelNode* iceLabel;
     SKSpriteNode* pauseButton;
     SKSpriteNode* upgradeArrow;
     SKLabelNode* waveComplete;
@@ -299,6 +302,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
     if(![typeString isEqualToString:@""])
     [_upgrades setObject:@(currentLevel) forKey:typeString];
+    
+    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
     
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
@@ -989,37 +996,35 @@ float degToRad(float degree)
 //   float testHealth = 7;
 //   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
-        SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        playerHealthBackground.name = @"playerHealthBackground";
-        playerHealthBackground.color = [SKColor darkGrayColor];
-        playerHealthBackground.colorBlendFactor = .5;
-        playerHealthBackground.fontSize = 15.0f;
+    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    playerHealthBackground.name = @"playerHealthBackground";
+    playerHealthBackground.color = [SKColor darkGrayColor];
+    playerHealthBackground.colorBlendFactor = .5;
+    playerHealthBackground.fontSize = 15.0f;
 
-        playerHealthBackground.text = _healthBar;
+    playerHealthBackground.text = _healthBar;
         
-        currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
-        coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
-        currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
-        currencyLabel.fontSize = 20;
-        currencyLabel.text = @"0";
-        currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
-        currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        [_hudLayerNode addChild:currencyLabel];
-        [_hudLayerNode addChild:coinStack];
+    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
+    coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
+    currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
+    currencyLabel.fontSize = 20;
+    currencyLabel.text = @"0";
+    currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+    currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayerNode addChild:currencyLabel];
+    [_hudLayerNode addChild:coinStack];
     
-        pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
-        pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
-        pauseButton.name = @"PauseButton";
-        [_hudLayerNode addChild:pauseButton];
+    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
+    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
+    pauseButton.name = @"PauseButton";
+    [_hudLayerNode addChild:pauseButton];
+    
+    playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
+    playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
+    [_hudLayerNode addChild:playerHealthBackground];
         
-        // 3
-        playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
-        playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
-        [_hudLayerNode addChild:playerHealthBackground];
-        
-        // 4
         _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         _playerHealthLabel.name = @"playerHealth";
         _playerHealthLabel.fontColor = [SKColor whiteColor];
@@ -1058,12 +1063,13 @@ float degToRad(float degree)
     
         [_hudLayerNode addChild:splitProjectileButton];
     
-        SKLabelNode* splitLabel = [SKLabelNode new];
+        splitLabel = [SKLabelNode new];
         splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         splitLabel.fontSize = 10.0f;
         splitLabel.fontColor = [SKColor whiteColor];
-        splitLabel.text = @"Lv: 0";
-        splitLabel.position = CGPointMake(self.frame.size.width/12, self.frame.size.height/6.5);
+        splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
+        splitLabel.position = CGPointMake(self.frame.size.width/11.5, self.frame.size.height/6.5);
+    
         [_hudLayerNode addChild:splitLabel];
     
         freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
@@ -1073,14 +1079,32 @@ float degToRad(float degree)
         freezeProjectileButton.alpha = 0.4f;
 
         [_hudLayerNode addChild:freezeProjectileButton];
-        
-        fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
-        fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
-        fireProjectileButton.name = @"FireButton";
-        fireProjectileButton.hidden = NO;
-        fireProjectileButton.alpha = 0.4f;
+    
+    iceLabel = [SKLabelNode new];
+    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    iceLabel.fontSize = 10.0f;
+    iceLabel.fontColor = [SKColor whiteColor];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
+    iceLabel.position = CGPointMake(self.frame.size.width/5.6, self.frame.size.height/6.5);
+    
+    [_hudLayerNode addChild:iceLabel];
+    
+    fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
+    fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
+    fireProjectileButton.name = @"FireButton";
+    fireProjectileButton.hidden = NO;
+    fireProjectileButton.alpha = 0.4f;
 
     [_hudLayerNode addChild:fireProjectileButton];
+    
+    fireLabel = [SKLabelNode new];
+    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    fireLabel.fontSize = 10.0f;
+    fireLabel.fontColor = [SKColor whiteColor];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
+    fireLabel.position = CGPointMake(self.frame.size.width/3.75, self.frame.size.height/6.5);
+    
+    [_hudLayerNode addChild:fireLabel];
     
     [self upgrades];
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
