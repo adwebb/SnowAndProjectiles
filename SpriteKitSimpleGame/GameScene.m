@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Razeware LLC. All rights reserved.
 //
 
-#import "MyScene.h"
+#import "GameScene.h"
 #import "GameOverScene.h"
 #import "Monster.h"
 #import "Minion.h"
@@ -27,14 +27,6 @@ static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
 
-typedef NS_ENUM(int32_t, PCGameState)
-{
-    PCGameStateStartingLevel,
-    PCGameStatePlaying,
-    PCGameStateInLevelMenu,
-    PCGameStateInReloadMenu,
-};
-
 typedef enum {
     untyped,
     split,
@@ -51,9 +43,10 @@ typedef enum {
     boss = 6
 }monsterType;
 
-@interface MyScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
+@interface GameScene () <SKPhysicsContactDelegate, UIGestureRecognizerDelegate>
 {
     Hero* hero;
+    Boss* kraken;
     
     UIPanGestureRecognizer* panGestureRecognizer;
     CGPoint projectileSpawnPoint;
@@ -119,14 +112,24 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return CGPointMake(a.x / length, a.y / length);
 }
 
-@implementation MyScene
+@implementation GameScene
 
--(id)initWithSize:(CGSize)size
+-(id)initWithSize:(CGSize)size continued:(BOOL)continued
 {
     if (self = [super initWithSize:size])
     {
-        
         [self setupUI];
+        
+        if(continued)
+        {
+            [self load];
+        }else
+        {
+            _score = 0;
+            _currency = 0;
+            _upgrades = [self upgrades];
+            [self advanceToWave:1];
+        }
     }
     return self;
 }
@@ -164,16 +167,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
     [[self view] addGestureRecognizer:gestureRecognizer];
     gestureRecognizer.delegate = self;
-    
-    if(_continued)
-    {
-        [self load];
-    }else
-    {
-        _score = 0;
-        _currency = 0;
-        [self advanceToWave:1];
-    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -182,11 +175,11 @@ static inline CGPoint rwNormalize(CGPoint a) {
     CGPoint location = [touch locationInNode:self];
     SKNode* node = [self nodeAtPoint:location];
     
-    if (_gameState == GameOver)
-    {
-        
-        [self restartGame];
-    }
+//    if (_gameState == GameOver)
+//    {
+//        
+//        [self restartGame];
+//    }
     
     
     if([node.name hasSuffix:@"Button"])
@@ -280,17 +273,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
     if (currentLevel == 0 && self.currency >= 50)
     {
-        self.currency -= 50;
+        [self increaseCurrencyBy:-50];
         currentLevel++;
     }
     else if (currentLevel == 1 && self.currency >= 100)
     {
-        self.currency -= 100;
+        [self increaseCurrencyBy:-100];
         currentLevel++;
     }
     else if (currentLevel == 2 && self.currency >= 250)
     {
-        self.currency -= 250;
+        [self increaseCurrencyBy:-250];
         currentLevel++;
     }
     if(![typeString isEqualToString:@""])
@@ -347,6 +340,52 @@ static inline CGPoint rwNormalize(CGPoint a) {
             }
         }
     }
+}
+
+-(void)sink:(SKSpriteNode*)node
+{
+    SKAction *rumble = [SKAction sequence:
+                     @[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
+                       [SKAction rotateByAngle:0.0 duration:0.1],
+                       [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
+    
+    SKAction* rumbleUntilGone = [SKAction repeatActionForever:rumble];
+    
+    SKAction* sinkAction = [SKAction moveByX:0 y:-50 duration:1];
+    
+    SKAction* fire = [SKAction customActionWithDuration:1 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
+        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        
+        float fireX = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.width);
+        
+        float fireY = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.height);
+        explosion.position = CGPointMake(fireX, fireY);
+        
+        [node addChild:explosion];
+    }];
+    
+    SKAction* sinkSequence = [SKAction sequence:@[sinkAction, fire, [SKAction waitForDuration:.5]]];
+    
+    SKAction* sinkUntilGone = [SKAction repeatAction:sinkSequence count:node.position.y/50];
+    
+    [node runAction:rumbleUntilGone];
+    
+    [node runAction:sinkUntilGone completion:^{
+        
+        BOOL won = NO;
+        if([node isKindOfClass:[Boss class]])
+        {
+            won = YES;
+        }else if ([node isKindOfClass:[Hero class]])
+        {
+            won = NO;
+        }
+        
+        SKTransition *reveal = [SKTransition flipVerticalWithDuration:0.5];
+        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:won score:_score];
+        [self.view presentScene:gameOverScene transition: reveal];
+    }];
 }
 
 -(void)launchProjectileWithImpulse:(CGVector)vector
@@ -503,11 +542,6 @@ float degToRad(float degree)
                                 @5, @5, @5, @5, @5, @5, @5, @5, @5, @5].mutableCopy;
             break;
         }
-        case 6:
-        {
-            monstersForWave = @[@6].mutableCopy;
-            break;
-        }
             
         default:
             break;
@@ -537,7 +571,7 @@ float degToRad(float degree)
 
 -(void)waveComplete
 {
-    if(self.wave <= 5)
+    if(self.wave <= 5 && hero.health > 0)
     {
         waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
@@ -551,123 +585,92 @@ float degToRad(float degree)
         [self save];
         [self advanceToWave:self.wave];
     }
-    
 }
 
 -(void)advanceToWave:(int)waveNumber
 {
     self.wave = waveNumber;
-    [self initializeMonsterWave:self.wave];
-    
-    
-    [self runAction:[SKAction waitForDuration:3] completion:^{
-      if (GameRunning){
-
-        waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
-        }
+    if(waveNumber < 6)
+    {
+        [self initializeMonsterWave:self.wave];
+        
+        
         [self runAction:[SKAction waitForDuration:3] completion:^{
-            [waveComplete removeFromParent];
-            [self spawnMonsters];
+            if (GameRunning){
+                
+                waveComplete.text = [NSString stringWithFormat:@"Prepare yourself! Wave %d Incoming!",self.wave];
+            }
+            [self runAction:[SKAction waitForDuration:3] completion:^{
+                [waveComplete removeFromParent];
+                [self spawnMonsters];
+            }];
         }];
-    }];
+    }else{
+        kraken.physicsBody.categoryBitMask = monsterCategory;
+        [kraken runAction:[SKAction moveByX:-self.size.width y:0 duration:5]];
+    }
     
 }
 
 
 - (void)update:(NSTimeInterval)currentTime
 {
-    switch (_gameState)
+            
+    for (NSArray* value in [_upgrades allValues])
     {
-        case GameRunning:
-            
-            for (NSArray* value in [_upgrades allValues])
-            {
-                NSArray* value = [_upgrades allValues];
-
-                if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
-                {
-                    upgradeArrow.hidden = NO;
-                }
-                else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
-                {
-                    upgradeArrow.hidden = NO;
-                }
-                else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
-                {
-                    upgradeArrow.hidden = NO;
-                }
-                else
-                {
-                    upgradeArrow.hidden = YES;
-                }
-            }
-    
-//            if (([_upgrades allValues]) && self.currency >= 50)
-//            {
-//                upgradeArrow.hidden = NO;
-//            }
-            // If the players health has dropped to <= 0 then set the game state to game over
-            if (hero.health <= 0) {
-                _gameState = GameOver;
-                break;
-            }
-            
-            if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
-            {
-                [self.projectile removeFromParent];
-            }
-            
-            if(projectileType == split)
-            {
-                for (Projectile* projectile in self.projectile.children)
-                {
-                    if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
-                    {
-                        [projectile removeFromParent];
-                    }
-                }
-                if(self.projectile.children.count <= 0)
-                {
-                    [self.projectile removeFromParent];
-                }
-            }
-            
-            if(![self.children containsObject:self.projectile])
-            {
-                [self spawnProjectileOfType: projectileType];
-            }
-            
-            break;
-        case GameOver:
+        NSArray* value = [_upgrades allValues];
+        
+        if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
         {
-            // If the game over message has not been added to the scene yet then add it
-            if (!_gameOverLabel.parent)
-            {
-                [hero removeFromParent];
-                [_monsterLayer removeFromParent];
-
-                
-                [_hudLayerNode addChild:_gameOverLabel];
-                [_hudLayerNode addChild:_tapScreenLabel];
-                [_tapScreenLabel runAction:_gameOverPulse];
-                
-                SKColor *newColor = [SKColor colorWithRed:drand48() green:drand48() blue:drand48() alpha:1.0];
-                _gameOverLabel.fontColor = newColor;
-            }
-            break;
+            upgradeArrow.hidden = NO;
         }
-        default:
-            break;
+        else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
+        {
+            upgradeArrow.hidden = NO;
+        }
+        else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
+        {
+            upgradeArrow.hidden = NO;
+        }
+        else
+        {
+            upgradeArrow.hidden = YES;
+        }
+    }
+    
+    if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
+    {
+        [self.projectile removeFromParent];
+    }
+    
+    if(projectileType == split)
+    {
+        for (Projectile* projectile in self.projectile.children)
+        {
+            if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+            {
+                [projectile removeFromParent];
+            }
+        }
+        if(self.projectile.children.count <= 0)
+        {
+            [self.projectile removeFromParent];
+        }
+    }
+    
+    if(![self.children containsObject:self.projectile])
+    {
+        [self spawnProjectileOfType: projectileType];
     }
 }
 
 - (void)monster:(Monster*)monster didCollideWithHero:(Hero*)ourHero
 {
     [self takeDamage:monster.damage];
-    [hero runAction:[self onHitColoration]];
+    [ourHero runAction:[self onHitColoration]];
     [monster removeFromParent];
 }
-    
+
 - (SKAction *)onHitColoration
 {
     SKAction* stutter = [SKAction waitForDuration:.15];
@@ -732,47 +735,51 @@ float degToRad(float degree)
     
     [self increaseScoreBy:monster.ScoreValue];
     
-    if (projectileType == fire)
+    if(![monster isKindOfClass:[Boss class]])
     {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
-        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        [monster addChild:explosion];
+        if (projectileType == fire)
+        {
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
+            SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+            [monster addChild:explosion];
+        }
+        else
+        {
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
+            SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+            [monster addChild:explosion];
+        }
+        
+        SKAction* wait = [SKAction waitForDuration:.5];
+        SKAction* remove = [SKAction removeFromParent];
+        SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
+        SKAction* burnOut = [SKAction colorizeWithColor:[UIColor blackColor] colorBlendFactor:0.8f duration:0.8f];
+        [monster runAction:burnOut];
+        [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
+        
+        SKNode* coinNode = [SKNode new];
+        [self addChild:coinNode];
+        
+        SKSpriteNode* coin = [SKSpriteNode spriteNodeWithImageNamed:@"coin"];
+        coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
+        [coinNode addChild:coin];
+        
+        SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        gold.text = [NSString stringWithFormat:@"%d",monster.goldValue];
+        gold.fontSize = 15.0;
+        gold.fontColor = [UIColor colorWithRed:1 green:192/255.0 blue:0 alpha:1];
+        gold.position = CGPointMake(coin.position.x+coin.size.width*1.2, coin.position.y-5);
+        [coinNode addChild:gold];
+        
+        [coinNode runAction:[SKAction waitForDuration:.4] completion:^{
+            [coinNode removeFromParent];
+        }];
+        
+        [self increaseCurrencyBy:monster.goldValue];
+        self.monstersDestroyed++;
+    }else{
+        [self sink:kraken];
     }
-    else
-    {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"SnowSplosion" ofType:@"sks"];
-        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        [monster addChild:explosion];
-    }
-   
-    SKAction* wait = [SKAction waitForDuration:.5];
-    SKAction* remove = [SKAction removeFromParent];
-    SKAction* fadeOut = [SKAction fadeOutWithDuration:.5];
-    SKAction* burnOut = [SKAction colorizeWithColor:[UIColor blackColor] colorBlendFactor:0.8f duration:0.8f];
-    [monster runAction:burnOut];
-    [monster runAction:[SKAction sequence:@[fadeOut, wait, remove]]];
-    
-    SKNode* coinNode = [SKNode new];
-    [self addChild:coinNode];
-    
-    SKSpriteNode* coin = [SKSpriteNode spriteNodeWithImageNamed:@"coin"];
-    coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
-    [coinNode addChild:coin];
-    
-    SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-    gold.text = [NSString stringWithFormat:@"%d",monster.goldValue];
-    gold.fontSize = 15.0;
-    gold.fontColor = [UIColor colorWithRed:1 green:192/255.0 blue:0 alpha:1];
-    gold.position = CGPointMake(coin.position.x+coin.size.width*1.2, coin.position.y-5);
-    [coinNode addChild:gold];
-    
-    [coinNode runAction:[SKAction waitForDuration:.4] completion:^{
-        [coinNode removeFromParent];
-    }];
-    
-    [self increaseCurrencyBy:monster.goldValue];
-    self.monstersDestroyed++;
-    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
@@ -844,7 +851,7 @@ float degToRad(float degree)
     [self addChild:self.monsterLayer];
     
     SKSpriteNode* backOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_back"];
-    [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.25)];
+    [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.2)];
     [self addChild:backOfBoat];
     
   //  NSLog(@"Size: %@", NSStringFromCGSize(self.size));
@@ -855,7 +862,7 @@ float degToRad(float degree)
     projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
     
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
-    [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.25)];
+    [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.2)];
     [self addChild:frontOfBoat];
     
     toWaveMove = [SKAction moveByX:-100 y:0 duration:6];
@@ -863,11 +870,12 @@ float degToRad(float degree)
     
     SKSpriteNode* fWave = [SKSpriteNode spriteNodeWithImageNamed:@"front_wave"];
     [self addChild:fWave];
-    [fWave setPosition: CGPointMake(self.size.width/2,fWave.size.height/2)];
+    [fWave setPosition: CGPointMake(self.size.width/2,fWave.size.height/2-10)];
     [fWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[froWaveMove, toWaveMove]]]];
     
-    SKSpriteNode* kraken = [SKSpriteNode spriteNodeWithImageNamed:@"kraken"];
-    [self addChild:kraken];
+    kraken = [Boss monster];
+    [self.monsterLayer addChild:kraken];
+    kraken.physicsBody.categoryBitMask = 0x0;
     [kraken setPosition:CGPointMake(self.size.width-kraken.size.width/4, kraken.size.height/2)];
     
     NSString *catPath= [[NSBundle mainBundle] pathForResource:@"catSun" ofType:@"sks"];
@@ -951,7 +959,7 @@ float degToRad(float degree)
         _playerHealthLabel.name = @"playerHealth";
         _playerHealthLabel.fontColor = [SKColor whiteColor];
         _playerHealthLabel.fontSize = 15.0f;
-        //_playerHealthLabel.text = actualHealth;
+        _playerHealthLabel.text = _healthBar;
         _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
         _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
         _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
@@ -998,20 +1006,26 @@ float degToRad(float degree)
 
         [_hudLayerNode addChild:fireProjectileButton];
     
-    [self upgrades];
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
     upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*4, fireProjectileButton.size.height/2);
     upgradeArrow.hidden = YES;
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
-    [self takeDamage:0];
 }
 
 -(void)takeDamage:(int)amount
 {
     hero.health -= amount;
     if(hero.health >= 0)
-    _playerHealthLabel.text = [_healthBar substringToIndex:(hero.health / 10 * _healthBar.length)];
+    {
+        _playerHealthLabel.text = [_healthBar substringToIndex:hero.health*2];
+    }
+    
+    if (hero.health <= 0)
+    {
+        [self sink:hero];
+    }
+
 }
 
 - (void)increaseScoreBy:(int)increment
@@ -1026,33 +1040,33 @@ float degToRad(float degree)
     currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
 }
 
-- (void)restartGame
-{
-    // Reset the state of the game
-    _gameState = GameRunning;
-
-    // Set up the entities again and the score
-    [self setupUI];
-    [self increaseScoreBy:-_score];
-    self.wave = 1;
-    [self advanceToWave:self.wave];
-    
-    // Reset the score and the players health
-  //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-    hero.health = 10;
-
-    hero = [Hero spawnHero];
-    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-    [self addChild:hero];
-    
-    [self advanceToWave:self.wave];
-    
-
-    // Remove the game over HUD labels
-    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
-    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
-    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
-}
+//- (void)restartGame
+//{
+//    // Reset the state of the game
+//    _gameState = GameRunning;
+//
+//    // Set up the entities again and the score
+//    [self setupUI];
+//    [self increaseScoreBy:-_score];
+//    self.wave = 1;
+//    [self advanceToWave:self.wave];
+//    
+//    // Reset the score and the players health
+//  //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
+//    hero.health = 10;
+//
+//    hero = [Hero spawnHero];
+//    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+//    [self addChild:hero];
+//    
+//    [self advanceToWave:self.wave];
+//    
+//
+//    // Remove the game over HUD labels
+//    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
+//    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
+//    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
+//}
 
 -(void)save
 {
@@ -1069,13 +1083,14 @@ float degToRad(float degree)
 {
    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     self.wave = ((NSNumber*)[userDefaults objectForKey:@"wave"]).intValue;
-    hero.health = ((NSNumber*)[userDefaults objectForKey:@"health"]).floatValue;
+    hero.health = ((NSNumber*)[userDefaults objectForKey:@"health"]).intValue;
     self.upgrades = [userDefaults objectForKey:@"upgrades"];
     self.currency = ((NSNumber*)[userDefaults objectForKey:@"currency"]).intValue;
-    _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).floatValue;
-    //restore value of score
-    scoreLabel.text = [NSString stringWithFormat:@"Score: %1.0d", _score];
-
+    _score = ((NSNumber*)[userDefaults objectForKey:@"score"]).intValue;
+    
+    [self increaseCurrencyBy:0];
+    [self increaseScoreBy:0];
+    [self takeDamage:0];
     [self advanceToWave:self.wave];
 }
 
