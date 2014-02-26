@@ -420,20 +420,39 @@ float degToRad(float degree)
 
 - (void)addMonsterOfType:(monsterType)type
 {
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, Nil, 0, 0);
+   // CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
     Monster* monster;
+    
+   // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     switch (type) {
         case minion:
             monster = [Minion monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+
             break;
         case brute:
             monster = [Brute monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height, self.size.height, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
+
             break;
         case soldier:
             monster = [Soldier monster];
+
             break;
         case skirmisher:
             monster = [Skirmisher monster];
+            
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
             break;
         case elite:
             monster = [Elite monster];
@@ -444,13 +463,8 @@ float degToRad(float degree)
             break;
     }
     
-    monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     [self.monsterLayer addChild:monster];
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, Nil, 0, 0);
-    CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
     
     // Create the actions
     SKAction * actionMove = [SKAction followPath:path asOffset:YES orientToPath:NO duration:5.0];
@@ -866,7 +880,7 @@ float degToRad(float degree)
 
 - (void)setupUI
 {
-    
+    [hero removeFromParent];
     [self removeAllChildren];
     [self removeAllActions];
     
@@ -886,9 +900,6 @@ float degToRad(float degree)
     froWaveMove.timingMode = SKActionTimingEaseInEaseOut;
     [bgWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[toWaveMove, froWaveMove]]]];
     
-    self.monsterLayer = [SKNode node];
-    [self addChild:self.monsterLayer];
-    
     SKSpriteNode* backOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_back"];
     [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.25)];
     [self addChild:backOfBoat];
@@ -899,9 +910,14 @@ float degToRad(float degree)
     
     projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
     
+   
+    
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.25)];
     [self addChild:frontOfBoat];
+    
+    self.monsterLayer = [SKNode node];
+    [self addChild:self.monsterLayer];
     
     toWaveMove = [SKAction moveByX:-100 y:0 duration:6];
     froWaveMove = [SKAction moveByX:100 y:0 duration:6];
@@ -1045,6 +1061,8 @@ float degToRad(float degree)
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
     [self takeDamage:0];
+    
+   
 }
 
 -(void)takeDamage:(int)amount
@@ -1070,7 +1088,7 @@ float degToRad(float degree)
 {
     // Reset the state of the game
     _gameState = GameRunning;
-
+    
     // Set up the entities again and the score
     [self setupUI];
     [self increaseScoreBy:-_score];
