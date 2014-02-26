@@ -444,13 +444,17 @@ float degToRad(float degree)
             break;
         case brute:
             monster = [Brute monster];
-            CGPathAddCurveToPoint(path, nil, -self.size.height, self.size.height, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2, self.size.height/2, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
 
             break;
         case soldier:
             monster = [Soldier monster];
+
+            CGPathAddCurveToPoint(path, nil, -self.size.width, -self.size.height/2, -self.size.height*2/3, -self.size.height/4, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
 
             break;
         case skirmisher:
@@ -462,13 +466,21 @@ float degToRad(float degree)
             break;
         case elite:
             monster = [Elite monster];
+            
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
             break;
         case boss:
             monster = [Boss monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
         default:
             break;
     }
-    
     
     [self.monsterLayer addChild:monster];
     
@@ -712,6 +724,7 @@ float degToRad(float degree)
             if (!_gameOverLabel.parent)
             {
                 [hero removeFromParent];
+                [hero removeAllChildren];
                 [_monsterLayer removeFromParent];
 
                 
@@ -973,8 +986,8 @@ float degToRad(float degree)
     [_hudLayerNode addChild:scoreLabel];
     
     _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//        float testHealth = 7;
-//        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
+//   float testHealth = 7;
+//   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
         SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         playerHealthBackground.name = @"playerHealthBackground";
@@ -1081,10 +1094,6 @@ float degToRad(float degree)
     [fireProjectileButton runAction:greyedOut];
     [freezeProjectileButton runAction:greyedOut];
     [splitProjectileButton runAction:greyedOut];
-    
-//    SKAction* normal = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
-//    [fireProjectileButton runAction:normal];
-
 }
 
 -(void)takeDamage:(int)amount
@@ -1111,6 +1120,7 @@ float degToRad(float degree)
     // Reset the state of the game
     _gameState = GameRunning;
     
+    
     // Set up the entities again and the score
     [self setupUI];
     [self increaseScoreBy:-_score];
@@ -1121,10 +1131,10 @@ float degToRad(float degree)
   //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
     hero.health = 10;
 
-    hero = [Hero spawnHero];
-    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-    [self addChild:hero];
-    
+//    hero = [Hero spawnHero];
+//    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+//    [self addChild:hero];
+//    
     [self advanceToWave:self.wave];
     
 
