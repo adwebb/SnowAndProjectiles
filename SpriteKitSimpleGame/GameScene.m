@@ -54,10 +54,7 @@ typedef enum {
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
-    SKAction    *_gameOverPulse;
-    SKLabelNode *_gameOverLabel;
     SKNode      *_hudLayerNode;
-    SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
     SKLabelNode* splitLabel;
     SKLabelNode* fireLabel;
@@ -290,9 +287,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(![typeString isEqualToString:@""])
     [_upgrades setObject:@(currentLevel) forKey:typeString];
     
-    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
-    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
-    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
     
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
@@ -1046,7 +1043,6 @@ float degToRad(float degree)
     [_hudLayerNode addChild:scoreLabel];
     
     _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//   float testHealth = 7;
 //   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
     SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
@@ -1087,27 +1083,7 @@ float degToRad(float degree)
         _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
         _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
         [_hudLayerNode addChild:_playerHealthLabel];
-        
-        _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
-        _gameOverLabel.name = @"gameOver";
-        _gameOverLabel.fontSize = 40.0f;
-        _gameOverLabel.fontColor = [SKColor whiteColor];
-        _gameOverLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _gameOverLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _gameOverLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-        _gameOverLabel.text = @"GAME OVER";
-        
-        _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        _tapScreenLabel.name = @"tapScreen";
-        _tapScreenLabel.fontSize = 20.0f;
-        _tapScreenLabel.fontColor = [SKColor whiteColor];
-        _tapScreenLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _tapScreenLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _tapScreenLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2 - 100);
-        _tapScreenLabel.text = @"Tap Screen To Restart";
-        
-        _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
-
+    
         splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
         splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
         splitProjectileButton.name = @"SplitButton";
@@ -1195,7 +1171,28 @@ float degToRad(float degree)
 -(void)increaseCurrencyBy:(int)increment
 {
     self.currency += increment;
-    currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+    currencyLabel.text = [NSString stringWithFormat:@"%d", self.currency];
+}
+
+- (void)restartGame
+{
+    // Reset the state of the game
+    _gameState = GameRunning;
+    
+    // Set up the entities again and the score
+    [self setupUI];
+    [self increaseScoreBy:-_score];
+    self.wave = 1;
+    
+    // Reset the score and the players health
+    hero.health = 10;
+
+    [self advanceToWave:self.wave];
+    
+    // Remove the game over HUD labels
+    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
 -(void)save
