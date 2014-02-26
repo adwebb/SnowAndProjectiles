@@ -53,10 +53,7 @@ typedef enum {
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
-    SKAction    *_gameOverPulse;
-    SKLabelNode *_gameOverLabel;
     SKNode      *_hudLayerNode;
-    SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
     SKLabelNode* splitLabel;
     SKLabelNode* fireLabel;
@@ -741,16 +738,6 @@ float degToRad(float degree)
             
             if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
             {
-                [hero removeFromParent];
-                [hero removeAllChildren];
-                [_monsterLayer removeFromParent];
-                
-                [_hudLayerNode addChild:_gameOverLabel];
-                [_hudLayerNode addChild:_tapScreenLabel];
-                [_tapScreenLabel runAction:_gameOverPulse];
-                
-                SKColor *newColor = [SKColor colorWithRed:drand48() green:drand48() blue:drand48() alpha:1.0];
-                _gameOverLabel.fontColor = newColor;
                 [self.projectile removeFromParent];
             }
             
@@ -1071,27 +1058,7 @@ float degToRad(float degree)
         _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
         _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
         [_hudLayerNode addChild:_playerHealthLabel];
-        
-        _gameOverLabel = [SKLabelNode labelNodeWithFontNamed:@"Arial"];
-        _gameOverLabel.name = @"gameOver";
-        _gameOverLabel.fontSize = 40.0f;
-        _gameOverLabel.fontColor = [SKColor whiteColor];
-        _gameOverLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _gameOverLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _gameOverLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-        _gameOverLabel.text = @"GAME OVER";
-        
-        _tapScreenLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        _tapScreenLabel.name = @"tapScreen";
-        _tapScreenLabel.fontSize = 20.0f;
-        _tapScreenLabel.fontColor = [SKColor whiteColor];
-        _tapScreenLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-        _tapScreenLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        _tapScreenLabel.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2 - 100);
-        _tapScreenLabel.text = @"Tap Screen To Restart";
-        
-        _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
-
+    
         splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
         splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
         splitProjectileButton.name = @"SplitButton";
