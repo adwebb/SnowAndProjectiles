@@ -438,7 +438,7 @@ float degToRad(float degree)
             break;
         case brute:
             monster = [Brute monster];
-            CGPathAddCurveToPoint(path, nil, -self.size.height, self.size.height, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2, self.size.height/2, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
 
@@ -454,25 +454,27 @@ float degToRad(float degree)
         case skirmisher:
             monster = [Skirmisher monster];
             
-//            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
-//            
-//            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
             break;
         case elite:
             monster = [Elite monster];
             
             CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
 
-            
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
             
             break;
         case boss:
             monster = [Boss monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
         default:
             break;
     }
-    
     
     [self.monsterLayer addChild:monster];
     
@@ -716,6 +718,7 @@ float degToRad(float degree)
             if (!_gameOverLabel.parent)
             {
                 [hero removeFromParent];
+                [hero removeAllChildren];
                 [_monsterLayer removeFromParent];
 
                 
@@ -920,8 +923,6 @@ float degToRad(float degree)
     
     projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
     
-   
-    
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.25)];
     [self addChild:frontOfBoat];
@@ -980,7 +981,6 @@ float degToRad(float degree)
         [_hudLayerNode addChild:scoreLabel];
     
         _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//        float testHealth = 7;
 //        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
         SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
@@ -1071,8 +1071,7 @@ float degToRad(float degree)
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
     [self takeDamage:0];
-    
-   
+
 }
 
 -(void)takeDamage:(int)amount
@@ -1099,6 +1098,7 @@ float degToRad(float degree)
     // Reset the state of the game
     _gameState = GameRunning;
     
+    
     // Set up the entities again and the score
     [self setupUI];
     [self increaseScoreBy:-_score];
@@ -1109,10 +1109,10 @@ float degToRad(float degree)
   //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
     hero.health = 10;
 
-    hero = [Hero spawnHero];
-    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-    [self addChild:hero];
-    
+//    hero = [Hero spawnHero];
+//    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
+//    [self addChild:hero];
+//    
     [self advanceToWave:self.wave];
     
 
