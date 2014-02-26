@@ -16,12 +16,11 @@
 #import "Boss.h"
 #import "Hero.h"
 #import "Projectile.h"
-#import "SnowballProjectile.h"
+#import "Harpoon.h"
 #import "Soldier.h"
 #import "FireProjectile.h"
 #import "IceProjectile.h"
 #import "SplitProjectile.h"
-
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
@@ -51,6 +50,7 @@ typedef enum {
     
     UIPanGestureRecognizer* panGestureRecognizer;
     CGPoint projectileSpawnPoint;
+    CGPoint releasePoint;
     
     SKLabelNode *_playerHealthLabel;
     NSString    *_healthBar;
@@ -144,7 +144,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     switch (type)
     {
         case untyped:
-            self.projectile = [SnowballProjectile snowballProjectile];
+            self.projectile = [Harpoon projectile];
             [self.projectile.physicsBody applyForce:CGVectorMake(25.0, 0)];
             
             break;
@@ -161,7 +161,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
     }
     self.projectile.position = projectileSpawnPoint;
-    
     [self addChild:self.projectile];
 }
 
@@ -328,7 +327,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             
             if ([[_selectedNode name] isEqualToString:movableNodeName]) {
                 
-                CGPoint location = self.projectile.position;
+                CGPoint location = releasePoint;
                 CGPoint offset = rwSub(location, projectileSpawnPoint);
                 
                 // Bail out if you are shooting down or backwards
@@ -347,66 +346,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
--(void)sink:(SKNode*)node
-{
-    BOOL won = NO;
-    if([node isKindOfClass:[Boss class]])
-    {
-        won = YES;
-    }else if ([node isKindOfClass:[Hero class]])
-    {
-        won = NO;
-    }
-    
-    
-    SKAction *rumble = [SKAction sequence:
-                     @[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
-                       [SKAction rotateByAngle:0.0 duration:0.1],
-                       [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
-    
-    SKAction* rumbleUntilGone = [SKAction repeatActionForever:rumble];
-    
-    SKAction* sinkAction = [SKAction moveByX:0 y:-50 duration:1];
-    
-    SKAction* fire = [SKAction customActionWithDuration:1 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
-        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        
-        float fireX = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.width);
-        
-        float fireY = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.height);
-        explosion.position = CGPointMake(fireX, fireY);
-        
-        [node addChild:explosion];
-    }];
-    
-    SKAction* sinkSequence = [SKAction sequence:@[fire, sinkAction, [SKAction waitForDuration:.5]]];
-    
-    SKAction* sinkUntilGone = [SKAction repeatAction:sinkSequence count:node.position.y/50];
-    
-    if(!won)
-        [boat runAction:sinkUntilGone];
-    
-    [node removeAllActions];
-    [node runAction:rumbleUntilGone];
-    [node runAction:sinkUntilGone completion:^{
-        
-        if(won)
-        {
-            [kraken removeFromParent];
-        }else{
-            [boat removeFromParent];
-        }
-        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:1];
-        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:won score:_score];
-        [self.view presentScene:gameOverScene transition: reveal];
-    }];
-}
-
 -(void)launchProjectileWithImpulse:(CGVector)vector
 {
     self.projectile.physicsBody.dynamic = YES;
     self.projectile.physicsBody.affectedByGravity = YES;
+    [hero.arm setPosition:CGPointMake(-hero.arm.size.width/30, hero.arm.position.y)];
+    hero.zRotation = 0;
     
     if(projectileType == split)
     {
@@ -437,13 +382,31 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)panForTranslation:(CGPoint)translation fromStartPoint:(CGPoint)point
 {
+    
+    
     if([self isWithinSlingshotDragArea:point])
     {
-        CGPoint position = self.projectile.position;
-        CGPoint newPosition = CGPointMake(position.x + translation.x, position.y + translation.y);
-        if([self isWithinSlingshotDragArea:newPosition]) {
-            [self.projectile setPosition:newPosition];
+        CGPoint projectilePosition = self.projectile.position;
+        CGPoint newProjectilePosition = CGPointMake(projectilePosition.x + translation.x, projectilePosition.y);
+        CGPoint newArmPosition = CGPointMake(hero.arm.position.x + translation.x, hero.arm.position.y);
+       
+        if([self isWithinSlingshotDragArea:newProjectilePosition])
+        {
+            if(newProjectilePosition.x < projectileSpawnPoint.x-15)
+            {
+                newProjectilePosition.x = projectileSpawnPoint.x-15;
+                newArmPosition.x = -hero.arm.size.width/5;
+            }
+            
+            releasePoint = CGPointMake(point.x + translation.x, point.y + translation.y);
+            [self.projectile setPosition:newProjectilePosition];
+            [hero.arm setPosition:newArmPosition];
+            
+            float zRotate = atan2(releasePoint.y, releasePoint.x)/10;
+            hero.zRotation = zRotate;
+            self.projectile.zRotation = zRotate;
         }
+        
     }
 }
 
@@ -451,11 +414,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if([self isWithinSlingshotDragArea:touchLocation])
     {
-        SKAction *sequence = [SKAction sequence:@[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
-                                                  [SKAction rotateByAngle:0.0 duration:0.1],
-                                                  [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
-
-    [self.projectile runAction:[SKAction repeatActionForever:sequence]];
         _selectedNode = self.projectile;
     }
 }
@@ -655,6 +613,11 @@ float degToRad(float degree)
 
 - (void)update:(NSTimeInterval)currentTime
 {
+    
+    if(self.projectile.position.x > projectileSpawnPoint.x)
+    self.projectile.zRotation = atan2(self.projectile.physicsBody.velocity.dy,self.projectile.physicsBody.velocity.dx);
+    
+    
     if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
         [self.projectile removeFromParent];
@@ -882,6 +845,65 @@ float degToRad(float degree)
     }
 }
 
+-(void)sink:(SKNode*)node
+{
+    BOOL won = NO;
+    if([node isKindOfClass:[Boss class]])
+    {
+        won = YES;
+    }else if ([node isKindOfClass:[Hero class]])
+    {
+        won = NO;
+    }
+    
+    
+    SKAction *rumble = [SKAction sequence:
+                        @[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
+                          [SKAction rotateByAngle:0.0 duration:0.1],
+                          [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
+    
+    SKAction* rumbleUntilGone = [SKAction repeatActionForever:rumble];
+    
+    SKAction* sinkAction = [SKAction moveByX:0 y:-50 duration:1];
+    
+    SKAction* fire = [SKAction customActionWithDuration:1 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
+        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        
+        float fireX = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.width);
+        
+        float fireY = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.height);
+        explosion.position = CGPointMake(fireX, fireY);
+        
+        [node addChild:explosion];
+    }];
+    
+    SKAction* sinkSequence = [SKAction sequence:@[fire, sinkAction, [SKAction waitForDuration:.5]]];
+    
+    SKAction* sinkUntilGone = [SKAction repeatAction:sinkSequence count:node.position.y/50];
+    
+    if(!won)
+    {
+        [boat runAction:sinkUntilGone];
+        [self.projectile runAction:sinkUntilGone];
+    }
+    
+    [node removeAllActions];
+    [node runAction:rumbleUntilGone];
+    [node runAction:sinkUntilGone completion:^{
+        
+        if(won)
+        {
+            [kraken removeFromParent];
+        }else{
+            [boat removeFromParent];
+        }
+        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:1];
+        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:won score:_score];
+        [self.view presentScene:gameOverScene transition: reveal];
+    }];
+}
+
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
         SKPhysicsBody *firstBody, *secondBody;
@@ -958,13 +980,15 @@ float degToRad(float degree)
     
     hero = [Hero spawnHero];
     hero.position = CGPointMake(hero.size.width, self.frame.size.height*2/5);
+    hero.zPosition = 1;
     [boat addChild:hero];
     
-    projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
+    projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-5);
     
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.2)];
     frontOfBoat.name = @"boatFront";
+    frontOfBoat.zPosition = 2;
     [boat addChild:frontOfBoat];
     
     self.monsterLayer = [SKNode node];

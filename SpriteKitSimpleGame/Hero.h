@@ -11,5 +11,6 @@
 @interface Hero : SKSpriteNode
 +(Hero*)spawnHero;
 @property int health;
+@property SKSpriteNode* arm;
 
 @end
