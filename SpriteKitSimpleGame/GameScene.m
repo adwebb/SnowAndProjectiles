@@ -287,9 +287,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(![typeString isEqualToString:@""])
     [_upgrades setObject:@(currentLevel) forKey:typeString];
     
-    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
-    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
-    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
     
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
