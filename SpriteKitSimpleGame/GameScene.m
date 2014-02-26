@@ -22,7 +22,6 @@
 #import "IceProjectile.h"
 #import "SplitProjectile.h"
 
-
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
@@ -742,6 +741,16 @@ float degToRad(float degree)
             
             if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
             {
+                [hero removeFromParent];
+                [hero removeAllChildren];
+                [_monsterLayer removeFromParent];
+                
+                [_hudLayerNode addChild:_gameOverLabel];
+                [_hudLayerNode addChild:_tapScreenLabel];
+                [_tapScreenLabel runAction:_gameOverPulse];
+                
+                SKColor *newColor = [SKColor colorWithRed:drand48() green:drand48() blue:drand48() alpha:1.0];
+                _gameOverLabel.fontColor = newColor;
                 [self.projectile removeFromParent];
             }
             
@@ -1022,7 +1031,6 @@ float degToRad(float degree)
     [_hudLayerNode addChild:scoreLabel];
     
     _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//   float testHealth = 7;
 //   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
     SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
@@ -1171,7 +1179,28 @@ float degToRad(float degree)
 -(void)increaseCurrencyBy:(int)increment
 {
     self.currency += increment;
-    currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+    currencyLabel.text = [NSString stringWithFormat:@"%d", self.currency];
+}
+
+- (void)restartGame
+{
+    // Reset the state of the game
+    _gameState = GameRunning;
+    
+    // Set up the entities again and the score
+    [self setupUI];
+    [self increaseScoreBy:-_score];
+    self.wave = 1;
+    
+    // Reset the score and the players health
+    hero.health = 10;
+
+    [self advanceToWave:self.wave];
+    
+    // Remove the game over HUD labels
+    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
+    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
 }
 
 -(void)save
