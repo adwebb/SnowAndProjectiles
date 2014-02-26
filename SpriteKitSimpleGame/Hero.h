@@ -10,6 +10,6 @@
 
 @interface Hero : SKSpriteNode
 +(Hero*)spawnHero;
-@property float health;
+@property int health;
 
 @end
