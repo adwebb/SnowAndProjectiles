@@ -16,7 +16,7 @@
 		35F3DEFE17D8011E009EFFF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DEFD17D8011E009EFFF2 /* AppDelegate.m */; };
 		35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F3DEFF17D8011E009EFFF2 /* Main.storyboard */; };
 		35F3DF0417D8011E009EFFF2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF0317D8011E009EFFF2 /* ViewController.m */; };
-		35F3DF0717D8011E009EFFF2 /* MyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF0617D8011E009EFFF2 /* MyScene.m */; };
+		35F3DF0717D8011E009EFFF2 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF0617D8011E009EFFF2 /* GameScene.m */; };
 		35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35F3DF0A17D8011E009EFFF2 /* Images.xcassets */; };
 		35F3DF1217D8011E009EFFF2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F3DF1117D8011E009EFFF2 /* XCTest.framework */; };
 		35F3DF1317D8011E009EFFF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F3DEEB17D8011E009EFFF2 /* Foundation.framework */; };
@@ -69,7 +69,6 @@
 		C2B6AC0018A97D39007FAFE8 /* dog.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6ABFB18A97D39007FAFE8 /* dog.png */; };
 		C2B6AC0118A97D39007FAFE8 /* turtle.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6ABFC18A97D39007FAFE8 /* turtle.png */; };
 		C2B6AC0318A97F00007FAFE8 /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0218A97F00007FAFE8 /* bg.jpg */; };
-		C2B6AC0618A97F5B007FAFE8 /* backgroundSnow.sks in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0418A97F5B007FAFE8 /* backgroundSnow.sks */; };
 		C2B6AC0718A97F5B007FAFE8 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0518A97F5B007FAFE8 /* spark.png */; };
 		C2B6AC0918A989C1007FAFE8 /* snowman.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0818A989C1007FAFE8 /* snowman.png */; };
 		C2B6AC0B18A98CEC007FAFE8 /* hero.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B6AC0A18A98CEC007FAFE8 /* hero.png */; };
@@ -81,11 +80,14 @@
 		C2F6E6CD18BC250B0086BA77 /* captain@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C218BC250B0086BA77 /* captain@2x.png */; };
 		C2F6E6CE18BC250B0086BA77 /* front_wave@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C318BC250B0086BA77 /* front_wave@2x.png */; };
 		C2F6E6CF18BC250B0086BA77 /* fullscreen_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C418BC250B0086BA77 /* fullscreen_background@2x.png */; };
-		C2F6E6D018BC250B0086BA77 /* harpoon_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C518BC250B0086BA77 /* harpoon_arrow@2x.png */; };
-		C2F6E6D118BC250B0086BA77 /* kraken@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C618BC250B0086BA77 /* kraken@2x.png */; };
 		C2F6E6D218BC250B0086BA77 /* shark_fish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C718BC250B0086BA77 /* shark_fish@2x.png */; };
 		C2F6E6D318BC250B0086BA77 /* squid_mouth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6C818BC250B0086BA77 /* squid_mouth@2x.png */; };
 		C2F6E6D518BC26900086BA77 /* arm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6D418BC26900086BA77 /* arm@2x.png */; };
+		C2F6E6D818BD72240086BA77 /* MainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F6E6D718BD72240086BA77 /* MainMenuScene.m */; };
+		C2F6E6DA18BE3E350086BA77 /* kraken@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6D918BE3E350086BA77 /* kraken@2x.png */; };
+		C2F6E6DC18BE3E3C0086BA77 /* harpoon_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6DB18BE3E3C0086BA77 /* harpoon_arrow@2x.png */; };
+		C2F6E6DF18BE53670086BA77 /* TutorialScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F6E6DE18BE53670086BA77 /* TutorialScene.m */; };
+		C2F6E6E218BE53890086BA77 /* CreditsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F6E6E118BE53890086BA77 /* CreditsScene.m */; };
 		C2FB16C718B3EF34002C9513 /* coin2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FB16C618B3EF34002C9513 /* coin2x.png */; };
 		C2FB16C918B3EF4C002C9513 /* stack.png in Resources */ = {isa = PBXBuildFile; fileRef = C2FB16C818B3EF4C002C9513 /* stack.png */; };
 		C2FB16CC18B3FF10002C9513 /* FireProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16CB18B3FF10002C9513 /* FireProjectile.m */; };
@@ -119,8 +121,8 @@
 		35F3DF0017D8011E009EFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		35F3DF0217D8011E009EFFF2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		35F3DF0317D8011E009EFFF2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		35F3DF0517D8011E009EFFF2 /* MyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScene.h; sourceTree = "<group>"; };
-		35F3DF0617D8011E009EFFF2 /* MyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScene.m; sourceTree = "<group>"; };
+		35F3DF0517D8011E009EFFF2 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		35F3DF0617D8011E009EFFF2 /* GameScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		35F3DF0A17D8011E009EFFF2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		35F3DF1017D8011E009EFFF2 /* Obj. SeafoodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Obj. SeafoodTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35F3DF1117D8011E009EFFF2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -157,7 +159,6 @@
 		AAEF99DF18B4071B00A44E7F /* Soldier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soldier.h; sourceTree = "<group>"; };
 		AAEF99E018B4071B00A44E7F /* Soldier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Soldier.m; sourceTree = "<group>"; };
 		AAEF99E218B4094300A44E7F /* cuteDragonSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuteDragonSmall.png; sourceTree = "<group>"; };
-		C21C9FCB18AD9B35003CF4F6 /* defaultsnow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = defaultsnow.sks; sourceTree = "<group>"; };
 		C221481118B5272E00A9ED15 /* iceball.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = iceball.sks; sourceTree = "<group>"; };
 		C225473418B6C6DD00A0AFC2 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		C225473618B6CD6200A0AFC2 /* soundOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soundOff.png; sourceTree = "<group>"; };
@@ -185,7 +186,6 @@
 		C2B6ABFB18A97D39007FAFE8 /* dog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dog.png; sourceTree = "<group>"; };
 		C2B6ABFC18A97D39007FAFE8 /* turtle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = turtle.png; sourceTree = "<group>"; };
 		C2B6AC0218A97F00007FAFE8 /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
-		C2B6AC0418A97F5B007FAFE8 /* backgroundSnow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = backgroundSnow.sks; sourceTree = "<group>"; };
 		C2B6AC0518A97F5B007FAFE8 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		C2B6AC0818A989C1007FAFE8 /* snowman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowman.png; sourceTree = "<group>"; };
 		C2B6AC0A18A98CEC007FAFE8 /* hero.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hero.png; sourceTree = "<group>"; };
@@ -197,11 +197,17 @@
 		C2F6E6C218BC250B0086BA77 /* captain@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "captain@2x.png"; sourceTree = "<group>"; };
 		C2F6E6C318BC250B0086BA77 /* front_wave@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "front_wave@2x.png"; sourceTree = "<group>"; };
 		C2F6E6C418BC250B0086BA77 /* fullscreen_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fullscreen_background@2x.png"; sourceTree = "<group>"; };
-		C2F6E6C518BC250B0086BA77 /* harpoon_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harpoon_arrow@2x.png"; sourceTree = "<group>"; };
-		C2F6E6C618BC250B0086BA77 /* kraken@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kraken@2x.png"; sourceTree = "<group>"; };
 		C2F6E6C718BC250B0086BA77 /* shark_fish@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shark_fish@2x.png"; sourceTree = "<group>"; };
 		C2F6E6C818BC250B0086BA77 /* squid_mouth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "squid_mouth@2x.png"; sourceTree = "<group>"; };
 		C2F6E6D418BC26900086BA77 /* arm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arm@2x.png"; sourceTree = "<group>"; };
+		C2F6E6D618BD72240086BA77 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
+		C2F6E6D718BD72240086BA77 /* MainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuScene.m; sourceTree = "<group>"; };
+		C2F6E6D918BE3E350086BA77 /* kraken@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kraken@2x.png"; sourceTree = "<group>"; };
+		C2F6E6DB18BE3E3C0086BA77 /* harpoon_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harpoon_arrow@2x.png"; sourceTree = "<group>"; };
+		C2F6E6DD18BE53670086BA77 /* TutorialScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialScene.h; sourceTree = "<group>"; };
+		C2F6E6DE18BE53670086BA77 /* TutorialScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialScene.m; sourceTree = "<group>"; };
+		C2F6E6E018BE53890086BA77 /* CreditsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsScene.h; sourceTree = "<group>"; };
+		C2F6E6E118BE53890086BA77 /* CreditsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsScene.m; sourceTree = "<group>"; };
 		C2FB16C618B3EF34002C9513 /* coin2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coin2x.png; path = ../coin2x.png; sourceTree = "<group>"; };
 		C2FB16C818B3EF4C002C9513 /* stack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stack.png; sourceTree = "<group>"; };
 		C2FB16CA18B3FF10002C9513 /* FireProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireProjectile.h; sourceTree = "<group>"; };
@@ -282,11 +288,17 @@
 				35F3DEFF17D8011E009EFFF2 /* Main.storyboard */,
 				35F3DF0217D8011E009EFFF2 /* ViewController.h */,
 				35F3DF0317D8011E009EFFF2 /* ViewController.m */,
-				35F3DF0517D8011E009EFFF2 /* MyScene.h */,
-				35F3DF0617D8011E009EFFF2 /* MyScene.m */,
-				C21C9FCB18AD9B35003CF4F6 /* defaultsnow.sks */,
+				C2F6E6D618BD72240086BA77 /* MainMenuScene.h */,
+				C2F6E6D718BD72240086BA77 /* MainMenuScene.m */,
+				35F3DF0517D8011E009EFFF2 /* GameScene.h */,
+				35F3DF0617D8011E009EFFF2 /* GameScene.m */,
+				C2F6E6DD18BE53670086BA77 /* TutorialScene.h */,
+				C2F6E6DE18BE53670086BA77 /* TutorialScene.m */,
+				C2F6E6E018BE53890086BA77 /* CreditsScene.h */,
+				C2F6E6E118BE53890086BA77 /* CreditsScene.m */,
+				35F3DF2E17D803D6009EFFF2 /* GameOverScene.h */,
+				35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */,
 				5A5D158C18AD13F100649720 /* Model */,
-				C2B6AC0418A97F5B007FAFE8 /* backgroundSnow.sks */,
 				C2FB16D318B400FA002C9513 /* fireball.sks */,
 				C221481118B5272E00A9ED15 /* iceball.sks */,
 				C2DEF39B18AD6DC700BD31E1 /* catSun.sks */,
@@ -296,8 +308,6 @@
 				C22E150618AA865500132E6E /* SnowSplosion.sks */,
 				35F3DF0A17D8011E009EFFF2 /* Images.xcassets */,
 				35F3DEF417D8011E009EFFF2 /* Supporting Files */,
-				35F3DF2E17D803D6009EFFF2 /* GameOverScene.h */,
-				35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */,
 			);
 			name = "Objective Seafood";
 			path = SpriteKitSimpleGame;
@@ -309,12 +319,12 @@
 				C2F6E6D418BC26900086BA77 /* arm@2x.png */,
 				C2F6E6BF18BC250B0086BA77 /* back_wave@2x.png */,
 				C2F6E6C018BC250B0086BA77 /* boat_back@2x.png */,
+				C2F6E6DB18BE3E3C0086BA77 /* harpoon_arrow@2x.png */,
 				C2F6E6C118BC250B0086BA77 /* boat_front@2x.png */,
 				C2F6E6C218BC250B0086BA77 /* captain@2x.png */,
 				C2F6E6C318BC250B0086BA77 /* front_wave@2x.png */,
 				C2F6E6C418BC250B0086BA77 /* fullscreen_background@2x.png */,
-				C2F6E6C518BC250B0086BA77 /* harpoon_arrow@2x.png */,
-				C2F6E6C618BC250B0086BA77 /* kraken@2x.png */,
+				C2F6E6D918BE3E350086BA77 /* kraken@2x.png */,
 				C2F6E6C718BC250B0086BA77 /* shark_fish@2x.png */,
 				C2F6E6C818BC250B0086BA77 /* squid_mouth@2x.png */,
 				5AAC65B618B7FD94007FC4C2 /* upgradeArrow@2x.png */,
@@ -510,7 +520,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C294709E18B683BE00037F86 /* bg.mp3 in Resources */,
-				C2F6E6D018BC250B0086BA77 /* harpoon_arrow@2x.png in Resources */,
 				C2FB16C718B3EF34002C9513 /* coin2x.png in Resources */,
 				C2B6AC0318A97F00007FAFE8 /* bg.jpg in Resources */,
 				C2F6E6CF18BC250B0086BA77 /* fullscreen_background@2x.png in Resources */,
@@ -535,19 +544,19 @@
 				C2DEF39E18AD6DC700BD31E1 /* bokeh.png in Resources */,
 				5A4DB9AD18B3F58D0050EA7A /* green.png in Resources */,
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
-				C2F6E6D118BC250B0086BA77 /* kraken@2x.png in Resources */,
+				C2F6E6DA18BE3E350086BA77 /* kraken@2x.png in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
 				5AAC65B718B7FD94007FC4C2 /* upgradeArrow@2x.png in Resources */,
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
 				C2F6E6D518BC26900086BA77 /* arm@2x.png in Resources */,
 				C29470A218B693D400037F86 /* icon@2x.png in Resources */,
 				C2B6AC0118A97D39007FAFE8 /* turtle.png in Resources */,
+				C2F6E6DC18BE3E3C0086BA77 /* harpoon_arrow@2x.png in Resources */,
 				C2F6E6D318BC250B0086BA77 /* squid_mouth@2x.png in Resources */,
 				C2B6ABFD18A97D39007FAFE8 /* bird.png in Resources */,
 				C2B6ABFE18A97D39007FAFE8 /* blue-shooting-stars.png in Resources */,
 				5A5D159418AD60C100649720 /* yeti.png in Resources */,
 				C221481218B5272E00A9ED15 /* iceball.sks in Resources */,
-				C2B6AC0618A97F5B007FAFE8 /* backgroundSnow.sks in Resources */,
 				C2B6AC0718A97F5B007FAFE8 /* spark.png in Resources */,
 				C2F6E6CC18BC250B0086BA77 /* boat_front@2x.png in Resources */,
 				C2DEF39D18AD6DC700BD31E1 /* catSun.sks in Resources */,
@@ -586,19 +595,22 @@
 			files = (
 				C2FB16CF18B3FF1D002C9513 /* IceProjectile.m in Sources */,
 				5A5D158F18AD31A600649720 /* Projectile.m in Sources */,
+				C2F6E6E218BE53890086BA77 /* CreditsScene.m in Sources */,
 				AAEF99E118B4071B00A44E7F /* Soldier.m in Sources */,
 				5A5D158B18AD13C100649720 /* Minion.m in Sources */,
 				C2FB16CC18B3FF10002C9513 /* FireProjectile.m in Sources */,
 				5A5D158818AD12BF00649720 /* Monster.m in Sources */,
 				C225474218B7DEA900A0AFC2 /* Boss.m in Sources */,
 				5A3C54F918B26B2C007A7E60 /* Hero.m in Sources */,
+				C2F6E6D818BD72240086BA77 /* MainMenuScene.m in Sources */,
 				35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */,
 				C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */,
 				C2FB16D218B3FF26002C9513 /* SplitProjectile.m in Sources */,
 				5A5D159218AD58BA00649720 /* Brute.m in Sources */,
-				35F3DF0717D8011E009EFFF2 /* MyScene.m in Sources */,
+				35F3DF0717D8011E009EFFF2 /* GameScene.m in Sources */,
 				C225473F18B7DEA200A0AFC2 /* Elite.m in Sources */,
 				35F3DF0417D8011E009EFFF2 /* ViewController.m in Sources */,
+				C2F6E6DF18BE53670086BA77 /* TutorialScene.m in Sources */,
 				35F3DEFE17D8011E009EFFF2 /* AppDelegate.m in Sources */,
 				5AFFF17018B29C9A00F7BFF5 /* SnowballProjectile.m in Sources */,
 				35F3DEFA17D8011E009EFFF2 /* main.m in Sources */,

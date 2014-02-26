@@ -11,18 +11,19 @@
 typedef enum : int {
     GameRunning      = 0,
     GameOver         = 1,
-    GameSave         = 2,
+    GameWon          = 2,
 } GameState;
 
 
-@interface MyScene : SKScene
+@interface GameScene : SKScene 
 
 -(void)save;
 -(void)load;
+-(id)initWithSize:(CGSize)size continued:(BOOL)continued;
+
 
 @property (nonatomic, strong) SKSpriteNode *background;
 @property (nonatomic, strong) SKSpriteNode *selectedNode;
 @property (nonatomic) BOOL muted;
-@property (nonatomic) BOOL continued;
 
 @end
