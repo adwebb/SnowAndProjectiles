@@ -20,7 +20,8 @@
  //   snowballProjectile.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snowballProjectile.frame.size];
     
     snowballProjectile.physicsBody.usesPreciseCollisionDetection = YES;
-    [snowballProjectile.physicsBody applyTorque:4.0];
+    [snowballProjectile.physicsBody applyAngularImpulse:45];
+    
     
     return snowballProjectile;
 }

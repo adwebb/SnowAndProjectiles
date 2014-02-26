@@ -58,6 +58,9 @@ typedef enum {
     SKNode      *_hudLayerNode;
     SKLabelNode *_tapScreenLabel;
     SKLabelNode* currencyLabel;
+    SKLabelNode* splitLabel;
+    SKLabelNode* fireLabel;
+    SKLabelNode* iceLabel;
     SKSpriteNode* pauseButton;
     SKSpriteNode* upgradeArrow;
     SKLabelNode* waveComplete;
@@ -157,7 +160,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
     }
     self.projectile.position = projectileSpawnPoint;
-
     
     [self addChild:self.projectile];
 }
@@ -175,20 +177,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
     CGPoint location = [touch locationInNode:self];
     SKNode* node = [self nodeAtPoint:location];
     
-//    if (_gameState == GameOver)
-//    {
-//        
-//        [self restartGame];
-//    }
-    
-    
     if([node.name hasSuffix:@"Button"])
     {
+        SKAction* recolor = [SKAction new];
+        
         if ([node.name isEqualToString:@"IceButton"])
         {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:ice];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                freezeProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"ice"] integerValue] > 0)
             {
@@ -200,6 +199,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:fire];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                fireProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"fire"] integerValue] > 0)
             {
@@ -211,6 +212,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:split];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                splitProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"split"] integerValue] > 0)
             {
@@ -231,8 +234,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
             fireProjectileButton.hidden = YES;
             freezeProjectileButton.hidden = YES;
             splitProjectileButton.hidden = YES;
-
-            
         }
         else
         {
@@ -289,9 +290,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(![typeString isEqualToString:@""])
     [_upgrades setObject:@(currentLevel) forKey:typeString];
     
+    splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:typeString] integerValue]];
+    
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
-    //NSLog(@"%@ level %@",typeString, [_upgrades objectForKey:typeString]);
 }
 
 - (NSMutableDictionary*)upgrades
@@ -396,7 +400,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(projectileType == split)
     {
         [self.projectile removeAllActions];
-       // NSLog(@"split");
+
         for (SplitProjectile* projectile in self.projectile.children) {
             int xVariance = arc4random()%5+1;
             int sign = arc4random()%2;
@@ -461,37 +465,63 @@ float degToRad(float degree)
 
 - (void)addMonsterOfType:(monsterType)type
 {
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, Nil, 0, 0);
+   // CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
     Monster* monster;
+    
+   // monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
     
     switch (type) {
         case minion:
             monster = [Minion monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+
             break;
         case brute:
             monster = [Brute monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2, self.size.height/2, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
+
             break;
         case soldier:
             monster = [Soldier monster];
+
+            CGPathAddCurveToPoint(path, nil, -self.size.width, -self.size.height/2, -self.size.height*2/3, -self.size.height/4, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+
             break;
         case skirmisher:
             monster = [Skirmisher monster];
+            
+            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
             break;
         case elite:
             monster = [Elite monster];
+            
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
             break;
         case boss:
             monster = [Boss monster];
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
         default:
             break;
     }
     
-    monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-    
     [self.monsterLayer addChild:monster];
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, Nil, 0, 0);
-    CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
     
     // Create the actions
     SKAction * actionMove = [SKAction followPath:path asOffset:YES orientToPath:NO duration:5.0];
@@ -609,35 +639,11 @@ float degToRad(float degree)
         kraken.physicsBody.categoryBitMask = monsterCategory;
         [kraken runAction:[SKAction moveByX:-self.size.width y:0 duration:5]];
     }
-    
 }
 
 
 - (void)update:(NSTimeInterval)currentTime
 {
-            
-    for (NSArray* value in [_upgrades allValues])
-    {
-        NSArray* value = [_upgrades allValues];
-        
-        if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
-        {
-            upgradeArrow.hidden = NO;
-        }
-        else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
-        {
-            upgradeArrow.hidden = NO;
-        }
-        else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
-        {
-            upgradeArrow.hidden = NO;
-        }
-        else
-        {
-            upgradeArrow.hidden = YES;
-        }
-    }
-    
     if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
     {
         [self.projectile removeFromParent];
@@ -646,15 +652,104 @@ float degToRad(float degree)
     if(projectileType == split)
     {
         for (Projectile* projectile in self.projectile.children)
-        {
-            if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+            
+            for (NSArray* value in [_upgrades allValues])
             {
-                [projectile removeFromParent];
+                NSArray* value = [_upgrades allValues];
+                
+                if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
+                {
+                    upgradeArrow.hidden = NO;
+                    
+                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 0)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [fireProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"ice"] integerValue]== 0)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [freezeProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"split"] integerValue] == 0)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [splitProjectileButton addChild:shimmer];
+                    }
+                }
+                else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
+                {
+                    upgradeArrow.hidden = NO;
+                    
+                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 1)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [fireProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"ice"] integerValue] == 1)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [freezeProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"split"] integerValue] == 1)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [splitProjectileButton addChild:shimmer];
+                    }
+                }
+                else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
+                {
+                    upgradeArrow.hidden = NO;
+                    
+                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 2)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [fireProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"ice"] integerValue] == 2)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [freezeProjectileButton addChild:shimmer];
+                    }
+                    if ([[_upgrades objectForKey:@"split"] integerValue] == 2)
+                    {
+                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                        [splitProjectileButton addChild:shimmer];
+                    }
+                }
+                else
+                {
+                    upgradeArrow.hidden = YES;
+                }
             }
-        }
-        if(self.projectile.children.count <= 0)
+        
+        if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
         {
             [self.projectile removeFromParent];
+        }
+        
+        if(projectileType == split)
+        {
+            for (Projectile* projectile in self.projectile.children)
+            {
+                if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+                {
+                    [projectile removeFromParent];
+                }
+            }
+            if(self.projectile.children.count <= 0)
+            {
+                [self.projectile removeFromParent];
+            }
         }
     }
     
@@ -713,12 +808,9 @@ float degToRad(float degree)
         [monster runAction:[SKAction sequence:@[[SKAction speedTo:monster.baseSpeed/([[_upgrades objectForKey:@"ice"]integerValue] +2) duration:0],[SKAction waitForDuration:.5], [SKAction speedTo:monster.baseSpeed duration:2]]]];
     }
     
-    
-    
     [projectile removeFromParent];
     
     self.monstersDestroyed++;
-
 }
 
 -(void)dealDamage:(int)amount toMonster:(Monster*)monster
@@ -790,14 +882,16 @@ float degToRad(float degree)
     {
         firstBody = contact.bodyA;
         secondBody = contact.bodyB;
-    }else if (contact.bodyA.categoryBitMask == contact.bodyB.categoryBitMask)
+    }
+    else if (contact.bodyA.categoryBitMask == contact.bodyB.categoryBitMask)
     {
         if(contact.bodyA.node.position.x < contact.bodyB.node.position.x)
         {
             firstBody = contact.bodyA;
             secondBody = contact.bodyB;
         }
-    }else
+    }
+    else
     {
         firstBody = contact.bodyB;
         secondBody = contact.bodyA;
@@ -822,12 +916,11 @@ float degToRad(float degree)
     float baseSpeed = monster2.baseSpeed;
     
     [monster2 runAction:[SKAction sequence:@[[SKAction speedTo:.01 duration:0],[SKAction waitForDuration:.01], [SKAction speedTo:baseSpeed duration:2]]]];
-    
 }
 
 - (void)setupUI
 {
-    
+    [hero removeFromParent];
     [self removeAllChildren];
     [self removeAllActions];
     
@@ -847,14 +940,10 @@ float degToRad(float degree)
     froWaveMove.timingMode = SKActionTimingEaseInEaseOut;
     [bgWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[toWaveMove, froWaveMove]]]];
     
-    self.monsterLayer = [SKNode node];
-    [self addChild:self.monsterLayer];
-    
     SKSpriteNode* backOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_back"];
     [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.2)];
     [self addChild:backOfBoat];
     
-  //  NSLog(@"Size: %@", NSStringFromCGSize(self.size));
     hero = [Hero spawnHero];
     hero.position = CGPointMake(hero.size.width, self.frame.size.height*2/5);
     [self addChild:hero];
@@ -864,6 +953,9 @@ float degToRad(float degree)
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.2)];
     [self addChild:frontOfBoat];
+    
+    self.monsterLayer = [SKNode node];
+    [self addChild:self.monsterLayer];
     
     toWaveMove = [SKAction moveByX:-100 y:0 duration:6];
     froWaveMove = [SKAction moveByX:100 y:0 duration:6];
@@ -891,70 +983,64 @@ float degToRad(float degree)
     
     self.currency = 0;
 
-        [[_hudLayerNode childNodeWithName:@"scoreLabel"] removeFromParent];
-        [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
-        [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"scoreLabel"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
+    [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
     
-        int barHeight = 35;
-        CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
+    int barHeight = 35;
+    CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
-        SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:.5];
-        SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
-        hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
-        hudBarBackground.anchorPoint = CGPointZero;
-        [_hudLayerNode addChild:hudBarBackground];
+    SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:.5];
+    SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
+    hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
+    hudBarBackground.anchorPoint = CGPointZero;
+    [_hudLayerNode addChild:hudBarBackground];
         
-        // 1
-        scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         
-        // 2
-        scoreLabel.fontSize = 20.0;
-        scoreLabel.text = @"Score: 0";
-        scoreLabel.name = @"scoreLabel";
-        // 3
-        scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        // 4
-        scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
-        // 5
-        [_hudLayerNode addChild:scoreLabel];
-        
-        // 1
-        _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//        float testHealth = 7;
-//        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
-    
-        // 2
-        SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        playerHealthBackground.name = @"playerHealthBackground";
-        playerHealthBackground.color = [SKColor darkGrayColor];
-        playerHealthBackground.colorBlendFactor = .5;
-        playerHealthBackground.fontSize = 15.0f;
+    scoreLabel.fontSize = 20.0;
+    scoreLabel.text = @"Score: 0";
+    scoreLabel.name = @"scoreLabel";
 
-        playerHealthBackground.text = _healthBar;
-        
-        currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
-        coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
-        currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
-        currencyLabel.fontSize = 20;
-        currencyLabel.text = @"0";
-        currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
-        currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        [_hudLayerNode addChild:currencyLabel];
-        [_hudLayerNode addChild:coinStack];
+    scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+
+    scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
+
+    [_hudLayerNode addChild:scoreLabel];
     
-        pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
-        pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
-        pauseButton.name = @"PauseButton";
-        [_hudLayerNode addChild:pauseButton];
+    _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+//   float testHealth = 7;
+//   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
+    
+    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    playerHealthBackground.name = @"playerHealthBackground";
+    playerHealthBackground.color = [SKColor darkGrayColor];
+    playerHealthBackground.colorBlendFactor = .5;
+    playerHealthBackground.fontSize = 15.0f;
+
+    playerHealthBackground.text = _healthBar;
         
-        // 3
-        playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
-        playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-        playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
-        [_hudLayerNode addChild:playerHealthBackground];
+    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
+    coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
+    currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
+    currencyLabel.fontSize = 20;
+    currencyLabel.text = @"0";
+    currencyLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+    currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    [_hudLayerNode addChild:currencyLabel];
+    [_hudLayerNode addChild:coinStack];
+    
+    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
+    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
+    pauseButton.name = @"PauseButton";
+    [_hudLayerNode addChild:pauseButton];
+    
+    playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
+    playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
+    [_hudLayerNode addChild:playerHealthBackground];
         
-        // 4
         _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         _playerHealthLabel.name = @"playerHealth";
         _playerHealthLabel.fontColor = [SKColor whiteColor];
@@ -984,33 +1070,68 @@ float degToRad(float degree)
         _tapScreenLabel.text = @"Tap Screen To Restart";
         
         _gameOverPulse = [SKAction repeatActionForever:[SKAction sequence:@[[SKAction fadeOutWithDuration:1.0], [SKAction fadeInWithDuration:1.0]]]];
-    
 
         splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
         splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
         splitProjectileButton.name = @"SplitButton";
         splitProjectileButton.hidden = NO;
+        splitProjectileButton.alpha = 0.4f;
+    
         [_hudLayerNode addChild:splitProjectileButton];
-        
+    
+        splitLabel = [SKLabelNode new];
+        splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        splitLabel.fontSize = 10.0f;
+        splitLabel.fontColor = [SKColor whiteColor];
+        splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
+        splitLabel.position = CGPointMake(self.frame.size.width/11.5, self.frame.size.height/6.5);
+    
+        [_hudLayerNode addChild:splitLabel];
+    
         freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
         freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2, freezeProjectileButton.size.height/2);
         freezeProjectileButton.name = @"IceButton";
         freezeProjectileButton.hidden = NO;
+        freezeProjectileButton.alpha = 0.4f;
 
         [_hudLayerNode addChild:freezeProjectileButton];
-        
-        fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
-        fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
-        fireProjectileButton.name = @"FireButton";
-        fireProjectileButton.hidden = NO;
+    
+    iceLabel = [SKLabelNode new];
+    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    iceLabel.fontSize = 10.0f;
+    iceLabel.fontColor = [SKColor whiteColor];
+    iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
+    iceLabel.position = CGPointMake(self.frame.size.width/5.6, self.frame.size.height/6.5);
+    
+    [_hudLayerNode addChild:iceLabel];
+    
+    fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
+    fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
+    fireProjectileButton.name = @"FireButton";
+    fireProjectileButton.hidden = NO;
+    fireProjectileButton.alpha = 0.4f;
 
-        [_hudLayerNode addChild:fireProjectileButton];
+    [_hudLayerNode addChild:fireProjectileButton];
+    
+    fireLabel = [SKLabelNode new];
+    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    fireLabel.fontSize = 10.0f;
+    fireLabel.fontColor = [SKColor whiteColor];
+    fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
+    fireLabel.position = CGPointMake(self.frame.size.width/3.75, self.frame.size.height/6.5);
+    
+    [_hudLayerNode addChild:fireLabel];
     
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
     upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*4, fireProjectileButton.size.height/2);
     upgradeArrow.hidden = YES;
     upgradeArrow.name = @"upgradeArrow";
     [_hudLayerNode addChild:upgradeArrow];
+    
+    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
+    [fireProjectileButton runAction:greyedOut];
+    [freezeProjectileButton runAction:greyedOut];
+    [splitProjectileButton runAction:greyedOut];
 }
 
 -(void)takeDamage:(int)amount
@@ -1039,34 +1160,6 @@ float degToRad(float degree)
     self.currency += increment;
     currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
 }
-
-//- (void)restartGame
-//{
-//    // Reset the state of the game
-//    _gameState = GameRunning;
-//
-//    // Set up the entities again and the score
-//    [self setupUI];
-//    [self increaseScoreBy:-_score];
-//    self.wave = 1;
-//    [self advanceToWave:self.wave];
-//    
-//    // Reset the score and the players health
-//  //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
-//    hero.health = 10;
-//
-//    hero = [Hero spawnHero];
-//    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-//    [self addChild:hero];
-//    
-//    [self advanceToWave:self.wave];
-//    
-//
-//    // Remove the game over HUD labels
-//    [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
-//    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
-//    [[_hudLayerNode childNodeWithName:@"tapScreen"] removeFromParent];
-//}
 
 -(void)save
 {
