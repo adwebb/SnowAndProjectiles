@@ -659,110 +659,107 @@ float degToRad(float degree)
     {
         [self.projectile removeFromParent];
     }
+   
+//    for (Projectile* projectile in self.projectile.children)
     
-    if(projectileType == split)
-    {
-        for (Projectile* projectile in self.projectile.children)
+        for (NSArray* value in [_upgrades allValues])
+        {
+            NSArray* value = [_upgrades allValues];
             
-            for (NSArray* value in [_upgrades allValues])
+            if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
             {
-                NSArray* value = [_upgrades allValues];
+                upgradeArrow.hidden = NO;
                 
-                if ([value containsObject:[NSNumber numberWithInt:0]] && self.currency >= 50)
+                if ([[_upgrades objectForKey:@"fire"] integerValue] == 0)
                 {
-                    upgradeArrow.hidden = NO;
-                    
-                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 0)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [fireProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"ice"] integerValue]== 0)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [freezeProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"split"] integerValue] == 0)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [splitProjectileButton addChild:shimmer];
-                    }
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [fireProjectileButton addChild:shimmer];
                 }
-                else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
+                if ([[_upgrades objectForKey:@"ice"] integerValue]== 0)
                 {
-                    upgradeArrow.hidden = NO;
-                    
-                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 1)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [fireProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"ice"] integerValue] == 1)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [freezeProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"split"] integerValue] == 1)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [splitProjectileButton addChild:shimmer];
-                    }
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [freezeProjectileButton addChild:shimmer];
                 }
-                else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
+                if ([[_upgrades objectForKey:@"split"] integerValue] == 0)
                 {
-                    upgradeArrow.hidden = NO;
-                    
-                    if ([[_upgrades objectForKey:@"fire"] integerValue] == 2)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [fireProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"ice"] integerValue] == 2)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [freezeProjectileButton addChild:shimmer];
-                    }
-                    if ([[_upgrades objectForKey:@"split"] integerValue] == 2)
-                    {
-                        NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
-                        SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-                        [splitProjectileButton addChild:shimmer];
-                    }
-                }
-                else
-                {
-                    upgradeArrow.hidden = YES;
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [splitProjectileButton addChild:shimmer];
                 }
             }
-        
-        if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
-        {
-            [self.projectile removeFromParent];
-        }
-        
-        if(projectileType == split)
-        {
-            for (Projectile* projectile in self.projectile.children)
+            else if ([value containsObject:[NSNumber numberWithInt:1]] && self.currency >= 100)
             {
-                if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+                upgradeArrow.hidden = NO;
+                
+                if ([[_upgrades objectForKey:@"fire"] integerValue] == 1)
                 {
-                    [projectile removeFromParent];
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [fireProjectileButton addChild:shimmer];
+                }
+                if ([[_upgrades objectForKey:@"ice"] integerValue] == 1)
+                {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [freezeProjectileButton addChild:shimmer];
+                }
+                if ([[_upgrades objectForKey:@"split"] integerValue] == 1)
+                {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [splitProjectileButton addChild:shimmer];
                 }
             }
-            if(self.projectile.children.count <= 0)
+            else if ([value containsObject:[NSNumber numberWithInt:2]] && self.currency >= 250)
+            {
+                upgradeArrow.hidden = NO;
+                
+                if ([[_upgrades objectForKey:@"fire"] integerValue] == 2)
+                {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [fireProjectileButton addChild:shimmer];
+                }
+                if ([[_upgrades objectForKey:@"ice"] integerValue] == 2)
+                {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [freezeProjectileButton addChild:shimmer];
+                }
+                if ([[_upgrades objectForKey:@"split"] integerValue] == 2)
+                {
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"shimmer" ofType:@"sks"];
+                    SKEmitterNode* shimmer = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+                    [splitProjectileButton addChild:shimmer];
+                }
+            }
+            else
+            {
+                upgradeArrow.hidden = YES;
+            }
+            
+            if(self.projectile.position.x > self.size.width || -self.projectile.position.y > self.size.height)
             {
                 [self.projectile removeFromParent];
             }
+            
+            if(projectileType == split)
+            {
+                for (Projectile* projectile in self.projectile.children)
+                {
+                    if(projectile.position.x > self.size.width || -projectile.position.y > self.size.height)
+                    {
+                        [projectile removeFromParent];
+                    }
+                }
+                if(self.projectile.children.count <= 0)
+                {
+                    [self.projectile removeFromParent];
+                }
+            }
         }
-    }
     
     if(![self.children containsObject:self.projectile])
     {
