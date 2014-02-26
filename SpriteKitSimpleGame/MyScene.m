@@ -22,7 +22,6 @@
 #import "IceProjectile.h"
 #import "SplitProjectile.h"
 
-
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t heroCategory           =  0x11;
@@ -726,7 +725,6 @@ float degToRad(float degree)
                 [hero removeFromParent];
                 [hero removeAllChildren];
                 [_monsterLayer removeFromParent];
-
                 
                 [_hudLayerNode addChild:_gameOverLabel];
                 [_hudLayerNode addChild:_tapScreenLabel];
@@ -986,7 +984,6 @@ float degToRad(float degree)
     [_hudLayerNode addChild:scoreLabel];
     
     _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-//   float testHealth = 7;
 //   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
         SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
@@ -1112,7 +1109,7 @@ float degToRad(float degree)
 -(void)increaseCurrencyBy:(int)increment
 {
     self.currency += increment;
-    currencyLabel.text = [NSString stringWithFormat:@"%d",self.currency];
+    currencyLabel.text = [NSString stringWithFormat:@"%d", self.currency];
 }
 
 - (void)restartGame
@@ -1120,24 +1117,16 @@ float degToRad(float degree)
     // Reset the state of the game
     _gameState = GameRunning;
     
-    
     // Set up the entities again and the score
     [self setupUI];
     [self increaseScoreBy:-_score];
     self.wave = 1;
-    [self advanceToWave:self.wave];
     
     // Reset the score and the players health
-  //  scoreLabel = (SKLabelNode *)[_hudLayerNode childNodeWithName:@"scoreLabel"];
     hero.health = 10;
 
-//    hero = [Hero spawnHero];
-//    hero.position = CGPointMake(hero.size.width*2, self.frame.size.height*2/5);
-//    [self addChild:hero];
-//    
     [self advanceToWave:self.wave];
     
-
     // Remove the game over HUD labels
     [[_hudLayerNode childNodeWithName:@"gameOver"] removeFromParent];
     [[_hudLayerNode childNodeWithName:@"tapScreen"] removeAllActions];
