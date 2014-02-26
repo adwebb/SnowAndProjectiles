@@ -227,6 +227,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         if (self.view.scene.paused == NO)
         {
             self.view.scene.paused = YES;
+    
             [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
             fireProjectileButton.hidden = YES;
             freezeProjectileButton.hidden = YES;
@@ -367,6 +368,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     SKAction* fire = [SKAction customActionWithDuration:1 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
         SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        
         
         float fireX = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.width);
         
