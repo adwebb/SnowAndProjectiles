@@ -125,7 +125,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     if (self = [super initWithSize:size])
     {
-        
         [self setupUI];
     }
     return self;
@@ -154,7 +153,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
             break;
     }
     self.projectile.position = projectileSpawnPoint;
-
     
     [self addChild:self.projectile];
 }
@@ -168,7 +166,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     if(_continued)
     {
         [self load];
-    }else
+    }
+    else
     {
         _score = 0;
         _currency = 0;
@@ -184,18 +183,21 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     if (_gameState == GameOver)
     {
-        
         [self restartGame];
     }
     
     
     if([node.name hasSuffix:@"Button"])
     {
+        SKAction* recolor = [SKAction new];
+        
         if ([node.name isEqualToString:@"IceButton"])
         {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:ice];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                freezeProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"ice"] integerValue] > 0)
             {
@@ -207,6 +209,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:fire];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                fireProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"fire"] integerValue] > 0)
             {
@@ -218,6 +222,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:split];
+                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                splitProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"split"] integerValue] > 0)
             {
@@ -875,7 +881,6 @@ float degToRad(float degree)
     float baseSpeed = monster2.baseSpeed;
     
     [monster2 runAction:[SKAction sequence:@[[SKAction speedTo:.01 duration:0],[SKAction waitForDuration:.01], [SKAction speedTo:baseSpeed duration:2]]]];
-    
 }
 
 - (void)setupUI
@@ -909,8 +914,6 @@ float degToRad(float degree)
     [self addChild:hero];
     
     projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
-    
-   
     
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.25)];
@@ -948,28 +951,28 @@ float degToRad(float degree)
     [[_hudLayerNode childNodeWithName:@"coinStack"] removeFromParent];
     [[_hudLayerNode childNodeWithName:@"currencyLabel"] removeFromParent];
     
-        int barHeight = 35;
-        CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
+    int barHeight = 35;
+    CGSize backgroundSize = CGSizeMake(self.size.width, barHeight);
         
-        SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:.5];
-        SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
-        hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
-        hudBarBackground.anchorPoint = CGPointZero;
-        [_hudLayerNode addChild:hudBarBackground];
+    SKColor *backgroundColor = [SKColor colorWithRed:0 green:0 blue:0.05 alpha:.5];
+    SKSpriteNode *hudBarBackground = [SKSpriteNode spriteNodeWithColor:backgroundColor size:backgroundSize];
+    hudBarBackground.position = CGPointMake(0, self.size.height - barHeight);
+    hudBarBackground.anchorPoint = CGPointZero;
+    [_hudLayerNode addChild:hudBarBackground];
         
-        scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         
-        scoreLabel.fontSize = 20.0;
-        scoreLabel.text = @"Score: 0";
-        scoreLabel.name = @"scoreLabel";
+    scoreLabel.fontSize = 20.0;
+    scoreLabel.text = @"Score: 0";
+    scoreLabel.name = @"scoreLabel";
 
-        scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
 
-        scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
+    scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
 
-        [_hudLayerNode addChild:scoreLabel];
+    [_hudLayerNode addChild:scoreLabel];
     
-        _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
+    _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
 //        float testHealth = 7;
 //        NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
     
@@ -1038,12 +1041,23 @@ float degToRad(float degree)
         splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
         splitProjectileButton.name = @"SplitButton";
         splitProjectileButton.hidden = NO;
+        splitProjectileButton.alpha = 0.4f;
+    
         [_hudLayerNode addChild:splitProjectileButton];
-        
+    
+        SKLabelNode* splitLabel = [SKLabelNode new];
+        splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        splitLabel.fontSize = 10.0f;
+        splitLabel.fontColor = [SKColor whiteColor];
+        splitLabel.text = @"Lv: 0";
+        splitLabel.position = CGPointMake(self.frame.size.width/12, self.frame.size.height/6.5);
+        [_hudLayerNode addChild:splitLabel];
+    
         freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
         freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2, freezeProjectileButton.size.height/2);
         freezeProjectileButton.name = @"IceButton";
         freezeProjectileButton.hidden = NO;
+        freezeProjectileButton.alpha = 0.4f;
 
         [_hudLayerNode addChild:freezeProjectileButton];
         
@@ -1051,8 +1065,9 @@ float degToRad(float degree)
         fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
         fireProjectileButton.name = @"FireButton";
         fireProjectileButton.hidden = NO;
+        fireProjectileButton.alpha = 0.4f;
 
-        [_hudLayerNode addChild:fireProjectileButton];
+    [_hudLayerNode addChild:fireProjectileButton];
     
     [self upgrades];
     upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
@@ -1062,7 +1077,14 @@ float degToRad(float degree)
     [_hudLayerNode addChild:upgradeArrow];
     [self takeDamage:0];
     
-   
+    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
+    [fireProjectileButton runAction:greyedOut];
+    [freezeProjectileButton runAction:greyedOut];
+    [splitProjectileButton runAction:greyedOut];
+    
+//    SKAction* normal = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+//    [fireProjectileButton runAction:normal];
+
 }
 
 -(void)takeDamage:(int)amount
