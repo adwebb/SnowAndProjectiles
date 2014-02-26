@@ -448,16 +448,26 @@ float degToRad(float degree)
         case soldier:
             monster = [Soldier monster];
 
+            CGPathAddCurveToPoint(path, nil, -self.size.width, -self.size.height/2, -self.size.height*2/3, -self.size.height/4, -self.size.width, -50);
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+
             break;
         case skirmisher:
             monster = [Skirmisher monster];
             
-            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
-            
-            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+//            CGPathAddCurveToPoint(path, nil, -self.size.height/2/3, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+//            
+//            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
             break;
         case elite:
             monster = [Elite monster];
+            
+            CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
+
+            
+            monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            
             break;
         case boss:
             monster = [Boss monster];
