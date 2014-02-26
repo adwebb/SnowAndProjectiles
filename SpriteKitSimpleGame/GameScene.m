@@ -47,6 +47,7 @@ typedef enum {
 {
     Hero* hero;
     Boss* kraken;
+    SKNode* boat;
     
     UIPanGestureRecognizer* panGestureRecognizer;
     CGPoint projectileSpawnPoint;
@@ -346,8 +347,18 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
--(void)sink:(SKSpriteNode*)node
+-(void)sink:(SKNode*)node
 {
+    BOOL won = NO;
+    if([node isKindOfClass:[Boss class]])
+    {
+        won = YES;
+    }else if ([node isKindOfClass:[Hero class]])
+    {
+        won = NO;
+    }
+    
+    
     SKAction *rumble = [SKAction sequence:
                      @[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
                        [SKAction rotateByAngle:0.0 duration:0.1],
@@ -369,24 +380,24 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [node addChild:explosion];
     }];
     
-    SKAction* sinkSequence = [SKAction sequence:@[sinkAction, fire, [SKAction waitForDuration:.5]]];
+    SKAction* sinkSequence = [SKAction sequence:@[fire, sinkAction, [SKAction waitForDuration:.5]]];
     
     SKAction* sinkUntilGone = [SKAction repeatAction:sinkSequence count:node.position.y/50];
     
-    [node runAction:rumbleUntilGone];
+    if(!won)
+        [boat runAction:sinkUntilGone];
     
+    [node removeAllActions];
+    [node runAction:rumbleUntilGone];
     [node runAction:sinkUntilGone completion:^{
         
-        BOOL won = NO;
-        if([node isKindOfClass:[Boss class]])
+        if(won)
         {
-            won = YES;
-        }else if ([node isKindOfClass:[Hero class]])
-        {
-            won = NO;
+            [kraken removeFromParent];
+        }else{
+            [boat removeFromParent];
         }
-        
-        SKTransition *reveal = [SKTransition flipVerticalWithDuration:0.5];
+        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:1];
         SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:won score:_score];
         [self.view presentScene:gameOverScene transition: reveal];
     }];
@@ -940,19 +951,24 @@ float degToRad(float degree)
     froWaveMove.timingMode = SKActionTimingEaseInEaseOut;
     [bgWave runAction:[SKAction repeatActionForever:[SKAction sequence:@[toWaveMove, froWaveMove]]]];
     
+    boat = [SKNode node];
+    [self addChild:boat];
+    
     SKSpriteNode* backOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_back"];
     [backOfBoat setPosition:CGPointMake(backOfBoat.size.width/2, backOfBoat.size.height*1.2)];
-    [self addChild:backOfBoat];
+    backOfBoat.name = @"boatBack";
+    [boat addChild:backOfBoat];
     
     hero = [Hero spawnHero];
     hero.position = CGPointMake(hero.size.width, self.frame.size.height*2/5);
-    [self addChild:hero];
+    [boat addChild:hero];
     
     projectileSpawnPoint = CGPointMake(hero.size.width*1.5, self.frame.size.height*2/5-7);
     
     SKSpriteNode* frontOfBoat = [SKSpriteNode spriteNodeWithImageNamed:@"boat_front"];
     [frontOfBoat setPosition:CGPointMake(frontOfBoat.size.width/2, frontOfBoat.size.height*1.2)];
-    [self addChild:frontOfBoat];
+    frontOfBoat.name = @"boatFront";
+    [boat addChild:frontOfBoat];
     
     self.monsterLayer = [SKNode node];
     [self addChild:self.monsterLayer];
