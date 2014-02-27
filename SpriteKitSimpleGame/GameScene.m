@@ -248,6 +248,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         if (self.view.scene.paused == NO)
         {
             self.view.scene.paused = YES;
+    
             [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
             fireProjectileButton.hidden = YES;
             freezeProjectileButton.hidden = YES;
@@ -778,7 +779,7 @@ float degToRad(float degree)
     }
 }
 
--(void)sink:(SKNode*)node
+- (void)sink:(SKNode*)node
 {
     BOOL won;
     if([node.name isEqualToString:@"Kraken"])
@@ -1010,6 +1011,7 @@ float degToRad(float degree)
     playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
     [_hudLayerNode addChild:playerHealthBackground];
+<<<<<<< HEAD
     
     _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     _playerHealthLabel.name = @"playerHealth";
@@ -1049,8 +1051,43 @@ float degToRad(float degree)
     freezeProjectileButton.alpha = 0.4f;
     
     [projectileButtonLayer addChild:freezeProjectileButton];
+=======
+        
+        _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        _playerHealthLabel.name = @"playerHealth";
+        _playerHealthLabel.fontColor = [SKColor whiteColor];
+        _playerHealthLabel.fontSize = 15.0f;
+        _playerHealthLabel.text = _healthBar;
+        _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+        _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+        _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
+        [_hudLayerNode addChild:_playerHealthLabel];
     
-    iceLabel = [SKLabelNode new];
+        splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+        splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
+        splitProjectileButton.name = @"SplitButton";
+        splitProjectileButton.hidden = NO;
+        splitProjectileButton.alpha = 0.4f;
+    
+        [_hudLayerNode addChild:splitProjectileButton];
+    
+        splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        splitLabel.fontSize = 10.0f;
+        splitLabel.fontColor = [SKColor whiteColor];
+        splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
+        splitLabel.position = CGPointMake(self.frame.size.width/11.5, self.frame.size.height/6.5);
+    
+        [_hudLayerNode addChild:splitLabel];
+    
+        freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
+        freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2, freezeProjectileButton.size.height/2);
+        freezeProjectileButton.name = @"IceButton";
+        freezeProjectileButton.hidden = NO;
+        freezeProjectileButton.alpha = 0.4f;
+
+        [_hudLayerNode addChild:freezeProjectileButton];
+>>>>>>> 9f41d4b20aef7c3ceb2fedb6a69233f7abc72aec
+    
     iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     iceLabel.fontSize = 10.0f;
     iceLabel.fontColor = [SKColor whiteColor];
@@ -1067,7 +1104,6 @@ float degToRad(float degree)
 
     [projectileButtonLayer addChild:fireProjectileButton];
     
-    fireLabel = [SKLabelNode new];
     fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     fireLabel.fontSize = 10.0f;
     fireLabel.fontColor = [SKColor whiteColor];
