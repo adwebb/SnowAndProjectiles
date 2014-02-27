@@ -53,6 +53,24 @@
 		C2F6E6DF18BE53670086BA77 /* TutorialScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F6E6DE18BE53670086BA77 /* TutorialScene.m */; };
 		C2F6E6E218BE53890086BA77 /* CreditsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F6E6E118BE53890086BA77 /* CreditsScene.m */; };
 		C2F6E6EB18BECA5B0086BA77 /* images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6EA18BECA5B0086BA77 /* images.atlas */; };
+		C2F6E6F118BEFEE80086BA77 /* harpoonlaunch.wav in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6F018BEFEE80086BA77 /* harpoonlaunch.wav */; };
+		C2F6E6F318BEFEF60086BA77 /* arrowHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E6F218BEFEF60086BA77 /* arrowHit.wav */; };
+		C2F6E70718BF03740086BA77 /* anglerfish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70218BF03740086BA77 /* anglerfish@2x.png */; };
+		C2F6E70818BF03740086BA77 /* backgroundScene@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70318BF03740086BA77 /* backgroundScene@2x.png */; };
+		C2F6E70918BF03740086BA77 /* eel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70418BF03740086BA77 /* eel@2x.png */; };
+		C2F6E70A18BF03740086BA77 /* harpoon_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70518BF03740086BA77 /* harpoon_white@2x.png */; };
+		C2F6E70B18BF03740086BA77 /* starfish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70618BF03740086BA77 /* starfish@2x.png */; };
+		C2F6E70F18BF03C90086BA77 /* Opificio.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70E18BF03C90086BA77 /* Opificio.ttf */; };
+		C2F6E71018BF03CB0086BA77 /* Opificio_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70D18BF03BD0086BA77 /* Opificio_Bold.ttf */; };
+		C2F6E71118BF03D10086BA77 /* Japan.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70C18BF038F0086BA77 /* Japan.ttf */; };
+		C2F6E71218BF03D40086BA77 /* coolvetica rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70118BF034B0086BA77 /* coolvetica rg.ttf */; };
+		C2F6E71318BF03DA0086BA77 /* Carnevalee Freakshow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E70018BF03380086BA77 /* Carnevalee Freakshow.ttf */; };
+		C2F6E71618BF043E0086BA77 /* Sancreek-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71518BF043E0086BA77 /* Sancreek-Regular.ttf */; };
+		C2F6E71718BF04430086BA77 /* Romantiques.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71418BF04300086BA77 /* Romantiques.ttf */; };
+		C2F6E71918BF04B00086BA77 /* Doergon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71818BF04B00086BA77 /* Doergon.ttf */; };
+		C2F6E71B18BF04DB0086BA77 /* typodermic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71A18BF04DB0086BA77 /* typodermic.otf */; };
+		C2F6E71D18BF057E0086BA77 /* ic_gem_status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71C18BF057E0086BA77 /* ic_gem_status@2x.png */; };
+		C2F6E71F18BF05860086BA77 /* ic_kill_gem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E71E18BF05860086BA77 /* ic_kill_gem@2x.png */; };
 		C2FB16CC18B3FF10002C9513 /* FireProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16CB18B3FF10002C9513 /* FireProjectile.m */; };
 		C2FB16CF18B3FF1D002C9513 /* IceProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16CE18B3FF1D002C9513 /* IceProjectile.m */; };
 		C2FB16D218B3FF26002C9513 /* SplitProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16D118B3FF26002C9513 /* SplitProjectile.m */; };
@@ -136,6 +154,24 @@
 		C2F6E6E018BE53890086BA77 /* CreditsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsScene.h; sourceTree = "<group>"; };
 		C2F6E6E118BE53890086BA77 /* CreditsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsScene.m; sourceTree = "<group>"; };
 		C2F6E6EA18BECA5B0086BA77 /* images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = images.atlas; path = SpriteKitSimpleGame/images.atlas; sourceTree = "<group>"; };
+		C2F6E6F018BEFEE80086BA77 /* harpoonlaunch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = harpoonlaunch.wav; sourceTree = "<group>"; };
+		C2F6E6F218BEFEF60086BA77 /* arrowHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = arrowHit.wav; sourceTree = "<group>"; };
+		C2F6E70018BF03380086BA77 /* Carnevalee Freakshow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Carnevalee Freakshow.ttf"; sourceTree = "<group>"; };
+		C2F6E70118BF034B0086BA77 /* coolvetica rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "coolvetica rg.ttf"; sourceTree = "<group>"; };
+		C2F6E70218BF03740086BA77 /* anglerfish@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "anglerfish@2x.png"; sourceTree = "<group>"; };
+		C2F6E70318BF03740086BA77 /* backgroundScene@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundScene@2x.png"; sourceTree = "<group>"; };
+		C2F6E70418BF03740086BA77 /* eel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "eel@2x.png"; sourceTree = "<group>"; };
+		C2F6E70518BF03740086BA77 /* harpoon_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harpoon_white@2x.png"; sourceTree = "<group>"; };
+		C2F6E70618BF03740086BA77 /* starfish@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starfish@2x.png"; sourceTree = "<group>"; };
+		C2F6E70C18BF038F0086BA77 /* Japan.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Japan.ttf; sourceTree = "<group>"; };
+		C2F6E70D18BF03BD0086BA77 /* Opificio_Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Opificio_Bold.ttf; sourceTree = "<group>"; };
+		C2F6E70E18BF03C90086BA77 /* Opificio.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Opificio.ttf; sourceTree = "<group>"; };
+		C2F6E71418BF04300086BA77 /* Romantiques.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Romantiques.ttf; sourceTree = "<group>"; };
+		C2F6E71518BF043E0086BA77 /* Sancreek-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sancreek-Regular.ttf"; sourceTree = "<group>"; };
+		C2F6E71818BF04B00086BA77 /* Doergon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Doergon.ttf; sourceTree = "<group>"; };
+		C2F6E71A18BF04DB0086BA77 /* typodermic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = typodermic.otf; sourceTree = "<group>"; };
+		C2F6E71C18BF057E0086BA77 /* ic_gem_status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_gem_status@2x.png"; sourceTree = "<group>"; };
+		C2F6E71E18BF05860086BA77 /* ic_kill_gem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_kill_gem@2x.png"; sourceTree = "<group>"; };
 		C2FB16CA18B3FF10002C9513 /* FireProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireProjectile.h; sourceTree = "<group>"; };
 		C2FB16CB18B3FF10002C9513 /* FireProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FireProjectile.m; sourceTree = "<group>"; };
 		C2FB16CD18B3FF1D002C9513 /* IceProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceProjectile.h; sourceTree = "<group>"; };
@@ -238,6 +274,22 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C2F6E71E18BF05860086BA77 /* ic_kill_gem@2x.png */,
+				C2F6E71C18BF057E0086BA77 /* ic_gem_status@2x.png */,
+				C2F6E71A18BF04DB0086BA77 /* typodermic.otf */,
+				C2F6E71818BF04B00086BA77 /* Doergon.ttf */,
+				C2F6E71518BF043E0086BA77 /* Sancreek-Regular.ttf */,
+				C2F6E71418BF04300086BA77 /* Romantiques.ttf */,
+				C2F6E70E18BF03C90086BA77 /* Opificio.ttf */,
+				C2F6E70D18BF03BD0086BA77 /* Opificio_Bold.ttf */,
+				C2F6E70C18BF038F0086BA77 /* Japan.ttf */,
+				C2F6E70118BF034B0086BA77 /* coolvetica rg.ttf */,
+				C2F6E70018BF03380086BA77 /* Carnevalee Freakshow.ttf */,
+				C2F6E70218BF03740086BA77 /* anglerfish@2x.png */,
+				C2F6E70318BF03740086BA77 /* backgroundScene@2x.png */,
+				C2F6E70418BF03740086BA77 /* eel@2x.png */,
+				C2F6E70518BF03740086BA77 /* harpoon_white@2x.png */,
+				C2F6E70618BF03740086BA77 /* starfish@2x.png */,
 				35F3DEF517D8011E009EFFF2 /* Obj. Seafood-Info.plist */,
 				35F3DEF617D8011E009EFFF2 /* InfoPlist.strings */,
 				35F3DEF917D8011E009EFFF2 /* main.m */,
@@ -268,6 +320,8 @@
 		35F3DF2717D80158009EFFF2 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				C2F6E6F218BEFEF60086BA77 /* arrowHit.wav */,
+				C2F6E6F018BEFEE80086BA77 /* harpoonlaunch.wav */,
 				C294709D18B683BE00037F86 /* bg.mp3 */,
 				C294709F18B683CB00037F86 /* intro.mp3 */,
 				5AB1C56E18B7F03E0010F703 /* iceHit.wav */,
@@ -420,12 +474,22 @@
 				AAA184FB18BF04D100782794 /* seagull3.png in Resources */,
 				AAA184FA18BF04D100782794 /* seagul2.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
+				C2F6E70F18BF03C90086BA77 /* Opificio.ttf in Resources */,
 				5A82FD5018BD3395002B0E64 /* shimmer.sks in Resources */,
+				C2F6E70918BF03740086BA77 /* eel@2x.png in Resources */,
+				C2F6E71B18BF04DB0086BA77 /* typodermic.otf in Resources */,
+				C2F6E71F18BF05860086BA77 /* ic_kill_gem@2x.png in Resources */,
 				5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */,
+				C2F6E6F318BEFEF60086BA77 /* arrowHit.wav in Resources */,
 				C29470A018B683CB00037F86 /* intro.mp3 in Resources */,
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
+				C2F6E70718BF03740086BA77 /* anglerfish@2x.png in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
+				C2F6E70818BF03740086BA77 /* backgroundScene@2x.png in Resources */,
+				C2F6E71D18BF057E0086BA77 /* ic_gem_status@2x.png in Resources */,
+				C2F6E71718BF04430086BA77 /* Romantiques.ttf in Resources */,
+				C2F6E6F118BEFEE80086BA77 /* harpoonlaunch.wav in Resources */,
 				C221481218B5272E00A9ED15 /* iceball.sks in Resources */,
 				C2DEF39D18AD6DC700BD31E1 /* catSun.sks in Resources */,
 				5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */,
@@ -434,7 +498,15 @@
 				5AAC65B518B7F646007FC4C2 /* fireExplosion.wav in Resources */,
 				C2F6E6EB18BECA5B0086BA77 /* images.atlas in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
+				C2F6E70B18BF03740086BA77 /* starfish@2x.png in Resources */,
+				C2F6E71018BF03CB0086BA77 /* Opificio_Bold.ttf in Resources */,
+				C2F6E71618BF043E0086BA77 /* Sancreek-Regular.ttf in Resources */,
 				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
+				C2F6E71918BF04B00086BA77 /* Doergon.ttf in Resources */,
+				C2F6E71318BF03DA0086BA77 /* Carnevalee Freakshow.ttf in Resources */,
+				C2F6E70A18BF03740086BA77 /* harpoon_white@2x.png in Resources */,
+				C2F6E71218BF03D40086BA77 /* coolvetica rg.ttf in Resources */,
+				C2F6E71118BF03D10086BA77 /* Japan.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

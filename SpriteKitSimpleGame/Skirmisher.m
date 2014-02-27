@@ -12,7 +12,7 @@
 
 + (Skirmisher*)monster
 {
-    Skirmisher* skirmisher = [Skirmisher spriteNodeWithImageNamed:@"fish"];
+    Skirmisher* skirmisher = [Skirmisher spriteNodeWithImageNamed:@"eel"];
     skirmisher.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:skirmisher.size];
     skirmisher.baseSpeed = 2;
     skirmisher.damage = 1;

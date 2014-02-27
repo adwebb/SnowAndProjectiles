@@ -12,7 +12,7 @@
 
 + (Harpoon*)projectile
 {
-    Harpoon* projectile = [Harpoon spriteNodeWithImageNamed:@"harpoon_arrow"];
+    Harpoon* projectile = [Harpoon spriteNodeWithImageNamed:@"harpoon_arrow.png"];
     projectile.damage = 1;
     projectile = (Harpoon*)[super setProjectileProperties:projectile];
     
