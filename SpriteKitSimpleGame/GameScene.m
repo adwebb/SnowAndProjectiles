@@ -1100,7 +1100,6 @@ float degToRad(float degree)
     
         [_hudLayerNode addChild:splitProjectileButton];
     
-        splitLabel = [SKLabelNode new];
         splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         splitLabel.fontSize = 10.0f;
         splitLabel.fontColor = [SKColor whiteColor];
@@ -1117,7 +1116,6 @@ float degToRad(float degree)
 
         [_hudLayerNode addChild:freezeProjectileButton];
     
-    iceLabel = [SKLabelNode new];
     iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     iceLabel.fontSize = 10.0f;
     iceLabel.fontColor = [SKColor whiteColor];
@@ -1134,7 +1132,6 @@ float degToRad(float degree)
 
     [_hudLayerNode addChild:fireProjectileButton];
     
-    fireLabel = [SKLabelNode new];
     fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     fireLabel.fontSize = 10.0f;
     fireLabel.fontColor = [SKColor whiteColor];
