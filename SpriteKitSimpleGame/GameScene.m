@@ -240,14 +240,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     if([node.name hasSuffix:@"Button"])
     {
-        SKAction* recolor = [SKAction new];
-        
         if ([node.name isEqualToString:@"IceButton"])
         {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:ice];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //freezeProjectileButton.colorBlendFactor = 0;
                 freezeProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"ice"] integerValue] > 0)
@@ -260,7 +258,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:fire];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //fireProjectileButton.colorBlendFactor = 0;
                 fireProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"fire"] integerValue] > 0)
@@ -273,7 +271,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:split];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //splitProjectileButton.colorBlendFactor = 0;
                 splitProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"split"] integerValue] > 0)
@@ -364,11 +362,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (NSMutableDictionary*)upgrades
 {
-    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
-        [splitProjectileButton runAction:greyedOut];
-        [freezeProjectileButton runAction:greyedOut];
-        [fireProjectileButton runAction:greyedOut];
-    
     return _upgrades ?: (_upgrades = @{@"fire": @0, @"ice": @0, @"split": @0}.mutableCopy);
 }
 
@@ -645,7 +638,7 @@ float degToRad(float degree)
 {
     if(self.wave <= 5 && hero.health > 0)
     {
-        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
         waveComplete.fontSize = 20;
         waveComplete.fontColor = [SKColor whiteColor];
@@ -684,7 +677,7 @@ float degToRad(float degree)
     
     if(!waveLabel)
     {
-        waveLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        waveLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
         waveLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
         waveLabel.position = CGPointMake(self.size.width-10, 10);
         waveLabel.zPosition = 4;
@@ -692,7 +685,7 @@ float degToRad(float degree)
         [self addChild:waveLabel];
     }
     
-     waveLabel.text = [NSString stringWithFormat:@"Wave:%d/6",self.wave];
+     waveLabel.text = [NSString stringWithFormat:@"Wave: %d/6",self.wave];
     
 }
 
@@ -827,7 +820,7 @@ float degToRad(float degree)
         coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
         [coinNode addChild:coin];
         
-        SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
         gold.text = [NSString stringWithFormat:@"%d",monster.goldValue];
         gold.fontSize = 15.0;
         gold.fontColor = [UIColor colorWithRed:1 green:192/255.0 blue:0 alpha:1];
@@ -1034,7 +1027,7 @@ float degToRad(float degree)
     hudBarBackground.anchorPoint = CGPointZero;
     [_hudLayerNode addChild:hudBarBackground];
     
-    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     
     scoreLabel.fontSize = 20.0;
     scoreLabel.text = @"Score: 0";
@@ -1046,7 +1039,7 @@ float degToRad(float degree)
     
     [_hudLayerNode addChild:scoreLabel];
     
-    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     playerHealthBackground.name = @"playerHealthBackground";
     playerHealthBackground.color = [SKColor darkGrayColor];
     playerHealthBackground.colorBlendFactor = .5;
@@ -1054,7 +1047,7 @@ float degToRad(float degree)
     
     playerHealthBackground.text = _healthBar;
     
-    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"ic_gem_status"];
     coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
     currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
@@ -1083,7 +1076,7 @@ float degToRad(float degree)
     [projectileButtonLayer addChild:splitProjectileButton];
     
     splitLabel = [SKLabelNode new];
-    splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     splitLabel.fontSize = 10.0f;
     splitLabel.fontColor = [SKColor whiteColor];
     splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
@@ -1099,7 +1092,7 @@ float degToRad(float degree)
     
     [projectileButtonLayer addChild:freezeProjectileButton];
     
-    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     iceLabel.fontSize = 10.0f;
     iceLabel.fontColor = [SKColor whiteColor];
     iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
@@ -1115,7 +1108,7 @@ float degToRad(float degree)
 
     [projectileButtonLayer addChild:fireProjectileButton];
     
-    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     fireLabel.fontSize = 10.0f;
     fireLabel.fontColor = [SKColor whiteColor];
     fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
@@ -1200,6 +1193,8 @@ float degToRad(float degree)
        shouldHideArrow = [self checkForUpgradeEligibility:2];
     
     upgradeArrow.hidden = shouldHideArrow;
+    if(shouldHideArrow)
+        [bubbleLayer removeAllChildren];
     
 }
 
@@ -1264,17 +1259,6 @@ float degToRad(float degree)
     [self increaseCurrencyBy:0];
     [self increaseScoreBy:0];
     [self takeDamage:0];
-    
-    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
-    
-    if([[_upgrades objectForKey:@"split"] integerValue] == 0)
-        [splitProjectileButton runAction:greyedOut];
-    
-    if([[_upgrades objectForKey:@"ice"] integerValue] == 0)
-        [freezeProjectileButton runAction:greyedOut];
-    
-    if([[_upgrades objectForKey:@"fire"] integerValue] == 0)
-        [fireProjectileButton runAction:greyedOut];
     
     [self advanceToWave:self.wave];
 }

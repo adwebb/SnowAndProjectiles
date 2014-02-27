@@ -1,14 +1,14 @@
 //
-//  TutorialScene.h
+//  TutorialScreenTwo.h
 //  Obj. Seafood
 //
-//  Created by Andrew Webb on 2/26/14.
+//  Created by Fletcher Rhoads on 2/27/14.
 //  Copyright (c) 2014 Razeware LLC. All rights reserved.
 //
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface TutorialScene : SKScene
+@interface TutorialScreenTwo : SKScene
 
 @property (nonatomic, strong) SKSpriteNode *background;
 

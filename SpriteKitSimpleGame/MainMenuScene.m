@@ -23,47 +23,54 @@
         [bgImageNode setName:@"background"];
         [self addChild:bgImageNode];
         
-        SKLabelNode* title = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* title = [SKLabelNode labelNodeWithFontNamed:@"CarnivaleeFreakshow"];
         title.text = @"Objective: Seafood";
         title.fontSize = 50;
         [title setPosition:CGPointMake(self.size.width/2, self.size.height*3/4+10)];
         [self addChild:title];
         
-        SKLabelNode* byLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-        byLabel.text = @"by SpriteKitchen";
+        SKLabelNode* byLabel = [SKLabelNode labelNodeWithFontNamed:@"CoolveticaRg-Regular"];
+        byLabel.text = @"by SpriteKitchen.com";
         byLabel.fontSize = 20;
-        [byLabel setPosition:CGPointMake(self.size.width, self.size.height*3/4-title.frame.size.height/2+byLabel.frame.size.height/2)];
+        [byLabel setPosition:CGPointMake(self.size.width-10, self.size.height*3/4-title.frame.size.height/2+byLabel.frame.size.height/2)];
         byLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
         [self addChild:byLabel];
         
         SKShapeNode* buttonLayer = [SKShapeNode node];
-        [buttonLayer setPath:CGPathCreateWithRoundedRect(CGRectMake(0, 0, 250, 200), 20, 20, nil)];
+        CGPathRef path = CGPathCreateWithRoundedRect(CGRectMake(0, 0, 250, 200), 20, 20, nil);
+        [buttonLayer setPath:path];
         [buttonLayer setPosition:(CGPointMake(self.size.width/2-buttonLayer.frame.size.width/2, self.size.height/2-buttonLayer.frame.size.height/2-50))];
         buttonLayer.glowWidth = 5;
         buttonLayer.strokeColor = buttonLayer.fillColor = [SKColor colorWithRed:12/255.0 green:32/255.0 blue:40/255.0 alpha:.7];
         [self addChild: buttonLayer];
         
-        SKLabelNode* newGameButton = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        CGPathRelease(path);
+        
+        SKLabelNode* newGameButton = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         newGameButton.text = @"New Game";
+        newGameButton.fontSize = 40;
         newGameButton.name = @"1";
         [newGameButton setPosition:(CGPointMake(buttonLayer.frame.size.width/2, self.size.height/2))];
         [buttonLayer addChild:newGameButton];
         
-        SKLabelNode* continueButton = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* continueButton = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         continueButton.text = @"Continue";
         continueButton.name = @"2";
+         continueButton.fontSize = 40;
         [continueButton setPosition:(CGPointMake(buttonLayer.frame.size.width/2, self.size.height/2-continueButton.frame.size.height*1.5))];
         [buttonLayer addChild:continueButton];
         
-        SKLabelNode* tutorial = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* tutorial = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         tutorial.text = @"Tutorial";
         tutorial.name = @"3";
+          tutorial.fontSize = 40;
         [tutorial setPosition:(CGPointMake(buttonLayer.frame.size.width/2, self.size.height/2-continueButton.frame.size.height*1.5-tutorial.frame.size.height*1.5))];
         [buttonLayer addChild:tutorial];
         
-        SKLabelNode* credits = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* credits = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         credits.text = @"Credits";
         credits.name = @"4";
+          credits.fontSize = 40;
         [credits setPosition:(CGPointMake(buttonLayer.frame.size.width/2, self.size.height/2-continueButton.frame.size.height*1.5-tutorial.frame.size.height*1.5-credits.frame.size.height*1.5))];
         [buttonLayer addChild:credits];
     }

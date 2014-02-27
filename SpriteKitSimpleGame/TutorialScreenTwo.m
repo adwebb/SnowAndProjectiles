@@ -1,21 +1,21 @@
 //
-//  TutorialScene.m
+//  TutorialScreenTwo.m
 //  Obj. Seafood
 //
-//  Created by Andrew Webb on 2/26/14.
+//  Created by Fletcher Rhoads on 2/27/14.
 //  Copyright (c) 2014 Razeware LLC. All rights reserved.
 //
 
-#import "TutorialScene.h"
 #import "TutorialScreenTwo.h"
+#import "MainMenuScene.h"
 
-@implementation TutorialScene
+@implementation TutorialScreenTwo
 
 -(id)initWithSize:(CGSize)size
 {
     self = [super initWithSize:size];
     
-    _background = [SKSpriteNode spriteNodeWithImageNamed:@"tutorialScreenOne.png"];
+    _background = [SKSpriteNode spriteNodeWithImageNamed:@"tutorialScreenTwo.png"];
     [_background setName:@"screenOne"];
     [_background setPosition:(CGPointMake(self.size.width/2, self.size.height/2))];
     
@@ -32,8 +32,8 @@
     if(touch)
     {
         SKTransition *reveal = [SKTransition flipHorizontalWithDuration:1.0];
-        TutorialScreenTwo *screenTwo = [[TutorialScreenTwo alloc] initWithSize:self.size];
-        [self.view presentScene:screenTwo transition: reveal];
+        MainMenuScene *mainMenuScene = [[MainMenuScene alloc] initWithSize:self.size];
+        [self.view presentScene:mainMenuScene transition: reveal];
     }
 }
 
