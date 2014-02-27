@@ -10,6 +10,6 @@
 
 @interface FireProjectile : Projectile
 
-+(FireProjectile*)fireProjectileOfRank:(int)rank inScene:(SKScene*)scene;
++(FireProjectile*)fireProjectileOfRank:(int)rank;
 
 @end

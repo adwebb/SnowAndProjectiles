@@ -10,18 +10,13 @@
 
 @implementation FireProjectile
 
-+(FireProjectile*)fireProjectileOfRank:(int)rank inScene:(SKScene*)scene
++(FireProjectile*)fireProjectileOfRank:(int)rank
 {
-    FireProjectile* fireProjectile = [FireProjectile spriteNodeWithImageNamed:@"snowball"];
+    FireProjectile* fireProjectile = [FireProjectile spriteNodeWithImageNamed:@"harpoon_arrow"];
     fireProjectile.color = [SKColor colorWithRed:1 green:85/255.0 blue:0 alpha:1];
     fireProjectile.colorBlendFactor = .75;
     fireProjectile.damage = rank+1;
     fireProjectile = (FireProjectile*)[super setProjectileProperties:fireProjectile];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"fireball" ofType:@"sks"];
-    SKEmitterNode* fireEmitter = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-    fireEmitter.targetNode = scene;
-    [fireProjectile addChild:fireEmitter];
     
     return fireProjectile;
 }
