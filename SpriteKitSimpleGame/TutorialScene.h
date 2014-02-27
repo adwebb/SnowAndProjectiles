@@ -10,4 +10,6 @@
 
 @interface TutorialScene : SKScene
 
+@property (nonatomic, strong) SKSpriteNode *background;
+
 @end

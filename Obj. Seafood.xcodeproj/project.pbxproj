@@ -32,6 +32,9 @@
 		5A82FD5018BD3395002B0E64 /* shimmer.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5A82FD4F18BD3395002B0E64 /* shimmer.sks */; };
 		5AAC65B518B7F646007FC4C2 /* fireExplosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AAC65B418B7F646007FC4C2 /* fireExplosion.wav */; };
 		5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AB1C56E18B7F03E0010F703 /* iceHit.wav */; };
+		5AB6C79118BFA1E700F3BDC6 /* tutorialScreenTwo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AB6C78F18BFA1E700F3BDC6 /* tutorialScreenTwo.png */; };
+		5AB6C79218BFA1E700F3BDC6 /* tutorialScreenOne.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AB6C79018BFA1E700F3BDC6 /* tutorialScreenOne.png */; };
+		5AB6C79518BFA2EE00F3BDC6 /* TutorialScreenTwo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AB6C79418BFA2EE00F3BDC6 /* TutorialScreenTwo.m */; };
 		5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9318B6993E002CC95A /* FireDeath.sks */; };
 		5AFFF17018B29C9A00F7BFF5 /* Harpoon.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* Harpoon.m */; };
 		AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */ = {isa = PBXBuildFile; fileRef = AA1418C518B56A07006D64AB /* fireBreath.sks */; };
@@ -122,6 +125,10 @@
 		5A82FD4F18BD3395002B0E64 /* shimmer.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = shimmer.sks; path = ../shimmer.sks; sourceTree = "<group>"; };
 		5AAC65B418B7F646007FC4C2 /* fireExplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fireExplosion.wav; sourceTree = "<group>"; };
 		5AB1C56E18B7F03E0010F703 /* iceHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = iceHit.wav; sourceTree = "<group>"; };
+		5AB6C78F18BFA1E700F3BDC6 /* tutorialScreenTwo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorialScreenTwo.png; sourceTree = "<group>"; };
+		5AB6C79018BFA1E700F3BDC6 /* tutorialScreenOne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorialScreenOne.png; sourceTree = "<group>"; };
+		5AB6C79318BFA2EE00F3BDC6 /* TutorialScreenTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialScreenTwo.h; sourceTree = "<group>"; };
+		5AB6C79418BFA2EE00F3BDC6 /* TutorialScreenTwo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialScreenTwo.m; sourceTree = "<group>"; };
 		5ABA1A9318B6993E002CC95A /* FireDeath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireDeath.sks; sourceTree = "<group>"; };
 		5AFFF16E18B29C9A00F7BFF5 /* Harpoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Harpoon.h; path = ../Harpoon.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* Harpoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Harpoon.m; path = ../Harpoon.m; sourceTree = "<group>"; };
@@ -249,6 +256,8 @@
 				35F3DF0617D8011E009EFFF2 /* GameScene.m */,
 				C2F6E6DD18BE53670086BA77 /* TutorialScene.h */,
 				C2F6E6DE18BE53670086BA77 /* TutorialScene.m */,
+				5AB6C79318BFA2EE00F3BDC6 /* TutorialScreenTwo.h */,
+				5AB6C79418BFA2EE00F3BDC6 /* TutorialScreenTwo.m */,
 				C2F6E6E018BE53890086BA77 /* CreditsScene.h */,
 				C2F6E6E118BE53890086BA77 /* CreditsScene.m */,
 				35F3DF2E17D803D6009EFFF2 /* GameOverScene.h */,
@@ -265,6 +274,8 @@
 		35F3DEF417D8011E009EFFF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5AB6C78F18BFA1E700F3BDC6 /* tutorialScreenTwo.png */,
+				5AB6C79018BFA1E700F3BDC6 /* tutorialScreenOne.png */,
 				C2F6E71E18BF05860086BA77 /* ic_kill_gem@2x.png */,
 				C2F6E71C18BF057E0086BA77 /* ic_gem_status@2x.png */,
 				C2F6E71A18BF04DB0086BA77 /* typodermic.otf */,
@@ -463,6 +474,7 @@
 			files = (
 				C294709E18B683BE00037F86 /* bg.mp3 in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
+				5AB6C79218BFA1E700F3BDC6 /* tutorialScreenOne.png in Resources */,
 				C2F6E70F18BF03C90086BA77 /* Opificio.ttf in Resources */,
 				5A82FD5018BD3395002B0E64 /* shimmer.sks in Resources */,
 				C2F6E70918BF03740086BA77 /* eel@2x.png in Resources */,
@@ -494,6 +506,7 @@
 				C2F6E71318BF03DA0086BA77 /* Carnevalee Freakshow.ttf in Resources */,
 				C2F6E70A18BF03740086BA77 /* harpoon_white@2x.png in Resources */,
 				C2F6E71218BF03D40086BA77 /* coolvetica rg.ttf in Resources */,
+				5AB6C79118BFA1E700F3BDC6 /* tutorialScreenTwo.png in Resources */,
 				C2F6E71118BF03D10086BA77 /* Japan.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,6 +538,7 @@
 				C2F6E6D818BD72240086BA77 /* MainMenuScene.m in Sources */,
 				35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */,
 				C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */,
+				5AB6C79518BFA2EE00F3BDC6 /* TutorialScreenTwo.m in Sources */,
 				C2FB16D218B3FF26002C9513 /* SplitProjectile.m in Sources */,
 				5A5D159218AD58BA00649720 /* Brute.m in Sources */,
 				35F3DF0717D8011E009EFFF2 /* GameScene.m in Sources */,
