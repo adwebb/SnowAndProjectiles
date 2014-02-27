@@ -24,6 +24,11 @@ static const uint32_t heroCategory        =  0x11;
     hero.physicsBody.dynamic = YES;
     hero.health = 10;
     
+    hero.arm = [SKSpriteNode spriteNodeWithImageNamed:@"arm"];
+    hero.arm.position = CGPointMake(-hero.arm.size.width/30,-hero.arm.size.height/2);
+    
+    [hero addChild:hero.arm];
+    
     return hero;
 }
 
