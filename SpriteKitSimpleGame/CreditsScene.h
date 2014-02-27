@@ -10,4 +10,6 @@
 
 @interface CreditsScene : SKScene
 
+@property (nonatomic, strong) SKSpriteNode *background;
+
 @end
