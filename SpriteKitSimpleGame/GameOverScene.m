@@ -24,6 +24,7 @@
  
         SKLabelNode* title = [SKLabelNode labelNodeWithFontNamed:@"CarnivaleeFreakshow"];
         title.text = @"Objective: Seafood";
+        title.fontColor = [SKColor blackColor];
         title.fontSize = 50;
         [title setPosition:CGPointMake(self.size.width/2, self.size.height*3/4+10)];
         [self addChild:title];
@@ -31,6 +32,7 @@
         SKLabelNode* byLabel = [SKLabelNode labelNodeWithFontNamed:@"CoolveticaRg-Regular"];
         byLabel.text = @"by SpriteKitchen";
         byLabel.fontSize = 20;
+        byLabel.fontColor = [SKColor blackColor];
         [byLabel setPosition:CGPointMake(self.size.width, self.size.height*3/4-title.frame.size.height/2+byLabel.frame.size.height/2)];
         byLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
         [self addChild:byLabel];
@@ -47,7 +49,7 @@
         SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         label.text = message;
         label.fontSize = 40;
-        label.position = CGPointMake(self.size.width/2, self.size.height/2);
+        label.position = CGPointMake(self.size.width/2, self.size.height/3);
         [self addChild:label];
  
         // 4
