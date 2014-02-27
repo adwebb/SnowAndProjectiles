@@ -8,8 +8,8 @@
 
 #import "Projectile.h"
 
-@interface SnowballProjectile : Projectile
+@interface Harpoon : Projectile
 
-+ (SnowballProjectile*)snowballProjectile;
++ (Harpoon*)projectile;
 
 @end
