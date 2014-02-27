@@ -344,63 +344,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
--(void)sink:(SKNode*)node
-{
-    BOOL won = NO;
-    if([node isKindOfClass:[Boss class]])
-    {
-        won = YES;
-    }else if ([node isKindOfClass:[Hero class]])
-    {
-        won = NO;
-    }
-    
-    
-    SKAction *rumble = [SKAction sequence:
-                     @[[SKAction rotateByAngle:degToRad(-4.0f) duration:0.1],
-                       [SKAction rotateByAngle:0.0 duration:0.1],
-                       [SKAction rotateByAngle:degToRad(4.0f) duration:0.1]]];
-    
-    SKAction* rumbleUntilGone = [SKAction repeatActionForever:rumble];
-    
-    SKAction* sinkAction = [SKAction moveByX:0 y:-50 duration:1];
-    
-    SKAction* fire = [SKAction customActionWithDuration:1 actionBlock:^(SKNode *node, CGFloat elapsedTime) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"FireDeath" ofType:@"sks"];
-        SKEmitterNode* explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        
-        
-        float fireX = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.width);
-        
-        float fireY = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * node.frame.size.height);
-        explosion.position = CGPointMake(fireX, fireY);
-        
-        [node addChild:explosion];
-    }];
-    
-    SKAction* sinkSequence = [SKAction sequence:@[fire, sinkAction, [SKAction waitForDuration:.5]]];
-    
-    SKAction* sinkUntilGone = [SKAction repeatAction:sinkSequence count:node.position.y/50];
-    
-    if(!won)
-        [boat runAction:sinkUntilGone];
-    
-    [node removeAllActions];
-    [node runAction:rumbleUntilGone];
-    [node runAction:sinkUntilGone completion:^{
-        
-        if(won)
-        {
-            [kraken removeFromParent];
-        }else{
-            [boat removeFromParent];
-        }
-        SKTransition *reveal = [SKTransition flipHorizontalWithDuration:1];
-        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:won score:_score];
-        [self.view presentScene:gameOverScene transition: reveal];
-    }];
-}
-
 -(void)launchProjectileWithImpulse:(CGVector)vector
 {
     self.projectile.physicsBody.dynamic = YES;
@@ -900,7 +843,7 @@ float degToRad(float degree)
     }
 }
 
--(void)sink:(SKNode*)node
+- (void)sink:(SKNode*)node
 {
     BOOL won = NO;
     if([node isKindOfClass:[Boss class]])
