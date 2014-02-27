@@ -1016,7 +1016,7 @@ float degToRad(float degree)
     
     scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     
-    scoreLabel.position = CGPointMake(self.size.width / 2, self.size.height - scoreLabel.frame.size.height + 3);
+    scoreLabel.position = CGPointMake(self.size.width/2+55, self.size.height - scoreLabel.frame.size.height + 3);
     
     [_hudLayerNode addChild:scoreLabel];
     
@@ -1028,9 +1028,15 @@ float degToRad(float degree)
     
     playerHealthBackground.text = _healthBar;
     
+    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
+    pauseButton.size = CGSizeMake(pauseButton.size.width*2, pauseButton.size.height*2);
+    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width-10, self.size.height-barHeight/2);
+    pauseButton.name = @"PauseButton";
+    [_hudLayerNode addChild:pauseButton];
+    
     currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"ic_gem_status"];
-    coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
+    coinStack.position = CGPointMake(pauseButton.position.x-coinStack.size.width-10, self.size.height-barHeight/2);
     currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
     currencyLabel.fontSize = 20;
     currencyLabel.text = @"0";
@@ -1038,11 +1044,6 @@ float degToRad(float degree)
     currencyLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     [_hudLayerNode addChild:currencyLabel];
     [_hudLayerNode addChild:coinStack];
-    
-    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
-    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width*2.5, self.size.height-barHeight/2);
-    pauseButton.name = @"PauseButton";
-    [_hudLayerNode addChild:pauseButton];
     
     SKNode* projectileButtonLayer = [SKNode node];
     projectileButtonLayer.zPosition = 5;
