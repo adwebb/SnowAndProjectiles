@@ -203,14 +203,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     if([node.name hasSuffix:@"Button"])
     {
-        SKAction* recolor = [SKAction new];
-        
         if ([node.name isEqualToString:@"IceButton"])
         {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:ice];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //freezeProjectileButton.colorBlendFactor = 0;
                 freezeProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"ice"] integerValue] > 0)
@@ -223,7 +221,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:fire];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //fireProjectileButton.colorBlendFactor = 0;
                 fireProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"fire"] integerValue] > 0)
@@ -236,7 +234,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             if (upgradeMode == YES)
             {
                 [self upgradeProjectile:split];
-                recolor = [SKAction colorizeWithColor:[UIColor whiteColor] colorBlendFactor:1 duration:0];
+                //splitProjectileButton.colorBlendFactor = 0;
                 splitProjectileButton.alpha = 1.0f;
             }
             if ([[_upgrades objectForKey:@"split"] integerValue] > 0)
@@ -327,11 +325,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (NSMutableDictionary*)upgrades
 {
-    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
-        [splitProjectileButton runAction:greyedOut];
-        [freezeProjectileButton runAction:greyedOut];
-        [fireProjectileButton runAction:greyedOut];
-    
     return _upgrades ?: (_upgrades = @{@"fire": @0, @"ice": @0, @"split": @0}.mutableCopy);
 }
 
@@ -1155,6 +1148,8 @@ float degToRad(float degree)
        shouldHideArrow = [self checkForUpgradeEligibility:2];
     
     upgradeArrow.hidden = shouldHideArrow;
+    if(shouldHideArrow)
+        [bubbleLayer removeAllChildren];
     
 }
 
@@ -1219,17 +1214,6 @@ float degToRad(float degree)
     [self increaseCurrencyBy:0];
     [self increaseScoreBy:0];
     [self takeDamage:0];
-    
-    SKAction* greyedOut = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
-    
-    if([[_upgrades objectForKey:@"split"] integerValue] == 0)
-        [splitProjectileButton runAction:greyedOut];
-    
-    if([[_upgrades objectForKey:@"ice"] integerValue] == 0)
-        [freezeProjectileButton runAction:greyedOut];
-    
-    if([[_upgrades objectForKey:@"fire"] integerValue] == 0)
-        [fireProjectileButton runAction:greyedOut];
     
     [self advanceToWave:self.wave];
 }
