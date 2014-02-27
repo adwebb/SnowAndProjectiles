@@ -276,7 +276,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         {
             self.view.scene.paused = YES;
     
-            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"play"]]];
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"btn_play"]]];
             fireProjectileButton.hidden = YES;
             freezeProjectileButton.hidden = YES;
             splitProjectileButton.hidden = YES;
@@ -284,7 +284,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
         else
         {
             self.view.scene.paused = NO;
-            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"pause"]]];
+            [pauseButton setTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"btn_pause"]]];
             fireProjectileButton.hidden = NO;
             freezeProjectileButton.hidden = NO;
             splitProjectileButton.hidden = NO;
@@ -1028,9 +1028,8 @@ float degToRad(float degree)
     
     playerHealthBackground.text = _healthBar;
     
-    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pause"];
-    pauseButton.size = CGSizeMake(pauseButton.size.width*2, pauseButton.size.height*2);
-    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width-10, self.size.height-barHeight/2);
+    pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"btn_pause"];
+    pauseButton.position = CGPointMake(self.size.width-pauseButton.size.width, self.size.height-barHeight/2);
     pauseButton.name = @"PauseButton";
     [_hudLayerNode addChild:pauseButton];
     

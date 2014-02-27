@@ -47,6 +47,8 @@
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C2573AEB18AA84DE009790A1 /* plop.mp3 */; };
 		C25E199718BFD6890041D56C /* gulls@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C25E199618BFD6890041D56C /* gulls@2x.png */; };
+		C27FB7DA18BFEFB9005402D4 /* btn_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27FB7D918BFEFB9005402D4 /* btn_play@2x.png */; };
+		C27FB7DC18BFEFBE005402D4 /* btn_pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27FB7DB18BFEFBE005402D4 /* btn_pause@2x.png */; };
 		C294709E18B683BE00037F86 /* bg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C294709D18B683BE00037F86 /* bg.mp3 */; };
 		C29470A018B683CB00037F86 /* intro.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C294709F18B683CB00037F86 /* intro.mp3 */; };
 		C2DEF39D18AD6DC700BD31E1 /* catSun.sks in Resources */ = {isa = PBXBuildFile; fileRef = C2DEF39B18AD6DC700BD31E1 /* catSun.sks */; };
@@ -184,6 +186,8 @@
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C2573AEB18AA84DE009790A1 /* plop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = plop.mp3; sourceTree = "<group>"; };
 		C25E199618BFD6890041D56C /* gulls@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gulls@2x.png"; sourceTree = "<group>"; };
+		C27FB7D918BFEFB9005402D4 /* btn_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_play@2x.png"; sourceTree = "<group>"; };
+		C27FB7DB18BFEFBE005402D4 /* btn_pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_pause@2x.png"; sourceTree = "<group>"; };
 		C294709D18B683BE00037F86 /* bg.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bg.mp3; sourceTree = "<group>"; };
 		C294709F18B683CB00037F86 /* intro.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = intro.mp3; sourceTree = "<group>"; };
 		C2DEF39B18AD6DC700BD31E1 /* catSun.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = catSun.sks; sourceTree = "<group>"; };
@@ -475,6 +479,8 @@
 			isa = PBXGroup;
 			children = (
 				C25E199618BFD6890041D56C /* gulls@2x.png */,
+				C27FB7D918BFEFB9005402D4 /* btn_play@2x.png */,
+				C27FB7DB18BFEFBE005402D4 /* btn_pause@2x.png */,
 				C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png */,
 				C2F6E77D18BF9E310086BA77 /* backgroundScene@2x.png */,
 				C2F6E77E18BF9E310086BA77 /* fullscreen_background@2x.png */,
@@ -624,6 +630,7 @@
 				C2F6E75D18BF9DF90086BA77 /* btn_harpoon_split.png in Resources */,
 				C2F6E6F318BEFEF60086BA77 /* arrowHit.wav in Resources */,
 				C29470A018B683CB00037F86 /* intro.mp3 in Resources */,
+				C27FB7DA18BFEFB9005402D4 /* btn_play@2x.png in Resources */,
 				C2F6E75918BF9DF90086BA77 /* btn_harpoon_fire.png in Resources */,
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
@@ -635,6 +642,7 @@
 				C25E199718BFD6890041D56C /* gulls@2x.png in Resources */,
 				C2F6E75018BF9DF90086BA77 /* anglerfish@2x.png in Resources */,
 				C2F6E76B18BF9DF90086BA77 /* harpoon_white@2x.png in Resources */,
+				C27FB7DC18BFEFBE005402D4 /* btn_pause@2x.png in Resources */,
 				C2F6E76918BF9DF90086BA77 /* green@2x.png in Resources */,
 				C2F6E77718BF9DF90086BA77 /* spark.png in Resources */,
 				C2F6E77318BF9DF90086BA77 /* play@2x.png in Resources */,
@@ -847,7 +855,7 @@
 				GCC_PREFIX_HEADER = "SpriteKitSimpleGame/Obj. Seafood-Prefix.pch";
 				INFOPLIST_FILE = "SpriteKitSimpleGame/Obj. Seafood-Info.plist";
 				PRODUCT_NAME = "Obj. Seafood";
-				PROVISIONING_PROFILE = "421335A3-AAD3-4AC2-8B1F-CFC5744FA112";
+				PROVISIONING_PROFILE = "B9C63E3F-1D0D-4220-9729-1949DFB79A89";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -862,7 +870,7 @@
 				GCC_PREFIX_HEADER = "SpriteKitSimpleGame/Obj. Seafood-Prefix.pch";
 				INFOPLIST_FILE = "SpriteKitSimpleGame/Obj. Seafood-Info.plist";
 				PRODUCT_NAME = "Obj. Seafood";
-				PROVISIONING_PROFILE = "421335A3-AAD3-4AC2-8B1F-CFC5744FA112";
+				PROVISIONING_PROFILE = "51E7C279-958F-48EB-94B8-F0994912DFDD";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
 				WRAPPER_EXTENSION = app;
 			};
