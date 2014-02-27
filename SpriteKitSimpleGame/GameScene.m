@@ -197,30 +197,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 -(void)flyingSeaguls
 {
-    NSMutableArray *flyFrames = [NSMutableArray array];
     
-    //[flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul1.png"] ];
-    [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul2.png"] ];
-    //[flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul3.png"] ];
-    
-    seagullFrames = flyFrames;
-    
-    SKTexture *temp = seagullFrames[0];
-    _seagull = [SKSpriteNode spriteNodeWithTexture:temp];
-   // _seagull.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    _seagull = [SKSpriteNode spriteNodeWithImageNamed:@"gulls"];
+    _seagull.position = CGPointMake(self.size.width/2, self.size.height/2);
+   
     [self addChild:_seagull];
-    //[_seagull runAction:[SKAction animateWithTextures:seagullFrames timePerFrame:0.1f]];
-    [_seagull runAction:[SKAction repeatActionForever:[SKAction animateWithTextures:seagullFrames timePerFrame:0.5f]]];
     
+    CGPathRef path = CGPathCreateWithEllipseInRect(CGRectMake(0, self.size.height*2/3, self.size.width, self.size.height), NULL);
     
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, Nil, 350, 850);
-     CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height, -self.size.width, 350);
+    _seagull.zRotation = 0;
     
-    _seagull.position = CGPointMake(self.frame.size.width - _seagull.size.width/2, self.frame.size.height/2);
-    _seagull.zRotation = 85.0;
-    
-    [_seagull runAction:[SKAction followPath:path asOffset:YES orientToPath:YES duration:15]];
+    [_seagull runAction:[SKAction followPath:path asOffset:NO orientToPath:NO duration:7].reversedAction];
     
 }
 
@@ -567,7 +554,6 @@ float degToRad(float degree)
         case 1:
         {
             monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2].mutableCopy;
-            [self flyingSeaguls];
 
             break;
         }
@@ -575,7 +561,6 @@ float degToRad(float degree)
         {
             monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2,
                                 @4, @4, @4, @4, @4, @4, @3, @3, @3, @3].mutableCopy;
-            [self flyingSeaguls];
 
             break;
         }
@@ -592,7 +577,6 @@ float degToRad(float degree)
                                 @2, @2, @2, @2, @2, @2, @2, @2, @2, @2,
                                 @4, @4, @4, @4, @4, @4, @4, @4, @4, @4,
                                 @3, @3, @3, @3, @3, @5, @5, @5, @5, @5].mutableCopy;
-            [self flyingSeaguls];
 
             break;
         }
@@ -690,7 +674,6 @@ float degToRad(float degree)
 
 - (void)update:(NSTimeInterval)currentTime
 {
-    
     if(self.projectile.position.x > projectileSpawnPoint.x)
         self.projectile.zRotation = atan2(self.projectile.physicsBody.velocity.dy,self.projectile.physicsBody.velocity.dx);
     
@@ -1170,6 +1153,9 @@ float degToRad(float degree)
 {
     _score += increment;
     scoreLabel.text = [NSString stringWithFormat:@"Score: %d", _score];
+    
+    if(_score%100 == 0)
+        [self flyingSeaguls];
 }
 
 -(void)increaseCurrencyBy:(int)increment
@@ -1204,6 +1190,8 @@ float degToRad(float degree)
         bubbleLayer.zPosition = 4;
         [self addChild:bubbleLayer];
     }
+    
+    [self flyingSeaguls];
     
     if([_upgrades[@"fire"] intValue] == rank && ![bubbleLayer childNodeWithName:@"fireBubble"])
     {

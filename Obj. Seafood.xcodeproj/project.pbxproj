@@ -38,10 +38,6 @@
 		5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5ABA1A9318B6993E002CC95A /* FireDeath.sks */; };
 		5AFFF17018B29C9A00F7BFF5 /* Harpoon.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF16F18B29C9A00F7BFF5 /* Harpoon.m */; };
 		AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */ = {isa = PBXBuildFile; fileRef = AA1418C518B56A07006D64AB /* fireBreath.sks */; };
-		AAA1856118BFAF9F00782794 /* seagull3.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1855E18BFAF9F00782794 /* seagull3.png */; };
-		AAA1856218BFAF9F00782794 /* seagul2.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1855F18BFAF9F00782794 /* seagul2.png */; };
-		AAA1856318BFAF9F00782794 /* seagul1.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1856018BFAF9F00782794 /* seagul1.png */; };
-		AAD87DCC18BFD0ED00F4B29A /* seagul1a.png in Resources */ = {isa = PBXBuildFile; fileRef = AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */; };
 		AAEF99E118B4071B00A44E7F /* Soldier.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* Soldier.m */; };
 		C221481218B5272E00A9ED15 /* iceball.sks in Resources */ = {isa = PBXBuildFile; fileRef = C221481118B5272E00A9ED15 /* iceball.sks */; };
 		C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */ = {isa = PBXBuildFile; fileRef = C225473B18B7DE9B00A0AFC2 /* Skirmisher.m */; };
@@ -50,6 +46,7 @@
 		C225474A18B92D0C00A0AFC2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C225474918B92D0C00A0AFC2 /* GameKit.framework */; };
 		C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = C22E150618AA865500132E6E /* SnowSplosion.sks */; };
 		C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C2573AEB18AA84DE009790A1 /* plop.mp3 */; };
+		C25E199718BFD6890041D56C /* gulls@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C25E199618BFD6890041D56C /* gulls@2x.png */; };
 		C294709E18B683BE00037F86 /* bg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C294709D18B683BE00037F86 /* bg.mp3 */; };
 		C29470A018B683CB00037F86 /* intro.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C294709F18B683CB00037F86 /* intro.mp3 */; };
 		C2DEF39D18AD6DC700BD31E1 /* catSun.sks in Resources */ = {isa = PBXBuildFile; fileRef = C2DEF39B18AD6DC700BD31E1 /* catSun.sks */; };
@@ -174,10 +171,6 @@
 		5AFFF16E18B29C9A00F7BFF5 /* Harpoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Harpoon.h; path = ../Harpoon.h; sourceTree = "<group>"; };
 		5AFFF16F18B29C9A00F7BFF5 /* Harpoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Harpoon.m; path = ../Harpoon.m; sourceTree = "<group>"; };
 		AA1418C518B56A07006D64AB /* fireBreath.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fireBreath.sks; sourceTree = "<group>"; };
-		AAA1855E18BFAF9F00782794 /* seagull3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagull3.png; sourceTree = "<group>"; };
-		AAA1855F18BFAF9F00782794 /* seagul2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagul2.png; sourceTree = "<group>"; };
-		AAA1856018BFAF9F00782794 /* seagul1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagul1.png; sourceTree = "<group>"; };
-		AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seagul1a.png; path = SpriteKitSimpleGame/seagul1a.png; sourceTree = "<group>"; };
 		AAEF99DF18B4071B00A44E7F /* Soldier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soldier.h; sourceTree = "<group>"; };
 		AAEF99E018B4071B00A44E7F /* Soldier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Soldier.m; sourceTree = "<group>"; };
 		C221481118B5272E00A9ED15 /* iceball.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = iceball.sks; sourceTree = "<group>"; };
@@ -190,6 +183,7 @@
 		C225474918B92D0C00A0AFC2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		C22E150618AA865500132E6E /* SnowSplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SnowSplosion.sks; path = ../SnowSplosion.sks; sourceTree = "<group>"; };
 		C2573AEB18AA84DE009790A1 /* plop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = plop.mp3; sourceTree = "<group>"; };
+		C25E199618BFD6890041D56C /* gulls@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gulls@2x.png"; sourceTree = "<group>"; };
 		C294709D18B683BE00037F86 /* bg.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bg.mp3; sourceTree = "<group>"; };
 		C294709F18B683CB00037F86 /* intro.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = intro.mp3; sourceTree = "<group>"; };
 		C2DEF39B18AD6DC700BD31E1 /* catSun.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = catSun.sks; sourceTree = "<group>"; };
@@ -297,10 +291,6 @@
 		35F3DEDF17D8011E009EFFF2 = {
 			isa = PBXGroup;
 			children = (
-				AAA1855E18BFAF9F00782794 /* seagull3.png */,
-				AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */,
-				AAA1855F18BFAF9F00782794 /* seagul2.png */,
-				AAA1856018BFAF9F00782794 /* seagul1.png */,
 				35F3DEF317D8011E009EFFF2 /* Objective Seafood */,
 				35F3DF1717D8011E009EFFF2 /* ObjectiveSeafoodTests */,
 				35F3DEEA17D8011E009EFFF2 /* Frameworks */,
@@ -484,6 +474,7 @@
 		C2F6E77C18BF9E160086BA77 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C25E199618BFD6890041D56C /* gulls@2x.png */,
 				C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png */,
 				C2F6E77D18BF9E310086BA77 /* backgroundScene@2x.png */,
 				C2F6E77E18BF9E310086BA77 /* fullscreen_background@2x.png */,
@@ -619,7 +610,6 @@
 				C2F6E75718BF9DF90086BA77 /* btn_bubble.png in Resources */,
 				C2F6E76C18BF9DF90086BA77 /* ic_gem_status@2x.png in Resources */,
 				C294709E18B683BE00037F86 /* bg.mp3 in Resources */,
-				AAA1856218BFAF9F00782794 /* seagul2.png in Resources */,
 				C2573AEC18AA84DE009790A1 /* plop.mp3 in Resources */,
 				5AB6C79218BFA1E700F3BDC6 /* tutorialScreenOne.png in Resources */,
 				C2F6E70F18BF03C90086BA77 /* Opificio.ttf in Resources */,
@@ -629,7 +619,6 @@
 				C2F6E77218BF9DF90086BA77 /* pause@2x.png in Resources */,
 				5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */,
 				C2F6E75518BF9DF90086BA77 /* boat_front@2x.png in Resources */,
-				AAD87DCC18BFD0ED00F4B29A /* seagul1a.png in Resources */,
 				C2F6E75A18BF9DF90086BA77 /* btn_harpoon_fire@2x.png in Resources */,
 				C2F6E78518BFA42A0086BA77 /* icon.png in Resources */,
 				C2F6E75D18BF9DF90086BA77 /* btn_harpoon_split.png in Resources */,
@@ -643,6 +632,7 @@
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
 				C2F6E75B18BF9DF90086BA77 /* btn_harpoon_ice.png in Resources */,
 				C2F6E77518BF9DF90086BA77 /* shark_fish@2x.png in Resources */,
+				C25E199718BFD6890041D56C /* gulls@2x.png in Resources */,
 				C2F6E75018BF9DF90086BA77 /* anglerfish@2x.png in Resources */,
 				C2F6E76B18BF9DF90086BA77 /* harpoon_white@2x.png in Resources */,
 				C2F6E76918BF9DF90086BA77 /* green@2x.png in Resources */,
@@ -661,7 +651,6 @@
 				5ABA1A9418B6993E002CC95A /* FireDeath.sks in Resources */,
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
 				5AAC65B518B7F646007FC4C2 /* fireExplosion.wav in Resources */,
-				AAA1856118BFAF9F00782794 /* seagull3.png in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 				C2F6E75418BF9DF90086BA77 /* boat_back@2x.png in Resources */,
 				C2F6E75118BF9DF90086BA77 /* arm@2x.png in Resources */,
@@ -671,7 +660,6 @@
 				C2F6E77818BF9DF90086BA77 /* squid_mouth@2x.png in Resources */,
 				C2F6E76D18BF9DF90086BA77 /* ic_kill_gem@2x.png in Resources */,
 				C2F6E71018BF03CB0086BA77 /* Opificio_Bold.ttf in Resources */,
-				AAA1856318BFAF9F00782794 /* seagul1.png in Resources */,
 				C2F6E77A18BF9DF90086BA77 /* starfish@2x.png in Resources */,
 				C2F6E71618BF043E0086BA77 /* Sancreek-Regular.ttf in Resources */,
 				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
