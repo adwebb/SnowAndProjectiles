@@ -37,11 +37,14 @@
         [self addChild:byLabel];
         
         SKShapeNode* buttonLayer = [SKShapeNode node];
-        [buttonLayer setPath:CGPathCreateWithRoundedRect(CGRectMake(0, 0, 250, 200), 20, 20, nil)];
+        CGPathRef path = CGPathCreateWithRoundedRect(CGRectMake(0, 0, 250, 200), 20, 20, nil);
+        [buttonLayer setPath:path];
         [buttonLayer setPosition:(CGPointMake(self.size.width/2-buttonLayer.frame.size.width/2, self.size.height/2-buttonLayer.frame.size.height/2-50))];
         buttonLayer.glowWidth = 5;
         buttonLayer.strokeColor = buttonLayer.fillColor = [SKColor colorWithRed:12/255.0 green:32/255.0 blue:40/255.0 alpha:.7];
         [self addChild: buttonLayer];
+        
+        CGPathRelease(path);
         
         SKLabelNode* newGameButton = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
         newGameButton.text = @"New Game";
