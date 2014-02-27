@@ -41,6 +41,7 @@
 		AAA1856118BFAF9F00782794 /* seagull3.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1855E18BFAF9F00782794 /* seagull3.png */; };
 		AAA1856218BFAF9F00782794 /* seagul2.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1855F18BFAF9F00782794 /* seagul2.png */; };
 		AAA1856318BFAF9F00782794 /* seagul1.png in Resources */ = {isa = PBXBuildFile; fileRef = AAA1856018BFAF9F00782794 /* seagul1.png */; };
+		AAD87DCC18BFD0ED00F4B29A /* seagul1a.png in Resources */ = {isa = PBXBuildFile; fileRef = AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */; };
 		AAEF99E118B4071B00A44E7F /* Soldier.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEF99E018B4071B00A44E7F /* Soldier.m */; };
 		C221481218B5272E00A9ED15 /* iceball.sks in Resources */ = {isa = PBXBuildFile; fileRef = C221481118B5272E00A9ED15 /* iceball.sks */; };
 		C225473C18B7DE9B00A0AFC2 /* Skirmisher.m in Sources */ = {isa = PBXBuildFile; fileRef = C225473B18B7DE9B00A0AFC2 /* Skirmisher.m */; };
@@ -179,6 +180,7 @@
 		AAA1855E18BFAF9F00782794 /* seagull3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagull3.png; sourceTree = "<group>"; };
 		AAA1855F18BFAF9F00782794 /* seagul2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagul2.png; sourceTree = "<group>"; };
 		AAA1856018BFAF9F00782794 /* seagul1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seagul1.png; sourceTree = "<group>"; };
+		AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seagul1a.png; path = SpriteKitSimpleGame/seagul1a.png; sourceTree = "<group>"; };
 		AAEF99DF18B4071B00A44E7F /* Soldier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soldier.h; sourceTree = "<group>"; };
 		AAEF99E018B4071B00A44E7F /* Soldier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Soldier.m; sourceTree = "<group>"; };
 		C221481118B5272E00A9ED15 /* iceball.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = iceball.sks; sourceTree = "<group>"; };
@@ -299,10 +301,10 @@
 			isa = PBXGroup;
 			children = (
 				AAA1855E18BFAF9F00782794 /* seagull3.png */,
+				AAD87DCB18BFD0ED00F4B29A /* seagul1a.png */,
 				AAA1855F18BFAF9F00782794 /* seagul2.png */,
 				AAA1856018BFAF9F00782794 /* seagul1.png */,
-				C2F6E6EA18BECA5B0086BA77 /* images.atlas */,
-                35F3DEF317D8011E009EFFF2 /* Objective Seafood */,
+				35F3DEF317D8011E009EFFF2 /* Objective Seafood */,
 				35F3DF1717D8011E009EFFF2 /* ObjectiveSeafoodTests */,
 				35F3DEEA17D8011E009EFFF2 /* Frameworks */,
 				35F3DEE917D8011E009EFFF2 /* Products */,
@@ -367,11 +369,6 @@
 			children = (
 				5AB6C78F18BFA1E700F3BDC6 /* tutorialScreenTwo.png */,
 				5AB6C79018BFA1E700F3BDC6 /* tutorialScreenOne.png */,
-				C2F6E71E18BF05860086BA77 /* ic_kill_gem@2x.png */,
-				C2F6E71C18BF057E0086BA77 /* ic_gem_status@2x.png */,
-
-				C2F6E71A18BF04DB0086BA77 /* typodermic.otf */,
-				C2F6E71818BF04B00086BA77 /* Doergon.ttf */,
 				C2F6E78A18BFA4460086BA77 /* app_icon-120-120.png */,
 				C2F6E78818BFA43C0086BA77 /* app_icon-80-80.png */,
 				C2F6E78618BFA4330086BA77 /* app_icon@2x.png */,
@@ -635,6 +632,7 @@
 				C2F6E77218BF9DF90086BA77 /* pause@2x.png in Resources */,
 				5AB1C56F18B7F03E0010F703 /* iceHit.wav in Resources */,
 				C2F6E75518BF9DF90086BA77 /* boat_front@2x.png in Resources */,
+				AAD87DCC18BFD0ED00F4B29A /* seagul1a.png in Resources */,
 				C2F6E75A18BF9DF90086BA77 /* btn_harpoon_fire@2x.png in Resources */,
 				C2F6E78518BFA42A0086BA77 /* app_icon.png in Resources */,
 				C2F6E75D18BF9DF90086BA77 /* btn_harpoon_split.png in Resources */,
@@ -669,7 +667,6 @@
 				35F3DF0117D8011E009EFFF2 /* Main.storyboard in Resources */,
 				5AAC65B518B7F646007FC4C2 /* fireExplosion.wav in Resources */,
 				AAA1856118BFAF9F00782794 /* seagull3.png in Resources */,
-				C2F6E6EB18BECA5B0086BA77 /* images.atlas in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 				C2F6E75418BF9DF90086BA77 /* boat_back@2x.png in Resources */,
 				C2F6E78D18BFA4520086BA77 /* app_icon-1024-1024.png in Resources */,
@@ -691,8 +688,6 @@
 				C2F6E75E18BF9DF90086BA77 /* btn_harpoon_split@2x.png in Resources */,
 				C2F6E71218BF03D40086BA77 /* coolvetica rg.ttf in Resources */,
 				5AB6C79118BFA1E700F3BDC6 /* tutorialScreenTwo.png in Resources */,
-				C2F6E71118BF03D10086BA77 /* Japan.ttf in Resources */,
-				C2F6E72318BF91030086BA77 /* backgrounds.atlas in Resources */,
 				C2F6E76618BF9DF90086BA77 /* eel@2x.png in Resources */,
 				C2F6E77B18BF9DF90086BA77 /* upgradeArrow@2x.png in Resources */,
 				C2F6E75F18BF9DF90086BA77 /* btn_levelUp.png in Resources */,

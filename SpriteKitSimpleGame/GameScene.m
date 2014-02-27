@@ -199,8 +199,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 {
     NSMutableArray *flyFrames = [NSMutableArray array];
     
-    [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul1.png"] ];
-   // [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul2.png"] ];
+    //[flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul1.png"] ];
+    [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul2.png"] ];
     //[flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul3.png"] ];
     
     seagullFrames = flyFrames;
@@ -210,7 +210,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
    // _seagull.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     [self addChild:_seagull];
     //[_seagull runAction:[SKAction animateWithTextures:seagullFrames timePerFrame:0.1f]];
-    [_seagull runAction:[SKAction repeatActionForever:[SKAction animateWithTextures:seagullFrames timePerFrame:0.1f]]];
+    [_seagull runAction:[SKAction repeatActionForever:[SKAction animateWithTextures:seagullFrames timePerFrame:0.5f]]];
     
     
     CGMutablePathRef path = CGPathCreateMutable();
@@ -218,10 +218,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
      CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height, -self.size.width, 350);
     
     _seagull.position = CGPointMake(self.frame.size.width - _seagull.size.width/2, self.frame.size.height/2);
-    _seagull.zRotation = 65.0;
+    _seagull.zRotation = 85.0;
     
-    [_seagull runAction:[SKAction followPath:path asOffset:YES orientToPath:YES duration:10]];
-    
+    [_seagull runAction:[SKAction followPath:path asOffset:YES orientToPath:YES duration:15]];
     
 }
 
@@ -506,7 +505,6 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.height, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-            [self flyingSeaguls];
 
             break;
         case brute:
@@ -514,7 +512,6 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.height/2, self.size.height/2, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
-            [self flyingSeaguls];
 
             break;
         case soldier:
@@ -523,7 +520,6 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.width, -self.size.height/2, -self.size.height*2/3, -self.size.height/4, -self.size.width, -50);
             
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-            [self flyingSeaguls];
 
             break;
         case skirmisher:
@@ -579,6 +575,8 @@ float degToRad(float degree)
         {
             monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2,
                                 @4, @4, @4, @4, @4, @4, @3, @3, @3, @3].mutableCopy;
+            [self flyingSeaguls];
+
             break;
         }
         case 3:
