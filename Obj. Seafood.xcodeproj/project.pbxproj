@@ -24,7 +24,6 @@
 		35F3DF1C17D8011E009EFFF2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F3DF1A17D8011E009EFFF2 /* InfoPlist.strings */; };
 		35F3DF1E17D8011E009EFFF2 /* AvastTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF1D17D8011E009EFFF2 /* AvastTests.m */; };
 		35F3DF3017D803D6009EFFF2 /* GameOverScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */; };
-		5A12544A18BEB8B4005BFBB4 /* backgroundScene@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12544918BEB8B4005BFBB4 /* backgroundScene@2x.png */; };
 		5A3C54F918B26B2C007A7E60 /* Hero.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3C54F818B26B2C007A7E60 /* Hero.m */; };
 		5A5D158818AD12BF00649720 /* Monster.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158718AD12BF00649720 /* Monster.m */; };
 		5A5D158B18AD13C100649720 /* Minion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D158A18AD13C100649720 /* Minion.m */; };
@@ -92,7 +91,6 @@
 		35F3DF1D17D8011E009EFFF2 /* AvastTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AvastTests.m; sourceTree = "<group>"; };
 		35F3DF2E17D803D6009EFFF2 /* GameOverScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverScene.h; sourceTree = "<group>"; };
 		35F3DF2F17D803D6009EFFF2 /* GameOverScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverScene.m; sourceTree = "<group>"; };
-		5A12544918BEB8B4005BFBB4 /* backgroundScene@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundScene@2x.png"; sourceTree = "<group>"; };
 		5A3C54F718B26B2C007A7E60 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hero.h; sourceTree = "<group>"; };
 		5A3C54F818B26B2C007A7E60 /* Hero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hero.m; sourceTree = "<group>"; };
 		5A5D158618AD12BF00649720 /* Monster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Monster.h; sourceTree = "<group>"; };
@@ -425,7 +423,6 @@
 				C2F6E6EB18BECA5B0086BA77 /* images.atlas in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 				AA1418C618B56A07006D64AB /* fireBreath.sks in Resources */,
-				5A12544A18BEB8B4005BFBB4 /* backgroundScene@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
