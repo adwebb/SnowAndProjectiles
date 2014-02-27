@@ -12,7 +12,7 @@
 
 +(IceProjectile*)iceProjectileOfRank:(int)rank
 {
-    IceProjectile* iceProjectile = [IceProjectile spriteNodeWithImageNamed:@"harpoon_arrow"];
+    IceProjectile* iceProjectile = [IceProjectile spriteNodeWithImageNamed:@"harpoon_white.png"];
     iceProjectile.color = [SKColor colorWithRed:0 green:144/255.0 blue:1 alpha:1];
     iceProjectile.colorBlendFactor = .5;
     iceProjectile.damage = 1 + rank/3;

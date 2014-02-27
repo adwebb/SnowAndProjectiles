@@ -12,7 +12,7 @@
 
 +(FireProjectile*)fireProjectileOfRank:(int)rank
 {
-    FireProjectile* fireProjectile = [FireProjectile spriteNodeWithImageNamed:@"harpoon_arrow"];
+    FireProjectile* fireProjectile = [FireProjectile spriteNodeWithImageNamed:@"harpoon_white.png"];
     fireProjectile.color = [SKColor colorWithRed:1 green:85/255.0 blue:0 alpha:1];
     fireProjectile.colorBlendFactor = .75;
     fireProjectile.damage = rank+1;

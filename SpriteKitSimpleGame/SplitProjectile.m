@@ -17,7 +17,7 @@
     
     for (NSInteger i = 0; i < rank + 1; i++)
     {
-        SplitProjectile* splitProjectile4 = [SplitProjectile spriteNodeWithImageNamed:@"harpoon_arrow"];
+        SplitProjectile* splitProjectile4 = [SplitProjectile spriteNodeWithImageNamed:@"harpoon_arrow.png"];
         //splitProjectile4.size = CGSizeMake(splitProjectile4.size.width/2, splitProjectile4.size.height/2);
         splitProjectile4.color = [SKColor colorWithRed:177/255.0 green:198/255.0 blue:0 alpha:1];
         splitProjectile4.colorBlendFactor = .5;

@@ -12,7 +12,7 @@
 
 + (Elite*)monster
 {
-    Elite* elite = [Elite spriteNodeWithImageNamed:@"crab"];
+    Elite* elite = [Elite spriteNodeWithImageNamed:@"anglerfish"];
     elite.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:elite.size];
     elite.baseSpeed = .75;
     elite.damage = 5;

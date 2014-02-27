@@ -13,7 +13,7 @@
 
 + (Soldier*)monster
 {
-    Soldier* dragonMonster = [Soldier spriteNodeWithImageNamed:@"cuteDragonSmall"];
+    Soldier* dragonMonster = [Soldier spriteNodeWithImageNamed:@"starfish"];
 
     dragonMonster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:dragonMonster.size];
     dragonMonster.baseSpeed = .5;

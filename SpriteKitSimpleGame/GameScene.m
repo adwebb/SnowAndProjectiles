@@ -77,6 +77,9 @@ typedef enum {
     
     int _score;
     SKLabelNode *scoreLabel;
+    SKNode* healthBarNode;
+    SKNode* bubbleLayer;
+    SKLabelNode* waveLabel;
     int _gameState;
     
     NSMutableArray* monstersForWave;
@@ -138,6 +141,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             _currency = 0;
             _upgrades = [self upgrades];
             [self advanceToWave:1];
+            [self takeDamage:0];
         }
     }
     return self;
@@ -159,6 +163,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             self.projectile = [FireProjectile fireProjectileOfRank:[[_upgrades objectForKey:@"fire"]integerValue]];
             SKEmitterNode* fireEmitter = fireball.copy;
             fireEmitter.targetNode = self;
+            fireEmitter.position = CGPointMake(self.projectile.position.x+self.projectile.size.width/3,self.projectile.position.y+self.projectile.size.height/3);
             [self.projectile addChild:fireEmitter];
             break;
         }
@@ -167,6 +172,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
             self.projectile = [IceProjectile iceProjectileOfRank:[[_upgrades objectForKey:@"ice"]integerValue]];
             SKEmitterNode* iceEmitter = iceball.copy;
             iceEmitter.targetNode = self;
+            iceEmitter.position = CGPointMake(self.projectile.position.x+self.projectile.size.width/3,self.projectile.position.y+self.projectile.size.height/3);
             [self.projectile addChild:iceEmitter];
             break;
         }
@@ -312,6 +318,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
     splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
     fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
     iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
+    
+    [[bubbleLayer childNodeWithName:[NSString stringWithFormat:@"%@Bubble",typeString]] removeFromParent];
     
     upgradeMode = NO;
     upgradeArrow.hidden = YES;
@@ -628,6 +636,19 @@ float degToRad(float degree)
         kraken.physicsBody.categoryBitMask = monsterCategory;
         [kraken runAction:[SKAction moveByX:-self.size.width y:0 duration:5]];
     }
+    
+    if(!waveLabel)
+    {
+        waveLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        waveLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+        waveLabel.position = CGPointMake(self.size.width-10, 10);
+        waveLabel.zPosition = 4;
+        waveLabel.fontSize = 18;
+        [self addChild:waveLabel];
+    }
+    
+     waveLabel.text = [NSString stringWithFormat:@"Wave:%d/6",self.wave];
+    
 }
 
 
@@ -757,7 +778,7 @@ float degToRad(float degree)
         SKNode* coinNode = [SKNode new];
         [self addChild:coinNode];
         
-        SKSpriteNode* coin = [SKSpriteNode spriteNodeWithImageNamed:@"coin"];
+        SKSpriteNode* coin = [SKSpriteNode spriteNodeWithImageNamed:@"ic_kill_gem"];
         coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
         [coinNode addChild:coin];
         
@@ -980,9 +1001,6 @@ float degToRad(float degree)
     
     [_hudLayerNode addChild:scoreLabel];
     
-    _healthBar = @"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️";
-    //   NSString * actualHealth = [_healthBar substringToIndex:(testHealth / 10 * _healthBar.length)];
-    
     SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
     playerHealthBackground.name = @"playerHealthBackground";
     playerHealthBackground.color = [SKColor darkGrayColor];
@@ -992,7 +1010,7 @@ float degToRad(float degree)
     playerHealthBackground.text = _healthBar;
     
     currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-    SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"stack"];
+    SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"ic_gem_status"];
     coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
     currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
     currencyLabel.fontSize = 20;
@@ -1007,26 +1025,11 @@ float degToRad(float degree)
     pauseButton.name = @"PauseButton";
     [_hudLayerNode addChild:pauseButton];
     
-    playerHealthBackground.horizontalAlignmentMode =  SKLabelHorizontalAlignmentModeLeft;
-    playerHealthBackground.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    playerHealthBackground.position =  CGPointMake(0, self.size.height - barHeight/4);
-    [_hudLayerNode addChild:playerHealthBackground];
-    
-    _playerHealthLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
-    _playerHealthLabel.name = @"playerHealth";
-    _playerHealthLabel.fontColor = [SKColor whiteColor];
-    _playerHealthLabel.fontSize = 15.0f;
-    _playerHealthLabel.text = _healthBar;
-    _playerHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
-    _playerHealthLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    _playerHealthLabel.position = CGPointMake(0, self.size.height - barHeight/4);
-    [_hudLayerNode addChild:_playerHealthLabel];
-    
     SKNode* projectileButtonLayer = [SKNode node];
     projectileButtonLayer.zPosition = 5;
     [self addChild:projectileButtonLayer];
     
-    splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+    splitProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"btn_harpoon_split"];
     splitProjectileButton.position = CGPointMake(splitProjectileButton.size.width, splitProjectileButton.size.height/2);
     splitProjectileButton.name = @"SplitButton";
     splitProjectileButton.hidden = NO;
@@ -1039,12 +1042,12 @@ float degToRad(float degree)
     splitLabel.fontSize = 10.0f;
     splitLabel.fontColor = [SKColor whiteColor];
     splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
-    splitLabel.position = CGPointMake(self.frame.size.width/11.5, self.frame.size.height/6.5);
+    splitLabel.position = CGPointMake(splitProjectileButton.position.x, 5);
     
     [projectileButtonLayer addChild:splitLabel];
     
-    freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"blue"];
-    freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2, freezeProjectileButton.size.height/2);
+    freezeProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"btn_harpoon_ice"];
+    freezeProjectileButton.position = CGPointMake(freezeProjectileButton.size.width*2.5, freezeProjectileButton.size.height/2);
     freezeProjectileButton.name = @"IceButton";
     freezeProjectileButton.hidden = NO;
     freezeProjectileButton.alpha = 0.4f;
@@ -1055,12 +1058,12 @@ float degToRad(float degree)
     iceLabel.fontSize = 10.0f;
     iceLabel.fontColor = [SKColor whiteColor];
     iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
-    iceLabel.position = CGPointMake(self.frame.size.width/5.6, self.frame.size.height/6.5);
+    iceLabel.position = CGPointMake(freezeProjectileButton.position.x, 5);
     
     [projectileButtonLayer addChild:iceLabel];
     
-    fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"red"];
-    fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*3, fireProjectileButton.size.height/2);
+    fireProjectileButton = [SKSpriteNode spriteNodeWithImageNamed:@"btn_harpoon_fire"];
+    fireProjectileButton.position = CGPointMake(fireProjectileButton.size.width*4, fireProjectileButton.size.height/2);
     fireProjectileButton.name = @"FireButton";
     fireProjectileButton.hidden = NO;
     fireProjectileButton.alpha = 0.4f;
@@ -1071,12 +1074,12 @@ float degToRad(float degree)
     fireLabel.fontSize = 10.0f;
     fireLabel.fontColor = [SKColor whiteColor];
     fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
-    fireLabel.position = CGPointMake(self.frame.size.width/3.75, self.frame.size.height/6.5);
+    fireLabel.position = CGPointMake(fireProjectileButton.position.x, 5);
     
     [projectileButtonLayer addChild:fireLabel];
     
-    upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"upgradeArrow"];
-    upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*4, fireProjectileButton.size.height/2);
+    upgradeArrow = [SKSpriteNode spriteNodeWithImageNamed:@"btn_levelUp"];
+    upgradeArrow.position = CGPointMake(fireProjectileButton.size.width*5.5, fireProjectileButton.size.height/2);
     upgradeArrow.hidden = YES;
     upgradeArrow.name = @"upgradeArrow";
     [projectileButtonLayer addChild:upgradeArrow];
@@ -1102,14 +1105,26 @@ float degToRad(float degree)
 -(void)takeDamage:(int)amount
 {
     hero.health -= amount;
-    if(hero.health >= 0)
+    
+    if(!healthBarNode)
     {
-        _playerHealthLabel.text = [_healthBar substringToIndex:hero.health*2];
+        healthBarNode = [SKNode node];
+        [self addChild:healthBarNode];
+    }else{
+        [healthBarNode removeAllChildren];
+    }
+    
+    for(int i = 0;i < hero.health; i++)
+    {
+        SKSpriteNode* healthbarPiece = [SKSpriteNode spriteNodeWithImageNamed:@"ic_ship_health"];
+        healthbarPiece.size = CGSizeMake(22, 22);
+        healthbarPiece.position = CGPointMake(healthbarPiece.size.width*i+18, self.size.height - healthbarPiece.size.height*3/4);
+        
+        [healthBarNode addChild:healthbarPiece];
     }
     
     if (hero.health <= 0)
     {
-        _playerHealthLabel.text = [_healthBar substringToIndex:0];
         [self sink:hero];
     }
 
@@ -1140,18 +1155,41 @@ float degToRad(float degree)
        shouldHideArrow = [self checkForUpgradeEligibility:2];
     
     upgradeArrow.hidden = shouldHideArrow;
+    
 }
 
 -(BOOL)checkForUpgradeEligibility:(int)rank
 {
-    if([_upgrades[@"fire"] intValue] == rank)
-        [fireProjectileButton addChild:shimmer.copy];
+    if(!bubbleLayer)
+    {
+        bubbleLayer = [SKNode node];
+        bubbleLayer.zPosition = 4;
+        [self addChild:bubbleLayer];
+    }
     
-    if([_upgrades[@"ice"] intValue] == rank)
-        [freezeProjectileButton addChild:shimmer.copy];
+    if([_upgrades[@"fire"] intValue] == rank && ![bubbleLayer childNodeWithName:@"fireBubble"])
+    {
+        SKSpriteNode* bubble = [SKSpriteNode spriteNodeWithImageNamed:@"btn_bubble"];
+        bubble.name = @"fireBubble";
+        bubble.position = fireProjectileButton.position;
+        [bubbleLayer addChild:bubble];
+    }
     
-    if([_upgrades[@"split"] intValue] == rank)
-        [splitProjectileButton addChild:shimmer.copy];
+    if([_upgrades[@"ice"] intValue] == rank && ![bubbleLayer childNodeWithName:@"iceBubble"])
+    {
+        SKSpriteNode* bubble = [SKSpriteNode spriteNodeWithImageNamed:@"btn_bubble"];
+        bubble.name = @"iceBubble";
+        bubble.position = freezeProjectileButton.position;
+        [bubbleLayer addChild:bubble];
+    }
+    
+    if([_upgrades[@"split"] intValue] == rank && ![bubbleLayer childNodeWithName:@"splitBubble"])
+    {
+        SKSpriteNode* bubble = [SKSpriteNode spriteNodeWithImageNamed:@"btn_bubble"];
+        bubble.name = @"splitBubble";
+        bubble.position = splitProjectileButton.position;
+        [bubbleLayer addChild:bubble];
+    }
     
     return NO;
 }
