@@ -49,31 +49,31 @@
 
 - (void)showCreditText
 {
-    SKLabelNode* creditTextLabelOne = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode* creditTextLabelOne = [SKLabelNode labelNodeWithFontNamed:@"CarnivaleeFreakshow"];
     creditTextLabelOne.fontColor = [SKColor whiteColor];
-    creditTextLabelOne.fontSize = 18.0f;
+    creditTextLabelOne.fontSize = 40.0f;
     creditTextLabelOne.text = @"Objective: Seafood";
     creditTextLabelOne.position = CGPointMake(self.size.width/2, self.size.height/1.7);
     
-    SKLabelNode* creditTextLabelTwo = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode* creditTextLabelTwo = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
     creditTextLabelTwo.fontColor = [SKColor whiteColor];
     creditTextLabelTwo.fontSize = 18.0f;
     creditTextLabelTwo.text = @"Designed by SpriteKitchen";
     creditTextLabelTwo.position = CGPointMake(self.size.width/2, creditTextLabelOne.position.y - 30);
     
-    SKLabelNode* creditTextLabelThree = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode* creditTextLabelThree = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
     creditTextLabelThree.fontColor = [SKColor whiteColor];
     creditTextLabelThree.fontSize = 18.0f;
     creditTextLabelThree.text = @"Art by Joe Call";
     creditTextLabelThree.position = CGPointMake(self.size.width/2, creditTextLabelTwo.position.y - 30);
     
-    SKLabelNode* creditTextLabelFour = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode* creditTextLabelFour = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
     creditTextLabelFour.fontColor = [SKColor whiteColor];
     creditTextLabelFour.fontSize = 18.0f;
     creditTextLabelFour.text = @"Music from Audionautix.com";
     creditTextLabelFour.position = CGPointMake(self.size.width/2, creditTextLabelThree.position.y - 30);
     
-    SKLabelNode* creditTextLabelFive = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode* creditTextLabelFive = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
     creditTextLabelFive.fontColor = [SKColor blueColor];
     creditTextLabelFive.fontSize = 18.0f;
     creditTextLabelFive.text = @"Visit us at SpriteKitchen.com";

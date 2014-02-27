@@ -593,7 +593,7 @@ float degToRad(float degree)
 {
     if(self.wave <= 5 && hero.health > 0)
     {
-        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        waveComplete = [SKLabelNode labelNodeWithFontNamed:@"Opificio-Bold"];
         waveComplete.position = CGPointMake(self.size.width/2, self.size.height/2);
         waveComplete.fontSize = 20;
         waveComplete.fontColor = [SKColor whiteColor];
@@ -632,7 +632,7 @@ float degToRad(float degree)
     
     if(!waveLabel)
     {
-        waveLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        waveLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
         waveLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
         waveLabel.position = CGPointMake(self.size.width-10, 10);
         waveLabel.zPosition = 4;
@@ -640,7 +640,7 @@ float degToRad(float degree)
         [self addChild:waveLabel];
     }
     
-     waveLabel.text = [NSString stringWithFormat:@"Wave:%d/6",self.wave];
+     waveLabel.text = [NSString stringWithFormat:@"Wave: %d/6",self.wave];
     
 }
 
@@ -775,7 +775,7 @@ float degToRad(float degree)
         coin.position = CGPointMake(monster.position.x, monster.position.y+monster.size.height/2);
         [coinNode addChild:coin];
         
-        SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+        SKLabelNode* gold = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
         gold.text = [NSString stringWithFormat:@"%d",monster.goldValue];
         gold.fontSize = 15.0;
         gold.fontColor = [UIColor colorWithRed:1 green:192/255.0 blue:0 alpha:1];
@@ -982,7 +982,7 @@ float degToRad(float degree)
     hudBarBackground.anchorPoint = CGPointZero;
     [_hudLayerNode addChild:hudBarBackground];
     
-    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     
     scoreLabel.fontSize = 20.0;
     scoreLabel.text = @"Score: 0";
@@ -994,7 +994,7 @@ float degToRad(float degree)
     
     [_hudLayerNode addChild:scoreLabel];
     
-    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    SKLabelNode *playerHealthBackground = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     playerHealthBackground.name = @"playerHealthBackground";
     playerHealthBackground.color = [SKColor darkGrayColor];
     playerHealthBackground.colorBlendFactor = .5;
@@ -1002,7 +1002,7 @@ float degToRad(float degree)
     
     playerHealthBackground.text = _healthBar;
     
-    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
+    currencyLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     SKSpriteNode* coinStack = [SKSpriteNode spriteNodeWithImageNamed:@"ic_gem_status"];
     coinStack.position = CGPointMake(self.size.width-coinStack.size.width-55, self.size.height-barHeight/2);
     currencyLabel.position = CGPointMake(coinStack.position.x-coinStack.size.width*2/3, coinStack.position.y);
@@ -1031,7 +1031,7 @@ float degToRad(float degree)
     [projectileButtonLayer addChild:splitProjectileButton];
     
     splitLabel = [SKLabelNode new];
-    splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    splitLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     splitLabel.fontSize = 10.0f;
     splitLabel.fontColor = [SKColor whiteColor];
     splitLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"split"] integerValue]];
@@ -1047,7 +1047,7 @@ float degToRad(float degree)
     
     [projectileButtonLayer addChild:freezeProjectileButton];
     
-    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    iceLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     iceLabel.fontSize = 10.0f;
     iceLabel.fontColor = [SKColor whiteColor];
     iceLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"ice"] integerValue]];
@@ -1063,7 +1063,7 @@ float degToRad(float degree)
 
     [projectileButtonLayer addChild:fireProjectileButton];
     
-    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    fireLabel = [SKLabelNode labelNodeWithFontNamed:@"Typodermic-Regular"];
     fireLabel.fontSize = 10.0f;
     fireLabel.fontColor = [SKColor whiteColor];
     fireLabel.text = [NSString stringWithFormat:@"%d/3", [[_upgrades objectForKey:@"fire"] integerValue]];
