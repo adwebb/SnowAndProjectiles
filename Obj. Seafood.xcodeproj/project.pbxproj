@@ -109,12 +109,9 @@
 		C2F6E78018BF9E310086BA77 /* backgroundScene@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E77D18BF9E310086BA77 /* backgroundScene@2x.png */; };
 		C2F6E78118BF9E310086BA77 /* fullscreen_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E77E18BF9E310086BA77 /* fullscreen_background@2x.png */; };
 		C2F6E78218BF9E310086BA77 /* introbg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E77F18BF9E310086BA77 /* introbg@2x.png */; };
-		C2F6E78518BFA42A0086BA77 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78418BFA42A0086BA77 /* app_icon.png */; };
-		C2F6E78718BFA4330086BA77 /* app_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78618BFA4330086BA77 /* app_icon@2x.png */; };
-		C2F6E78918BFA43C0086BA77 /* app_icon-80-80.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78818BFA43C0086BA77 /* app_icon-80-80.png */; };
-		C2F6E78B18BFA4460086BA77 /* app_icon-120-120.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78A18BFA4460086BA77 /* app_icon-120-120.png */; };
-		C2F6E78D18BFA4520086BA77 /* app_icon-1024-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78C18BFA4520086BA77 /* app_icon-1024-1024.png */; };
-		C2F6E78F18BFA4870086BA77 /* objective_seafood_splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen.png */; };
+		C2F6E78518BFA42A0086BA77 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78418BFA42A0086BA77 /* icon.png */; };
+		C2F6E78718BFA4330086BA77 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78618BFA4330086BA77 /* icon@2x.png */; };
+		C2F6E78F18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png */; };
 		C2FB16CC18B3FF10002C9513 /* FireProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16CB18B3FF10002C9513 /* FireProjectile.m */; };
 		C2FB16CF18B3FF1D002C9513 /* IceProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16CE18B3FF1D002C9513 /* IceProjectile.m */; };
 		C2FB16D218B3FF26002C9513 /* SplitProjectile.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB16D118B3FF26002C9513 /* SplitProjectile.m */; };
@@ -255,12 +252,12 @@
 		C2F6E77D18BF9E310086BA77 /* backgroundScene@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "backgroundScene@2x.png"; path = "backgrounds.atlas/backgroundScene@2x.png"; sourceTree = "<group>"; };
 		C2F6E77E18BF9E310086BA77 /* fullscreen_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fullscreen_background@2x.png"; path = "backgrounds.atlas/fullscreen_background@2x.png"; sourceTree = "<group>"; };
 		C2F6E77F18BF9E310086BA77 /* introbg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "introbg@2x.png"; path = "backgrounds.atlas/introbg@2x.png"; sourceTree = "<group>"; };
-		C2F6E78418BFA42A0086BA77 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
-		C2F6E78618BFA4330086BA77 /* app_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_icon@2x.png"; sourceTree = "<group>"; };
+		C2F6E78418BFA42A0086BA77 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		C2F6E78618BFA4330086BA77 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		C2F6E78818BFA43C0086BA77 /* app_icon-80-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_icon-80-80.png"; sourceTree = "<group>"; };
 		C2F6E78A18BFA4460086BA77 /* app_icon-120-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_icon-120-120.png"; sourceTree = "<group>"; };
 		C2F6E78C18BFA4520086BA77 /* app_icon-1024-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_icon-1024-1024.png"; sourceTree = "<group>"; };
-		C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = objective_seafood_splashscreen.png; sourceTree = "<group>"; };
+		C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "objective_seafood_splashscreen@2x.png"; sourceTree = "<group>"; };
 		C2F6E79018BFA5BF0086BA77 /* typodermic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = typodermic.otf; sourceTree = "<group>"; };
 		C2FB16CA18B3FF10002C9513 /* FireProjectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireProjectile.h; sourceTree = "<group>"; };
 		C2FB16CB18B3FF10002C9513 /* FireProjectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FireProjectile.m; sourceTree = "<group>"; };
@@ -368,11 +365,11 @@
 			isa = PBXGroup;
 			children = (
 				5AB6C78F18BFA1E700F3BDC6 /* tutorialScreenTwo.png */,
+				C2F6E78818BFA43C0086BA77 /* app_icon-80-80.png */,
 				5AB6C79018BFA1E700F3BDC6 /* tutorialScreenOne.png */,
 				C2F6E78A18BFA4460086BA77 /* app_icon-120-120.png */,
-				C2F6E78818BFA43C0086BA77 /* app_icon-80-80.png */,
-				C2F6E78618BFA4330086BA77 /* app_icon@2x.png */,
-				C2F6E78418BFA42A0086BA77 /* app_icon.png */,
+				C2F6E78618BFA4330086BA77 /* icon@2x.png */,
+				C2F6E78418BFA42A0086BA77 /* icon.png */,
 				C2F6E79018BFA5BF0086BA77 /* typodermic.otf */,
 				C2F6E78C18BFA4520086BA77 /* app_icon-1024-1024.png */,
 				C2F6E71518BF043E0086BA77 /* Sancreek-Regular.ttf */,
@@ -487,7 +484,7 @@
 		C2F6E77C18BF9E160086BA77 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen.png */,
+				C2F6E78E18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png */,
 				C2F6E77D18BF9E310086BA77 /* backgroundScene@2x.png */,
 				C2F6E77E18BF9E310086BA77 /* fullscreen_background@2x.png */,
 				C2F6E77F18BF9E310086BA77 /* introbg@2x.png */,
@@ -634,16 +631,14 @@
 				C2F6E75518BF9DF90086BA77 /* boat_front@2x.png in Resources */,
 				AAD87DCC18BFD0ED00F4B29A /* seagul1a.png in Resources */,
 				C2F6E75A18BF9DF90086BA77 /* btn_harpoon_fire@2x.png in Resources */,
-				C2F6E78518BFA42A0086BA77 /* app_icon.png in Resources */,
+				C2F6E78518BFA42A0086BA77 /* icon.png in Resources */,
 				C2F6E75D18BF9DF90086BA77 /* btn_harpoon_split.png in Resources */,
 				C2F6E6F318BEFEF60086BA77 /* arrowHit.wav in Resources */,
 				C29470A018B683CB00037F86 /* intro.mp3 in Resources */,
 				C2F6E75918BF9DF90086BA77 /* btn_harpoon_fire.png in Resources */,
 				35F3DEF817D8011E009EFFF2 /* InfoPlist.strings in Resources */,
-				C2F6E78918BFA43C0086BA77 /* app_icon-80-80.png in Resources */,
 				35F3DF0B17D8011E009EFFF2 /* Images.xcassets in Resources */,
 				C2F6E77918BF9DF90086BA77 /* stack@2x.png in Resources */,
-				C2F6E78B18BFA4460086BA77 /* app_icon-120-120.png in Resources */,
 				C2F6E77418BF9DF90086BA77 /* red@2x.png in Resources */,
 				C2FB16D418B400FA002C9513 /* fireball.sks in Resources */,
 				C2F6E75B18BF9DF90086BA77 /* btn_harpoon_ice.png in Resources */,
@@ -669,9 +664,8 @@
 				AAA1856118BFAF9F00782794 /* seagull3.png in Resources */,
 				C22E150818AA865500132E6E /* SnowSplosion.sks in Resources */,
 				C2F6E75418BF9DF90086BA77 /* boat_back@2x.png in Resources */,
-				C2F6E78D18BFA4520086BA77 /* app_icon-1024-1024.png in Resources */,
 				C2F6E75118BF9DF90086BA77 /* arm@2x.png in Resources */,
-				C2F6E78718BFA4330086BA77 /* app_icon@2x.png in Resources */,
+				C2F6E78718BFA4330086BA77 /* icon@2x.png in Resources */,
 				C2F6E75618BF9DF90086BA77 /* bokeh.png in Resources */,
 				C2F6E75818BF9DF90086BA77 /* btn_bubble@2x.png in Resources */,
 				C2F6E77818BF9DF90086BA77 /* squid_mouth@2x.png in Resources */,
@@ -692,7 +686,7 @@
 				C2F6E77B18BF9DF90086BA77 /* upgradeArrow@2x.png in Resources */,
 				C2F6E75F18BF9DF90086BA77 /* btn_levelUp.png in Resources */,
 				C2F6E76E18BF9DF90086BA77 /* ic_ship_health.png in Resources */,
-				C2F6E78F18BFA4870086BA77 /* objective_seafood_splashscreen.png in Resources */,
+				C2F6E78F18BFA4870086BA77 /* objective_seafood_splashscreen@2x.png in Resources */,
 				C2F6E76A18BF9DF90086BA77 /* harpoon_arrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
