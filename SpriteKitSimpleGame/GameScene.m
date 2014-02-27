@@ -85,6 +85,10 @@ typedef enum {
     NSMutableArray* monstersForWave;
     
     BOOL upgradeMode;
+    
+    SKSpriteNode *_seagull;
+    NSArray *seagullFrames;
+    
 }
 
 @property (nonatomic) int monstersDestroyed;
@@ -131,6 +135,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     {
         [self setupEmitters];
         [self setupUI];
+        [self flyingSeaguls];
         
         if(continued)
         {
@@ -143,9 +148,11 @@ static inline CGPoint rwNormalize(CGPoint a) {
             [self advanceToWave:1];
             [self takeDamage:0];
         }
+        
     }
     return self;
 }
+
 
 - (void)spawnProjectileOfType:(ProjectileType)type
 {
@@ -186,6 +193,36 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
     self.projectile.position = projectileSpawnPoint;
     [self addChild:self.projectile];
+}
+
+-(void)flyingSeaguls
+{
+    NSMutableArray *flyFrames = [NSMutableArray array];
+    
+    [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul1.png"] ];
+   // [flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul2.png"] ];
+    //[flyFrames addObject:[SKTexture textureWithImageNamed:@"seagul3.png"] ];
+    
+    seagullFrames = flyFrames;
+    
+    SKTexture *temp = seagullFrames[0];
+    _seagull = [SKSpriteNode spriteNodeWithTexture:temp];
+   // _seagull.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    [self addChild:_seagull];
+    //[_seagull runAction:[SKAction animateWithTextures:seagullFrames timePerFrame:0.1f]];
+    [_seagull runAction:[SKAction repeatActionForever:[SKAction animateWithTextures:seagullFrames timePerFrame:0.1f]]];
+    
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, Nil, 350, 850);
+     CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height, -self.size.width, 350);
+    
+    _seagull.position = CGPointMake(self.frame.size.width - _seagull.size.width/2, self.frame.size.height/2);
+    _seagull.zRotation = 65.0;
+    
+    [_seagull runAction:[SKAction followPath:path asOffset:YES orientToPath:YES duration:10]];
+    
+    
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -476,6 +513,7 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.height, -self.size.height/2, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            [self flyingSeaguls];
 
             break;
         case brute:
@@ -483,6 +521,7 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.height/2, self.size.height/2, -self.size.height/2, -self.size.height/3, -self.size.width, -80);
 
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/*/2*/, self.frame.size.height/2);
+            [self flyingSeaguls];
 
             break;
         case soldier:
@@ -491,6 +530,7 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.width, -self.size.height/2, -self.size.height*2/3, -self.size.height/4, -self.size.width, -50);
             
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
+            [self flyingSeaguls];
 
             break;
         case skirmisher:
@@ -513,7 +553,8 @@ float degToRad(float degree)
             CGPathAddCurveToPoint(path, nil, -self.size.height/3, self.size.height/3, -self.size.height*2/3, -self.size.height/3, -self.size.width, -50);
             
             monster.position = CGPointMake(self.frame.size.width - monster.size.width/2, self.frame.size.height/2);
-            
+            [self flyingSeaguls];
+
         default:
             break;
     }
@@ -537,6 +578,8 @@ float degToRad(float degree)
         case 1:
         {
             monstersForWave = @[@1, @1, @1, @1, @1, @1, @1, @2, @2, @2].mutableCopy;
+            [self flyingSeaguls];
+
             break;
         }
         case 2:
@@ -558,6 +601,8 @@ float degToRad(float degree)
                                 @2, @2, @2, @2, @2, @2, @2, @2, @2, @2,
                                 @4, @4, @4, @4, @4, @4, @4, @4, @4, @4,
                                 @3, @3, @3, @3, @3, @5, @5, @5, @5, @5].mutableCopy;
+            [self flyingSeaguls];
+
             break;
         }
         case 5:
