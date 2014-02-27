@@ -13,16 +13,15 @@
 
 -(id)initWithSize:(CGSize)size
 {
-    if (self = [super initWithSize:size])
-         NSLog(@"Size: %@", NSStringFromCGSize(size));
+    self = [super initWithSize:size];
     
     _background = [SKSpriteNode spriteNodeWithImageNamed:@"backgroundScene.png"];
     [_background setName:@"background"];
     [_background setPosition:(CGPointMake(self.size.width/2, self.size.height/2))];
+   
     SKAction* greyOutBackground = [SKAction colorizeWithColor:[UIColor lightGrayColor] colorBlendFactor:1 duration:0];
     [_background runAction:greyOutBackground];
     [self addChild:_background];
-
     
     [self showCreditText];
     
@@ -56,7 +55,6 @@
     creditTextLabelOne.fontSize = 18.0f;
     creditTextLabelOne.text = @"Objective: Seafood";
     creditTextLabelOne.position = CGPointMake(self.size.width/2, self.size.height/1.7);
-
     
     SKLabelNode* creditTextLabelTwo = [[SKLabelNode alloc]init];
     creditTextLabelTwo = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
@@ -64,7 +62,6 @@
     creditTextLabelTwo.fontSize = 18.0f;
     creditTextLabelTwo.text = @"Designed by SpriteKitchen";
     creditTextLabelTwo.position = CGPointMake(self.size.width/2, creditTextLabelOne.position.y - 30);
-    //creditTextLabelTwo.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
     
     SKLabelNode* creditTextLabelThree = [[SKLabelNode alloc]init];
     creditTextLabelThree = [SKLabelNode labelNodeWithFontNamed:@"chalkduster"];
