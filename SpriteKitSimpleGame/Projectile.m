@@ -20,7 +20,7 @@ static const uint32_t monsterCategory        =  0x1 << 1;
     projectile.physicsBody.affectedByGravity = NO;
     projectile.physicsBody.usesPreciseCollisionDetection = YES;
     projectile.physicsBody.collisionBitMask = 0;
-    projectile.physicsBody.categoryBitMask = projectileCategory;
+    projectile.physicsBody.categoryBitMask = 0x0;
     projectile.physicsBody.contactTestBitMask = monsterCategory;
     projectile.alpha = 1;
     [projectile setName:movableNodeName];
